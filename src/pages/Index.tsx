@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BookOpen,
+  Archive,
+  Layers,
+  Activity,
+} from "lucide-react";
 import PageTransition from "@/components/PageTransition";
 import ProjectCard from "@/components/ProjectCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -348,31 +355,96 @@ const Index = () => {
 
         {/* Quick Links */}
         <section className="py-16 border-t border-border/40">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Link
-              to="/learning-journey"
-              className="group border border-border/60 rounded-lg p-6 hover:border-primary/40 transition-all duration-300"
-            >
-              <h3 className="font-mono text-xs text-primary tracking-widest uppercase mb-2">
-                learning journey
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                things i'm currently learning, building, and figuring out along
-                the way.
-              </p>
-            </Link>
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="font-mono text-xs text-primary tracking-widest uppercase">
+              explore more
+            </h2>
+            <span className="font-mono text-[10px] text-muted-foreground tracking-wider uppercase">
+              2 sections
+            </span>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {[
+              {
+                to: "/learning-journey",
+                label: "learning journey",
+                title: "Learning Journey",
+                description:
+                  "things i'm currently learning, building, and figuring out along the way.",
+                icon: BookOpen,
+                meta: [
+                  { icon: Layers, text: "5 entries" },
+                  { icon: Activity, text: "active" },
+                ],
+              },
+              {
+                to: "/legacy",
+                label: "legacy",
+                title: "Legacy",
+                description:
+                  "an archive of past projects, experiments, and systems i've moved on from.",
+                icon: Archive,
+                meta: [
+                  { icon: Layers, text: "8 records" },
+                  { icon: Activity, text: "archive" },
+                ],
+              },
+            ].map(({ to, label, title, description, icon: Icon, meta }) => (
+              <Link
+                key={to}
+                to={to}
+                className="group relative flex flex-col rounded-xl border border-border/60 bg-surface/30 p-6 overflow-hidden transition-all duration-300 md:hover:-translate-y-1 md:hover:border-primary/40 md:hover:shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.2)]"
+                style={{ willChange: "transform" }}
+              >
+                {/* top accent line */}
+                <span className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
 
-            <Link
-              to="/legacy"
-              className="group border border-border/60 rounded-lg p-6 hover:border-primary/40 transition-all duration-300"
-            >
-              <h3 className="font-mono text-xs text-primary tracking-widest uppercase mb-2">
-                legacy
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                a glimpse into the people who shaped my journey in programming.
-              </p>
-            </Link>
+                {/* Top: icon + label + arrow */}
+                <div className="flex items-start justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-background/60 text-primary transition-all duration-300 md:group-hover:border-primary/40 md:group-hover:scale-105">
+                      <Icon size={16} />
+                    </div>
+                    <h3 className="font-mono text-xs text-primary tracking-widest uppercase">
+                      {label}
+                    </h3>
+                  </div>
+                  <ArrowUpRight
+                    size={16}
+                    className="shrink-0 text-muted-foreground transition-all duration-300 md:group-hover:text-primary md:group-hover:-translate-y-0.5 md:group-hover:translate-x-0.5"
+                  />
+                </div>
+
+                {/* Title + description */}
+                <h4 className="text-lg font-semibold tracking-tight text-foreground mb-2 md:group-hover:text-primary transition-colors">
+                  {title}
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+                  {description}
+                </p>
+
+                <div className="flex-1" />
+
+                {/* Divider */}
+                <div className="h-px w-full bg-border/60 mb-4" />
+
+                {/* Metadata */}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-mono text-muted-foreground">
+                  {meta.map((m) => {
+                    const MIcon = m.icon;
+                    return (
+                      <span
+                        key={m.text}
+                        className="inline-flex items-center gap-1.5"
+                      >
+                        <MIcon size={11} />
+                        {m.text}
+                      </span>
+                    );
+                  })}
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
 
