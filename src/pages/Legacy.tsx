@@ -1,71 +1,244 @@
 import PageTransition from "@/components/PageTransition";
 import { motion } from "framer-motion";
+import {
+  Archive,
+  FlaskConical,
+  Server,
+  Calendar,
+  Code2,
+  Tag,
+  FolderGit2,
+  Cpu,
+  Globe,
+} from "lucide-react";
 
-const heritage = [
+type Status = "archived" | "completed" | "experimental" | "deprecated";
+
+interface LegacyItem {
+  title: string;
+  context: string;
+  period: string;
+  stack: string[];
+  status: Status;
+  icon: typeof Code2;
+}
+
+interface Section {
+  id: string;
+  title: string;
+  description: string;
+  icon: typeof Archive;
+  items: LegacyItem[];
+}
+
+const sections: Section[] = [
   {
-    name: "******* *****",
-    role: "Introduced me to technology, problem solving, and inspired me to be a developer.",
-    period: "2004 - Now",
-    image: "https://res.cloudinary.com/da4fjxm1e/image/upload/f_auto,q_auto,w_500/person_uycbpf.png",
+    id: "projects",
+    title: "old projects",
+    description: "early builds and shipped work that taught me how things actually break in production.",
+    icon: FolderGit2,
+    items: [
+      {
+        title: "Personal Portfolio v1",
+        context: "First static portfolio built to learn semantic markup and basic layout systems.",
+        period: "2023",
+        stack: ["HTML", "CSS", "Vanilla JS"],
+        status: "archived",
+        icon: Globe,
+      },
+      {
+        title: "School Inventory App",
+        context: "Simple CRUD inventory built as a class project. Taught me routing, forms, and database basics.",
+        period: "2024",
+        stack: ["Laravel", "Blade", "MySQL"],
+        status: "completed",
+        icon: Server,
+      },
+      {
+        title: "Landing Page Templates",
+        context: "Collection of marketing landing pages used for practicing responsive design and Tailwind utility patterns.",
+        period: "2024",
+        stack: ["HTML", "Tailwind", "AlpineJS"],
+        status: "archived",
+        icon: Code2,
+      },
+    ],
   },
   {
-    name: "Dzikra Ahsan Imawan",
-    role: "Continuing the journey and building my own path.",
-    period: "2024 – Now",
-    image: "https://res.cloudinary.com/da4fjxm1e/image/upload/f_auto,q_auto,w_500/Dzikra-foto2_evsxzq.png",
+    id: "experiments",
+    title: "experiments",
+    description: "small ideas i shipped to learn one specific thing — most never grew past v0.",
+    icon: FlaskConical,
+    items: [
+      {
+        title: "Realtime Chat Prototype",
+        context: "Tested websocket basics and how state syncs between clients. Never deployed publicly.",
+        period: "2024",
+        stack: ["React", "Socket.io", "Node"],
+        status: "experimental",
+        icon: Cpu,
+      },
+      {
+        title: "Markdown Note App",
+        context: "Tiny markdown editor with localStorage persistence. Used to learn controlled inputs and parsing.",
+        period: "2024",
+        stack: ["React", "Marked", "LocalStorage"],
+        status: "experimental",
+        icon: Code2,
+      },
+      {
+        title: "Component Animation Lab",
+        context: "Playground for testing Framer Motion patterns — page transitions, gestures, and layout animations.",
+        period: "2025",
+        stack: ["React", "Framer Motion", "TS"],
+        status: "experimental",
+        icon: FlaskConical,
+      },
+    ],
+  },
+  {
+    id: "systems",
+    title: "deprecated systems",
+    description: "stacks and tools i used heavily before moving on to something better.",
+    icon: Archive,
+    items: [
+      {
+        title: "jQuery-based UI Patterns",
+        context: "Dropdowns, modals, and form handling done the old way. Replaced by component-driven React.",
+        period: "2023",
+        stack: ["jQuery", "Bootstrap 4"],
+        status: "deprecated",
+        icon: Archive,
+      },
+      {
+        title: "Manual Build Pipeline",
+        context: "Hand-rolled Gulp scripts for asset bundling. Replaced by Vite for everything.",
+        period: "2023 — 2024",
+        stack: ["Gulp", "Sass", "Babel"],
+        status: "deprecated",
+        icon: Server,
+      },
+    ],
   },
 ];
 
-const Blog = () => (
+const statusStyles: Record<Status, string> = {
+  archived: "text-muted-foreground border-border bg-secondary",
+  completed: "text-emerald-400 border-emerald-500/30 bg-emerald-500/5",
+  experimental: "text-amber-400 border-amber-500/30 bg-amber-500/5",
+  deprecated: "text-muted-foreground border-border/60 bg-secondary/60",
+};
+
+const Legacy = () => (
   <PageTransition>
     <div className="container pt-32 -mb-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
-          heirtage
-        </h1>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">legacy</h1>
         <p className="text-muted-foreground max-w-lg mb-12">
-          a glimpse into the people who shaped my journey in programming.
+          an archive of past projects, experiments, and systems i've moved on from — kept here as a record of the path.
         </p>
       </motion.div>
 
-      <div className="flex flex-col gap-1">
-        {heritage.map((item, i) => (
-          <motion.article
-            key={item.name}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.06 }}
-            className="group flex items-center gap-4 py-8 border-b border-border/40 hover:bg-card/50 -mx-4 px-4 rounded-md transition-colors"
-          >
-            {/* LEFT - IMAGE */}
-            <img
-              src={item.image}
-              alt={item.name}
-              decoding="async"
-              loading="lazy"
-              className="w-16 h-16 rounded-full object-cover shrink-0"
-            />
+      <div className="space-y-14">
+        {sections.map((section, sIdx) => {
+          const SectionIcon = section.icon;
+          return (
+            <motion.section
+              key={section.id}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: sIdx * 0.05 }}
+            >
+              {/* Section header */}
+              <div className="flex items-start gap-3 mb-5">
+                <div className="shrink-0 w-9 h-9 rounded-lg bg-secondary/60 border border-border/60 flex items-center justify-center">
+                  <SectionIcon size={16} className="text-primary" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold tracking-tight text-foreground">
+                    {section.title}
+                  </h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {section.description}
+                  </p>
+                </div>
+              </div>
 
-            {/* CENTER - NAME + ROLE */}
-            <div className="flex-1 min-w-0">
-              <h3 className="font-medium text-[15px] text-foreground group-hover:text-primary transition-colors mb-1">
-                {item.name}
-              </h3>
-              <p className="text-[11px] text-muted-foreground leading-relaxed justify-text-left">
-                {item.role}
-              </p>
-            </div>
+              {/* Timeline items */}
+              <div className="relative pl-6 ml-4 border-l border-border/50">
+                {section.items.map((item, i) => {
+                  const ItemIcon = item.icon;
+                  return (
+                    <motion.div
+                      key={item.title}
+                      initial={{ opacity: 0, x: -8 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.04 }}
+                      className="group relative py-4 first:pt-2 last:pb-0"
+                    >
+                      {/* Timeline dot */}
+                      <span className="absolute -left-[27px] top-6 w-2 h-2 rounded-full bg-border group-hover:bg-primary transition-colors" />
 
-            {/* RIGHT - PERIOD */}
-            <span className="font-mono pl-4 text-[10px] md:text-sm lg:text-sm text-muted-foreground shrink-0">
-              {item.period}
-            </span>
-          </motion.article>
-        ))}
+                      <div className="rounded-lg border border-border/50 bg-card/40 p-5 hover:border-primary/40 hover:bg-card/70 hover:-translate-y-0.5 transition-all duration-300">
+                        {/* Top row: icon + title + status */}
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <ItemIcon
+                              size={14}
+                              className="text-muted-foreground group-hover:text-primary transition-colors shrink-0"
+                            />
+                            <h3 className="text-[15px] font-semibold text-foreground group-hover:text-primary transition-colors truncate">
+                              {item.title}
+                            </h3>
+                          </div>
+                          <span
+                            className={`shrink-0 font-mono text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full border ${statusStyles[item.status]}`}
+                          >
+                            {item.status}
+                          </span>
+                        </div>
+
+                        {/* Context */}
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {item.context}
+                        </p>
+
+                        {/* Inner divider */}
+                        <div className="my-3 border-t border-border/40" />
+
+                        {/* Metadata row */}
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar size={12} />
+                            <span className="font-mono">{item.period}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <Tag size={12} className="shrink-0" />
+                            <div className="flex flex-wrap gap-1.5">
+                              {item.stack.map((tech) => (
+                                <span
+                                  key={tech}
+                                  className="font-mono text-[10px] px-1.5 py-0.5 rounded-md bg-secondary/60 border border-border/50 text-foreground/75"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.section>
+          );
+        })}
       </div>
     </div>
   </PageTransition>
 );
- 
-export default Blog;
+
+export default Legacy;
