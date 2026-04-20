@@ -78,8 +78,6 @@
     text-align-last: left;
 }
 
-/* Alignment item skills & tools */
-
 @keyframes wave {
     0% {
         transform: rotate(0deg);
