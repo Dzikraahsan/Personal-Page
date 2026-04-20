@@ -7,6 +7,7 @@ interface ProjectCardProps {
   tags: string[];
   link?: string;
   index: number;
+  className?: string;
 }
 
 const ProjectCard = ({
@@ -15,6 +16,7 @@ const ProjectCard = ({
   tags,
   link,
   index,
+  className = "",
 }: ProjectCardProps) => (
   <motion.a
     href={link || "#"}
