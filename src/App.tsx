@@ -14,6 +14,8 @@ import Contact from "./pages/Contact.tsx";
 import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import ScrollToTop from "./components/ScrollToTop";
+import ClickSpark from "@/components/ClickSpark";
+import LetterGlitch from "@/components/LetterGlitch";
 
 const queryClient = new QueryClient();
 
@@ -45,15 +47,34 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
+        <ClickSpark
+          sparkColor="#ffffff"
+          sparkSize={10}
+          sparkRadius={15}
+          sparkCount={8}
+          duration={400}
+          easing="ease-out"
+        >
+          <div className="min-h-screen flex flex-col relative overflow-hidden">
+            <div className="absolute inset-0 -z-10 bg-black">
+              <LetterGlitch
+                className="w-full h-full opacity-15"
+                glitchSpeed={180}
+                smooth={true}
+                centerVignette={false}
+                outerVignette={false}
+              />
+            </div>
 
-          <main className="flex-1">
-            <AnimatedRoutes />
-          </main>
+            <Navbar />
 
-          <Footer />
-        </div>
+            <main className="flex-1">
+              <AnimatedRoutes />
+            </main>
+
+            <Footer />
+          </div>
+        </ClickSpark>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
