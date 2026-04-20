@@ -339,7 +339,7 @@ const Index = () => {
               <ElectricCard
                 key={project.title}
                 color="#7df9ff"
-                speed={0.6}
+                speed={1}
                 chaos={0.08}
                 style={{ borderRadius: 16 }}
               >
