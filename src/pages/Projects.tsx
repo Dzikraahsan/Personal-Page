@@ -8,12 +8,16 @@ const allProjects = [
     description: "A food business website that sells various menus.",
     tags: ["React", "Vite", "TypeScript", "Tailwind"],
     link: "https://www.kaifood.web.id/",
+    year: "2024",
+    status: "Completed" as const,
   },
   {
     title: "Portfolio",
     description: "A personal portfolio that contains information about myself.",
     tags: ["React", "Vite", "TypeScript", "Tailwind"],
     link: "https://portfoliodzikra.vercel.app/",
+    year: "2024",
+    status: "Completed" as const,
   },
   {
     title: "Finance",
@@ -21,6 +25,8 @@ const allProjects = [
       "A personal finance website that helps users track their income and expenses.",
     tags: ["React", "Vite", "TypeScript", "Tailwind", "Supabase"],
     link: "https://dzii-finance.vercel.app",
+    year: "2024",
+    status: "Completed" as const,
   },
   {
     title: "Daily Activity",
@@ -28,6 +34,8 @@ const allProjects = [
       "A website used to record daily activities, with several features that can be used.",
     tags: ["React", "Vite", "TypeScript", "Tailwind"],
     link: "https://tracking-activities.vercel.app/",
+    year: "2024",
+    status: "Completed" as const,
   },
   {
     title: "Dashboard",
@@ -35,18 +43,24 @@ const allProjects = [
       "A website that has the function of recording employee work and performance statistics.",
     tags: ["React", "Vite", "JavaScript", "Tailwind"],
     link: "https://dashboard-40.vercel.app/",
+    year: "2023",
+    status: "Archived" as const,
   },
   {
     title: "Finance Flow",
     description: "Web prototype for structured and recorded financial use.",
     tags: ["React", "Vite", "TypeScript", "Tailwind"],
     link: "https://finance-flow-beryl.vercel.app/",
+    year: "2024",
+    status: "Experimental" as const,
   },
   {
     title: "Text Generate",
     description: "The website is used to generate text with custom fonts.",
     tags: ["React", "Vite", "TypeScript", "Tailwind"],
     link: "https://text-studio-pro.vercel.app",
+    year: "2024",
+    status: "Experimental" as const,
   },
 ];
 
@@ -66,15 +80,9 @@ const Projects = () => (
         </p>
       </motion.div>
 
-      <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 items-stretch">
+      <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3 items-stretch">
         {allProjects.map((project, i) => (
-          <div className="h-[330px] flex">
-            <ProjectCard
-              {...project}
-              index={i}
-              className="h-full w-full flex flex-col"
-            />
-          </div>
+          <ProjectCard key={project.title} {...project} index={i} />
         ))}
       </div>
     </div>
