@@ -337,11 +337,14 @@ const Index = () => {
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
             {featuredProjects.map((project, i) => (
               <ElectricCard
-                key={project.title}
                 color="#7df9ff"
-                speed={1}
-                chaos={0.08}
-                style={{ borderRadius: 16 }}
+                speed={0.4}
+                chaos={0.01}
+                thickness={1}
+                style={{
+                  borderRadius: 24,
+                  padding: 1,
+                }}
               >
                 <div className="h-[330px] flex">
                   <ProjectCard

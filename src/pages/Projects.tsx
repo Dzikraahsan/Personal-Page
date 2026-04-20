@@ -75,7 +75,7 @@ const Projects = () => (
             chaos={0.01}
             thickness={1}
             style={{
-              borderRadius: 16,
+              borderRadius: 24,
               padding: 1,
             }}
           >

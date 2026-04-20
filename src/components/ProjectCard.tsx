@@ -27,9 +27,9 @@ const ProjectCard = ({
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.4, delay: index * 0.08 }}
-    className={`group block h-full w-full rounded-2xl bg-surface/60 backdrop-blur border border-border/50 p-6 ${className}`}
+    className={`group block h-full w-full rounded-[1.75rem] backdrop-blur border border-border/50 p-2 ${className}`}
   >
-    <div className="h-full flex flex-col p-6 rounded-xl bg-surface/60 backdrop-blur border border-border/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]">
+    <div className="h-full flex flex-col p-8 rounded-[1.75rem] bg-surface/60 backdrop-blur border border-border/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]">
       {/* TOP */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold tracking-tight text-foreground">
