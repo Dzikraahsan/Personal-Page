@@ -59,8 +59,8 @@ const App = () => (
             <div className="absolute inset-0 -z-10 bg-black">
               <LetterGlitch
                 className="w-full h-full opacity-15"
-                glitchSpeed={180}
-                smooth={true}
+                glitchSpeed={200}
+                smooth={false}
                 centerVignette={false}
                 outerVignette={false}
               />
