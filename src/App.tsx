@@ -56,7 +56,7 @@ const App = () => (
           easing="ease-out"
         >
           <div className="min-h-screen flex flex-col relative overflow-hidden">
-            <div className="absolute inset-0 -z-10 bg-black">
+            <div className="absolute inset-0 -z-10 bg-background">
               {/*<LetterGlitch
                 className="w-full h-full opacity-15"
                 glitchSpeed={200}
