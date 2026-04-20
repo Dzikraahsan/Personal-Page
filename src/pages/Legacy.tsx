@@ -10,6 +10,11 @@ import {
   FolderGit2,
   Cpu,
   Globe,
+  Wallet,
+  ClipboardList,
+  ClipboardCheck,
+  Home,
+  Type,
 } from "lucide-react";
 
 type Status = "archived" | "completed" | "experimental" | "deprecated";
@@ -35,88 +40,99 @@ const sections: Section[] = [
   {
     id: "projects",
     title: "old projects",
-    description: "early builds and shipped work that taught me how things actually break in production.",
+    description:
+      "early builds and shipped work that taught me how things actually break in production.",
     icon: FolderGit2,
     items: [
       {
-        title: "Personal Portfolio v1",
-        context: "First static portfolio built to learn semantic markup and basic layout systems.",
-        period: "2023",
-        stack: ["HTML", "CSS", "Vanilla JS"],
-        status: "archived",
-        icon: Globe,
-      },
-      {
-        title: "School Inventory App",
-        context: "Simple CRUD inventory built as a class project. Taught me routing, forms, and database basics.",
+        title: "Web School",
+        context:
+          "Simple CRUD inventory built as a class project. Taught me routing, forms, and database basics.",
         period: "2024",
         stack: ["Laravel", "Blade", "MySQL"],
         status: "completed",
         icon: Server,
       },
       {
-        title: "Landing Page Templates",
-        context: "Collection of marketing landing pages used for practicing responsive design and Tailwind utility patterns.",
+        title: "Dream Home",
+        context:
+          "Built a simple housing website to showcase property listings and basic layouts. Focused on structuring pages and understanding how Laravel handles routing and views.",
         period: "2024",
-        stack: ["HTML", "Tailwind", "AlpineJS"],
+        stack: ["PHP", "Laravel", "CSS", "Bootstrap"],
         status: "archived",
-        icon: Code2,
+        icon: Home,
+      },
+      {
+        title: "Text Generator",
+        context:
+          "Built a simple text generator to experiment with input handling and dynamic output. Focused on updating content in real time based on user input.",
+        period: "2025",
+        stack: ["HTML", "CSS", "JavaScript"],
+        status: "archived",
+        icon: Type,
       },
     ],
   },
   {
-    id: "experiments",
-    title: "experiments",
-    description: "small ideas i shipped to learn one specific thing — most never grew past v0.",
+    id: "system",
+    title: "build system",
+    description:
+      "small things i built to understand how stuff works — most of them were just tests and never meant to be finished.",
     icon: FlaskConical,
     items: [
       {
-        title: "Realtime Chat Prototype",
-        context: "Tested websocket basics and how state syncs between clients. Never deployed publicly.",
+        title: "Finance",
+        context:
+          "Built a simple finance tracker to manage income and expenses. Focused on handling data with Supabase and keeping everything in sync with the UI.",
         period: "2024",
-        stack: ["React", "Socket.io", "Node"],
-        status: "experimental",
-        icon: Cpu,
+        stack: ["React.js", "Vite", "Tailwind", "Supabase"],
+        status: "completed",
+        icon: Wallet,
       },
       {
-        title: "Markdown Note App",
-        context: "Tiny markdown editor with localStorage persistence. Used to learn controlled inputs and parsing.",
+        title: "Activities Tracking",
+        context:
+          "Built a simple activity tracker to record daily actions and store them locally. Focused on managing state and keeping the UI in sync with stored data.",
         period: "2024",
-        stack: ["React", "Marked", "LocalStorage"],
-        status: "experimental",
-        icon: Code2,
+        stack: ["React.js", "Vite", "Tailwind"],
+        status: "completed",
+        icon: ClipboardList,
       },
       {
-        title: "Component Animation Lab",
-        context: "Playground for testing Framer Motion patterns — page transitions, gestures, and layout animations.",
+        title: "Cleanliness Assessment",
+        context:
+          "Built a simple system to record and evaluate cleanliness scores. Focused on handling form input, storing data in MySQL, and displaying results through Blade views.",
         period: "2025",
-        stack: ["React", "Framer Motion", "TS"],
-        status: "experimental",
-        icon: FlaskConical,
+        stack: ["Laravel", "Blade", "MySQL"],
+        status: "completed",
+        icon: ClipboardCheck,
       },
     ],
   },
   {
     id: "systems",
-    title: "deprecated systems",
-    description: "stacks and tools i used heavily before moving on to something better.",
+    title: "deprecated projects",
+    description:
+      "stacks and tools i used heavily before moving on to something better.",
     icon: Archive,
     items: [
       {
-        title: "jQuery-based UI Patterns",
-        context: "Dropdowns, modals, and form handling done the old way. Replaced by component-driven React.",
-        period: "2023",
-        stack: ["jQuery", "Bootstrap 4"],
+        title: "Personal Portfolio v1",
+        context:
+          "First static portfolio built to learn semantic markup and basic layout systems.",
+        period: "2024",
+        stack: ["HTML", "CSS", "Bootstrap"],
         status: "deprecated",
-        icon: Archive,
+        icon: Globe,
       },
       {
-        title: "Manual Build Pipeline",
-        context: "Hand-rolled Gulp scripts for asset bundling. Replaced by Vite for everything.",
-        period: "2023 — 2024",
-        stack: ["Gulp", "Sass", "Babel"],
+        title: "Salary Management System",
+        context:
+          "Building a salary management system to handle employee data, calculate wages, and keep everything organized in one place. Focused on how the backend connects with the database and how the data flows through the app.",
+        period: "2024",
+        stack: ["PHP", "MySQL"],
         status: "deprecated",
-        icon: Server,
+        icon: Code2,
       },
     ],
   },
@@ -132,10 +148,16 @@ const statusStyles: Record<Status, string> = {
 const Legacy = () => (
   <PageTransition>
     <div className="container pt-32 -mb-8">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">legacy</h1>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
+          legacy
+        </h1>
         <p className="text-muted-foreground max-w-lg mb-12">
-          an archive of past projects, experiments, and systems i've moved on from — kept here as a record of the path.
+          an archive of past projects, experiments, and systems i've moved on
+          from — kept here as a record of the path.
         </p>
       </motion.div>
 

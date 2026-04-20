@@ -278,7 +278,7 @@ const Index = () => {
         <motion.section
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="py-16 mt-48 border-t border-border/40 overflow-hidden"
         >
           <div
@@ -305,7 +305,7 @@ const Index = () => {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="py-16 border-t border-border/40"
         >
           <h2 className="font-mono text-xs text-primary tracking-widest uppercase mb-6">

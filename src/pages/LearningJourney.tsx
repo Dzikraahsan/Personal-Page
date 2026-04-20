@@ -4,24 +4,36 @@ import { Code2, Server, FileCode, Palette, Clock, Wrench } from "lucide-react";
 
 const experiments = [
   {
-    title: "Learn React.js",
-    description: "Exploring how React works, from its structure to the way everything connects and runs together.",
+    title: "Learn Dart",
+    description:
+      "Learning the fundamentals of Dart, from its basic syntax to how the core concepts work together in building simple applications.",
     status: "learning",
-    duration: "Ongoing · 2025",
+    duration: "Ongoing · 2026",
+    tools: ["SDK", "Flutter"],
+    icon: Code2,
+  },
+  {
+    title: "Learn React.js",
+    description:
+      "Exploring how React works, from its structure to the way everything connects and runs together.",
+    status: "learning",
+    duration: "Ongoing · 2025 - now",
     tools: ["React", "Vite", "TSX"],
     icon: Code2,
   },
   {
     title: "Learn Laravel",
-    description: "Exploring the fundamentals of Laravel, from how its structure works to handling routes, views, and simple database integration.",
+    description:
+      "Exploring the fundamentals of Laravel, from how its structure works to handling routes, views, and simple database integration.",
     status: "learning",
-    duration: "Ongoing · 2025",
+    duration: "Ongoing · 2025 - now",
     tools: ["Laravel", "PHP", "MySQL"],
     icon: Server,
   },
   {
     title: "Learn JavaScript & TypeScript",
-    description: "Learning the basics of JavaScript and TypeScript, from working with the DOM to understanding state and how everything behaves in a simple application.",
+    description:
+      "Learning the basics of JavaScript and TypeScript, from working with the DOM to understanding state and how everything behaves in a simple application.",
     status: "learning",
     duration: "Ongoing · 2024 — now",
     tools: ["JavaScript", "TypeScript", "DOM"],
@@ -29,10 +41,11 @@ const experiments = [
   },
   {
     title: "Learn HTML & CSS",
-    description: "Learning the basics of HTML and CSS, from building simple page structures to styling layouts and understanding how everything comes together on the web.",
+    description:
+      "Learning the basics of HTML and CSS, from building simple page structures to styling layouts and understanding how everything comes together on the web.",
     status: "completed",
     duration: "2023 — 2024",
-    tools: ["HTML", "CSS", "Tailwind"],
+    tools: ["HTML", "CSS", "Tailwind", "Bootstrap"],
     icon: Palette,
   },
 ];
@@ -46,10 +59,16 @@ const statusStyles: Record<string, string> = {
 const Labs = () => (
   <PageTransition>
     <div className="container pt-32 -mb-8">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">learning journey</h1>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
+          learning journey
+        </h1>
         <p className="text-muted-foreground max-w-lg mb-12">
-          things i'm currently learning, building, and figuring out along the way.
+          things i'm currently learning, building, and figuring out along the
+          way.
         </p>
       </motion.div>
       <div className="grid gap-5 md:grid-cols-2">
@@ -68,7 +87,10 @@ const Labs = () => (
               <div className="flex items-start justify-between gap-4 mb-3">
                 <div className="flex items-start gap-3 min-w-0">
                   <div className="shrink-0 w-10 h-10 rounded-lg bg-secondary/60 border border-border/60 flex items-center justify-center group-hover:border-primary/40 group-hover:scale-105 transition-all duration-300">
-                    <Icon size={18} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                    <Icon
+                      size={18}
+                      className="text-muted-foreground group-hover:text-primary transition-colors"
+                    />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors leading-tight pt-1.5">
                     {exp.title}
