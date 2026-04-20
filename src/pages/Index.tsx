@@ -6,6 +6,7 @@ import ProjectCard from "@/components/ProjectCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHand } from "@fortawesome/free-solid-svg-icons";
 import LogoLoop from "@/components/LogoLoop";
+import ElectricCard from "@/components/ElectricCard";
 import {
   SiReact,
   SiNextdotjs,
@@ -217,7 +218,7 @@ const toolLogos = tools.map((tool) => ({
 const Index = () => {
   return (
     <PageTransition>
-      <div className="container pt-[10rem] -mb-0">
+      <div className="container pt-[9rem] -mb-0">
         {/* Hero */}
         <section className="min-h-[60vh] flex flex-col justify-center">
           <motion.p
@@ -333,9 +334,23 @@ const Index = () => {
               view all <ArrowRight size={12} />
             </Link>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
             {featuredProjects.map((project, i) => (
-              <ProjectCard key={project.title} {...project} index={i} />
+              <ElectricCard
+                key={project.title}
+                color="#7df9ff"
+                speed={0.6}
+                chaos={0.08}
+                style={{ borderRadius: 16 }}
+              >
+                <div className="h-[330px] flex">
+                  <ProjectCard
+                    {...project}
+                    index={i}
+                    className="h-full w-full flex flex-col"
+                  />
+                </div>
+              </ElectricCard>
             ))}
           </div>
         </section>

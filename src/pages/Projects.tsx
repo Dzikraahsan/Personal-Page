@@ -1,5 +1,6 @@
 import PageTransition from "@/components/PageTransition";
 import ProjectCard from "@/components/ProjectCard";
+import ElectricCard from "@/components/ElectricCard";
 import { motion } from "framer-motion";
 
 const allProjects = [
@@ -17,19 +18,22 @@ const allProjects = [
   },
   {
     title: "Finance",
-    description: "A personal finance website that helps users track their income and expenses.",
+    description:
+      "A personal finance website that helps users track their income and expenses.",
     tags: ["React", "Vite", "TypeScript", "Tailwind", "Supabase"],
     link: "https://dzii-finance.vercel.app",
   },
   {
     title: "Daily Activity",
-    description: "A website used to record daily activities, with several features that can be used.",
+    description:
+      "A website used to record daily activities, with several features that can be used.",
     tags: ["React", "Vite", "TypeScript", "Tailwind"],
     link: "https://tracking-activities.vercel.app/",
   },
   {
     title: "Dashboard",
-    description: "A website that has the function of recording employee work and performance statistics.",
+    description:
+      "A website that has the function of recording employee work and performance statistics.",
     tags: ["React", "Vite", "JavaScript", "Tailwind"],
     link: "https://dashboard-40.vercel.app/",
   },
@@ -54,14 +58,33 @@ const Projects = () => (
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">projects</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
+          projects
+        </h1>
         <p className="text-muted-foreground max-w-lg mb-12">
-          a collection of things i've built — from open source tools to full-stack applications.
+          a collection of things i've built — from open source tools to
+          full-stack applications.
         </p>
       </motion.div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
+      {/* 🔥 FIX DI SINI */}
+      <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 items-stretch">
         {allProjects.map((project, i) => (
-          <ProjectCard key={project.title} {...project} index={i} />
+          <ElectricCard
+            key={project.title}
+            color="#7df9ff"
+            speed={0.6}
+            chaos={0.08}
+            style={{ borderRadius: 16 }}
+          >
+            <div className="h-[330px] flex">
+              <ProjectCard
+                {...project}
+                index={i}
+                className="h-full w-full flex flex-col"
+              />
+            </div>
+          </ElectricCard>
         ))}
       </div>
     </div>
