@@ -57,13 +57,14 @@ const ProjectCard = ({
   // On mobile: no animation — content is always visible immediately.
   // On desktop: subtle fade-in on mount (not scroll-dependent) to avoid
   // whileInView never firing if viewport detection fails.
-  const motionProps = isMobile
-    ? {}
-    : {
-        initial: { opacity: 0, y: 16 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.35, delay: Math.min(index * 0.05, 0.3) },
-      };
+  const motionProps = {
+    initial: { opacity: 0, y: 12 },
+    animate: { opacity: 1, y: 0 },
+    transition: {
+      duration: 0.3,
+      delay: isMobile ? 0 : Math.min(index * 0.05, 0.3),
+    },
+  };
 
   return (
     <motion.a

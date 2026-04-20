@@ -247,7 +247,7 @@ const Index = () => {
             transition={{ delay: 0.2 }}
             className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight mb-6 max-w-2xl"
           >
-            hai, i'm <span className="text-gradient">Dzikra</span>{" "}
+            hi, i'm <span className="text-gradient">Dzikra</span>{" "}
             <span className="wave">👋</span>
           </motion.h1>
           <motion.p
