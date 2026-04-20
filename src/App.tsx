@@ -57,13 +57,13 @@ const App = () => (
         >
           <div className="min-h-screen flex flex-col relative overflow-hidden">
             <div className="absolute inset-0 -z-10 bg-black">
-              <LetterGlitch
+              {/*<LetterGlitch
                 className="w-full h-full opacity-15"
                 glitchSpeed={200}
                 smooth={false}
                 centerVignette={false}
                 outerVignette={false}
-              />
+              />*/}
             </div>
 
             <Navbar />
