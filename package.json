@@ -57,7 +57,7 @@
     "lucide-react": "^0.462.0",
     "ogl": "^1.0.11",
     "react": "^19.2.5",
-    "react-day-picker": "8.10.1",
+    "react-day-picker": "^9.14.0",
     "react-dom": "^19.2.5",
     "react-hook-form": "^7.61.1",
     "react-icons": "^5.6.0",
