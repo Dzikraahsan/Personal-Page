@@ -1,5 +1,17 @@
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import {
+  ArrowUpRight,
+  Code2,
+  Wallet,
+  User,
+  CalendarDays,
+  Layers,
+  Activity,
+  LayoutDashboard,
+  Type,
+  Utensils,
+} from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProjectCardProps {
   title: string;
@@ -8,7 +20,25 @@ interface ProjectCardProps {
   link?: string;
   index: number;
   className?: string;
+  year?: string;
+  status?: "Completed" | "Experimental" | "Archived";
 }
+
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  Kaifood: Utensils,
+  Portfolio: User,
+  Finance: Wallet,
+  "Daily Activity": Activity,
+  Dashboard: LayoutDashboard,
+  "Finance Flow": Wallet,
+  "Text Generate": Type,
+};
+
+const statusStyles: Record<string, string> = {
+  Completed: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  Experimental: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  Archived: "bg-muted text-muted-foreground border-border",
+};
 
 const ProjectCard = ({
   title,
@@ -17,55 +47,88 @@ const ProjectCard = ({
   link,
   index,
   className = "",
-}: ProjectCardProps) => (
-  <motion.a
-    href={link || "#"}
-    target="_blank"
-    rel="noopener noreferrer"
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.4, delay: index * 0.08 }}
-    className="group block border border-border/60 rounded-lg p-6 hover:border-primary/40 hover:glow-border transition-all duration-300"
-  >
-    <div className="h-full flex flex-col p-6 rounded-2xl bg-surface/60 backdrop-blur border border-border/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]">
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold tracking-tight text-foreground">
-          {title}
-        </h3>
+  year = "2024",
+  status = "Completed",
+}: ProjectCardProps) => {
+  const isMobile = useIsMobile();
+  const Icon = iconMap[title] || Code2;
 
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          {description}
-        </p>
+  const motionProps = isMobile
+    ? {}
+    : {
+        initial: { opacity: 0, y: 16 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: "-50px" },
+        transition: { duration: 0.35, delay: Math.min(index * 0.05, 0.3) },
+      };
+
+  return (
+    <motion.a
+      href={link || "#"}
+      target="_blank"
+      rel="noopener noreferrer"
+      {...motionProps}
+      className={`group relative flex flex-col rounded-2xl border border-border/60 bg-surface/40 p-6 transition-all duration-300 md:hover:-translate-y-1 md:hover:border-primary/40 md:hover:shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.2)] ${className}`}
+      style={{ willChange: "transform" }}
+    >
+      {/* Top: icon + title + status */}
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-background/60 text-primary transition-colors md:group-hover:border-primary/40">
+            <Icon size={16} />
+          </div>
+          <h3 className="text-base font-semibold tracking-tight text-foreground truncate">
+            {title}
+          </h3>
+        </div>
+        <ArrowUpRight
+          size={16}
+          className="shrink-0 text-muted-foreground transition-all duration-300 md:group-hover:text-primary md:group-hover:-translate-y-0.5 md:group-hover:translate-x-0.5"
+        />
       </div>
+
+      {/* Description */}
+      <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+        {description}
+      </p>
 
       <div className="flex-1" />
 
-      <div className="space-y-4 pt-6">
-        <div className="flex flex-wrap gap-2">
+      {/* Divider */}
+      <div className="h-px w-full bg-border/60 mb-4" />
+
+      {/* Metadata */}
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-mono text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <CalendarDays size={11} />
+            {year}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Layers size={11} />
+            {tags.length} stack
+          </span>
+          <span
+            className={`ml-auto inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-wide ${statusStyles[status]}`}
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-current" />
+            {status}
+          </span>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="text-[10px] font-mono uppercase tracking-wide px-2 py-1 rounded-md bg-muted text-muted-foreground"
+              className="text-[10px] font-mono uppercase tracking-wide px-2 py-1 rounded-md bg-muted/60 text-muted-foreground border border-border/40"
             >
               {tag}
             </span>
           ))}
         </div>
-
-        <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-xs font-mono text-primary hover:underline"
-        >
-          visit
-        </a>
       </div>
-
-      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition bg-gradient-to-br from-primary/5 to-transparent" />
-    </div>
-  </motion.a>
-);
+    </motion.a>
+  );
+};
 
 export default ProjectCard;
