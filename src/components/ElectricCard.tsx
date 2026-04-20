@@ -269,30 +269,39 @@ const ElectricBorder: React.FC<ElectricBorderProps> = ({
       lastFrameTimeRef.current = currentTime;
 
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.scale(dpr, dpr);
 
+      const lineWidth = 1;
       ctx.strokeStyle = color;
-      ctx.lineWidth = 1;
+      ctx.lineWidth = lineWidth;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
 
-      const scale = displacement;
-      const left = borderOffset;
-      const top = borderOffset;
-      const borderWidth = width - 2 * borderOffset;
-      const borderHeight = height - 2 * borderOffset;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+
+      const inset = borderOffset + lineWidth / 2;
+
+      const left = inset;
+      const top = inset;
+      const borderWidth = width - inset * 2;
+      const borderHeight = height - inset * 2;
+
       const maxRadius = Math.min(borderWidth, borderHeight) / 2;
       const radius = Math.min(borderRadius, maxRadius);
 
-      const approximatePerimeter =
-        2 * (borderWidth + borderHeight) + 2 * Math.PI * radius;
-      const sampleCount = Math.floor(approximatePerimeter / 2);
+      const perimeter = 2 * (borderWidth + borderHeight) + 2 * Math.PI * radius;
+      const sampleCount = Math.max(80, Math.floor(perimeter / 3));
 
       ctx.beginPath();
 
-      for (let i = 0; i <= sampleCount; i++) {
+      const maxDisp = Math.min(displacement, inset - 1);
+
+      for (let i = 0; i < sampleCount; i++) {
         const progress = i / sampleCount;
 
         const point = getRoundedRectPoint(
@@ -304,7 +313,7 @@ const ElectricBorder: React.FC<ElectricBorderProps> = ({
           radius,
         );
 
-        const xNoise = octavedNoise(
+        const nx = octavedNoise(
           progress * 8,
           octaves,
           lacunarity,
@@ -315,7 +324,8 @@ const ElectricBorder: React.FC<ElectricBorderProps> = ({
           0,
           baseFlatness,
         );
-        const yNoise = octavedNoise(
+
+        const ny = octavedNoise(
           progress * 8,
           octaves,
           lacunarity,
@@ -327,17 +337,16 @@ const ElectricBorder: React.FC<ElectricBorderProps> = ({
           baseFlatness,
         );
 
-        const displacedX = point.x + xNoise * scale;
-        const displacedY = point.y + yNoise * scale;
+        const dx = Math.max(-maxDisp, Math.min(maxDisp, nx * maxDisp));
+        const dy = Math.max(-maxDisp, Math.min(maxDisp, ny * maxDisp));
 
-        if (i === 0) {
-          ctx.moveTo(displacedX, displacedY);
-        } else {
-          ctx.lineTo(displacedX, displacedY);
-        }
+        const x = point.x + dx;
+        const y = point.y + dy;
+
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
 
-      ctx.closePath();
       ctx.stroke();
 
       animationRef.current = requestAnimationFrame(drawElectricBorder);

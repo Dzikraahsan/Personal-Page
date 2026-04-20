@@ -67,23 +67,19 @@ const Projects = () => (
         </p>
       </motion.div>
 
-      {/* 🔥 FIX DI SINI */}
       <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 items-stretch">
         {allProjects.map((project, i) => (
           <ElectricCard
-            key={project.title}
             color="#7df9ff"
-            speed={1}
-            chaos={0.08}
-            style={{ borderRadius: 16 }}
+            speed={0.4}
+            chaos={0.01}
+            thickness={1}
+            style={{
+              borderRadius: 16,
+              padding: 1,
+            }}
           >
-            <div className="h-[330px] flex">
-              <ProjectCard
-                {...project}
-                index={i}
-                className="h-full w-full flex flex-col"
-              />
-            </div>
+            <ProjectCard {...project} index={i} className="h-[320px] w-full" />
           </ElectricCard>
         ))}
       </div>
