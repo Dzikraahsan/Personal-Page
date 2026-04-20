@@ -1,6 +1,5 @@
 import PageTransition from "@/components/PageTransition";
 import ProjectCard from "@/components/ProjectCard";
-import ElectricCard from "@/components/ElectricCard";
 import { motion } from "framer-motion";
 
 const allProjects = [
