@@ -23,10 +23,10 @@ const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait">
-      <>
-        <ScrollToTop />
+    <>
+      <ScrollToTop />
 
+      <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Index />} />
           <Route path="/projects" element={<Projects />} />
@@ -36,8 +36,8 @@ const AnimatedRoutes = () => {
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </>
-    </AnimatePresence>
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -56,15 +56,7 @@ const App = () => (
           easing="ease-out"
         >
           <div className="min-h-screen flex flex-col relative overflow-hidden">
-            <div className="absolute inset-0 -z-10 bg-background">
-              {/*<LetterGlitch
-                className="w-full h-full opacity-15"
-                glitchSpeed={200}
-                smooth={false}
-                centerVignette={false}
-                outerVignette={false}
-              />*/}
-            </div>
+            <div className="absolute inset-0 -z-10 bg-background"></div>
 
             <Navbar />
 
