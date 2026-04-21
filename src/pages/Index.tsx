@@ -224,7 +224,6 @@ const toolLogos = tools.map((tool) => ({
     />
   ),
   title: tool.name,
-  href: "#",
 }));
 
 const Index = () => {
