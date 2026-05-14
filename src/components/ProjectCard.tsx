@@ -25,7 +25,7 @@ interface ProjectCardProps {
   index: number;
   className?: string;
   year?: string;
-  status?: "Completed" | "Experimental" | "Archived";
+  status?: "Completed" | "Experimental" | "Archived" | "On Working";
 }
 
 const iconMap: Record<string, LucideIcon> = {
