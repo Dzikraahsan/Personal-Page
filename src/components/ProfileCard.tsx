@@ -321,7 +321,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   );
 
   useEffect(() => {
-    if (!enableTilt || !tiltEngine) return;
+    if (!tiltActive || !tiltEngine) return;
 
     const shell = shellRef.current;
     if (!shell) return;
