@@ -192,7 +192,7 @@ const About = () => (
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.1 }}
         className="mb-16"
       >
         <h2 className="font-mono text-xs text-primary tracking-widest uppercase mb-4">
@@ -210,7 +210,7 @@ const About = () => (
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.1 }}
       >
         <h2 className="font-mono text-xs text-primary tracking-widest uppercase mb-6">
           skills & tools
@@ -221,7 +221,7 @@ const About = () => (
               key={tool.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: i * 0.05 }}
               className="flex items-center gap-4 p-3 rounded-xl bg-card border border-border/50 hover:border-primary/40 hover:scale-[1.03] transition-all duration-300"
             >

@@ -169,7 +169,7 @@ const Legacy = () => (
               key={section.id}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: sIdx * 0.05 }}
             >
               {/* Section header */}
@@ -196,7 +196,7 @@ const Legacy = () => (
                       key={item.title}
                       initial={{ opacity: 0, x: -8 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
+                      viewport={{ once: true, amount: 0.1 }}
                       transition={{ delay: i * 0.04 }}
                       className="group relative py-4 first:pt-2 last:pb-0"
                     >
