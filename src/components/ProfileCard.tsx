@@ -114,11 +114,14 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   const wrapRef = useRef<HTMLDivElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
 
+  const isMobile = useIsMobile();
+  const tiltActive = enableTilt && !isMobile;
+
   const enterTimerRef = useRef<number | null>(null);
   const leaveRafRef = useRef<number | null>(null);
 
   const tiltEngine = useMemo<TiltEngine | null>(() => {
-    if (!enableTilt) return null;
+    if (!tiltActive) return null;
 
     let rafId: number | null = null;
     let running = false;
