@@ -568,9 +568,9 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
               gridArea: "1 / -1",
             }}
           >
-            <div style={shineStyle} />
+            {!isMobile && <div style={shineStyle} />}
 
-            <div style={glareStyle} />
+            {!isMobile && <div style={glareStyle} />}
 
             <div
               className="overflow-visible"
