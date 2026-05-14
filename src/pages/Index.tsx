@@ -290,7 +290,7 @@ const Index = () => {
             </div>
 
             {/* PROFILE CARD */}
-            <div className="order-1 md:order-2 flex justify-center md:justify-end w-full">
+            <div className="order-1 md:order-2 flex justify-center md:justify-end w-full mx-auto">
               <ProfileCard
                 avatarUrl="https://res.cloudinary.com/da4fjxm1e/image/upload/v1778729787/dzii27-trsnprnt_kvonuu.png"
                 miniAvatarUrl="https://res.cloudinary.com/da4fjxm1e/image/upload/v1778729787/dzii27-trsnprnt_kvonuu.png"
@@ -302,7 +302,7 @@ const Index = () => {
                 showUserInfo={false}
                 enableTilt={true}
                 enableMobileTilt={false}
-                className="w-full max-w-[460px] sm:max-w-[500px] md:max-w-[500px]"
+                className="w-full max-w-[360px] sm:max-w-[440px] md:max-w-[500px] mx-auto md:mx-0"
               />
             </div>
           </div>
