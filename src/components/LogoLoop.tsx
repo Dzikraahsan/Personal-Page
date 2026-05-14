@@ -6,23 +6,27 @@ import React, {
   useState,
 } from "react";
 
-export type LogoItem =
-  | {
-      node: React.ReactNode;
-      href?: string;
-      title?: string;
-      ariaLabel?: string;
-    }
-  | {
-      src: string;
-      alt?: string;
-      href?: string;
-      title?: string;
-      srcSet?: string;
-      sizes?: string;
-      width?: number;
-      height?: number;
-    };
+export interface LogoNodeItem {
+  node: React.ReactNode;
+  href?: string;
+  title?: string;
+  ariaLabel?: string;
+}
+
+export interface LogoImageItem {
+  src: string;
+  alt?: string;
+  href?: string;
+  title?: string;
+  srcSet?: string;
+  sizes?: string;
+  width?: number;
+  height?: number;
+}
+
+export type LogoItem = LogoNodeItem | LogoImageItem;
+
+const isNodeLogo = (item: LogoItem): item is LogoNodeItem => "node" in item;
 
 export interface LogoLoopProps {
   logos: LogoItem[];
