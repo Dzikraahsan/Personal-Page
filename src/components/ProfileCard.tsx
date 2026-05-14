@@ -620,11 +620,11 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 pointerEvents: "none",
               }}
             >
-              <div className="absolute inset-x-0 top-4 sm:top-7 md:top-9 flex flex-col">
+              <div className="absolute inset-x-0 top-4 sm:top-7 md:top-9 hidden md:flex flex-col">
                 <h3
                   className="font-semibold m-0"
                   style={{
-                    fontSize: "clamp(1.2rem, 3vw + 0.6rem, 2.1rem)",
+                    fontSize: "clamp(0.9rem, 3vw + 0.6rem, 2.25rem)",
                     backgroundImage:
                       "linear-gradient(to bottom, #fff, #6f6fbe)",
                     backgroundSize: "1em 1.5em",
@@ -639,6 +639,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 >
                   {name}
                 </h3>
+
                 <p
                   className="font-semibold whitespace-nowrap mx-auto w-min"
                   style={{
