@@ -517,8 +517,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
           className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-200 ease-out"
           style={{
             background: `radial-gradient(circle at var(--pointer-x) var(--pointer-y), var(--behind-glow-color) 0%, transparent var(--behind-glow-size))`,
-            filter: "blur(50px) saturate(1.1)",
-            opacity: "calc(0.8 * var(--card-opacity))",
+            filter: isMobile ? "blur(28px) saturate(1)" : "blur(50px) saturate(1.1)",
+            opacity: isMobile ? "calc(0.45 * var(--card-opacity))" : "calc(0.8 * var(--card-opacity))",
           }}
         />
       )}
@@ -528,8 +528,10 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
           className="grid relative overflow-hidden"
           style={{
             width: "100%",
-            height: "clamp(380px, 84vw, 480px)",
-            maxHeight: "480px",
+            height: isMobile
+              ? "clamp(320px, 78vw, 420px)"
+              : "clamp(380px, 84vw, 480px)",
+            maxHeight: isMobile ? "420px" : "480px",
             aspectRatio: "0.84",
             borderRadius: cardRadius,
             backgroundBlendMode: "color-dodge, normal, normal, normal",
