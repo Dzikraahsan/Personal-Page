@@ -43,6 +43,7 @@ const statusStyles: Record<string, string> = {
   Completed: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   Experimental: "bg-amber-500/10 text-amber-400 border-amber-500/20",
   Archived: "bg-muted text-muted-foreground border-border",
+  "On Working": "bg-sky-500/10 text-sky-400 border-sky-500/20",
 };
 
 const ProjectCard = ({
