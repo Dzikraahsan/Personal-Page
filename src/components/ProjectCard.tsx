@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   Code2,
@@ -15,7 +14,7 @@ import {
   Earth,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import Reveal from "@/components/Reveal";
 
 interface ProjectCardProps {
   title: string;
@@ -56,27 +55,15 @@ const ProjectCard = ({
   year = "2024",
   status = "Completed",
 }: ProjectCardProps) => {
-  const isMobile = useIsMobile();
   const Icon = iconMap[title] || Code2;
 
-  // On mobile: no animation — content is always visible immediately.
-  // On desktop: subtle fade-in on mount (not scroll-dependent) to avoid
-  // whileInView never firing if viewport detection fails.
-  const motionProps = {
-    initial: { opacity: 0, y: 12 },
-    animate: { opacity: 1, y: 0 },
-    transition: {
-      duration: 0.3,
-      delay: isMobile ? 0 : Math.min(index * 0.05, 0.3),
-    },
-  };
-
   return (
-    <motion.a
+    <Reveal
+      as="a"
+      index={index}
       href={link || "#"}
       target="_blank"
       rel="noopener noreferrer"
-      {...motionProps}
       className={`group relative flex flex-col rounded-2xl border border-border/60 bg-surface/40 p-6 transition-all duration-300 md:hover:-translate-y-1 md:hover:border-primary/40 md:hover:shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.2)] ${className}`}
       style={{ willChange: "transform" }}
     >
@@ -136,7 +123,7 @@ const ProjectCard = ({
           ))}
         </div>
       </div>
-    </motion.a>
+    </Reveal>
   );
 };
 
