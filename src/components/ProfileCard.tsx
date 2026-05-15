@@ -13,7 +13,6 @@ const DEFAULT_ICON_URL = `data:image/svg+xml;utf8,${encodeURIComponent(
       <text x="392" y="138" font-size="30">&lt;/&gt;</text>
       <text x="500" y="238" font-size="24">&lt;/&gt;</text>
       <text x="118" y="262" font-size="28">&lt;/&gt;</text>
-      <text x="298" y="250" font-size="22">&lt;/&gt;</text>
       <text x="472" y="358" font-size="32">&lt;/&gt;</text>
       <text x="82" y="420" font-size="24">&lt;/&gt;</text>
       <text x="250" y="432" font-size="30">&lt;/&gt;</text>
