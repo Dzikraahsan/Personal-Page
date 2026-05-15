@@ -9,6 +9,7 @@ import {
   Activity,
 } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
+import Reveal from "@/components/Reveal";
 import ProjectCard from "@/components/ProjectCard";
 import ProfileCard from "@/components/ProfileCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
