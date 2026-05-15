@@ -1,5 +1,5 @@
 import PageTransition from "@/components/PageTransition";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import {
   Archive,
   FlaskConical,
@@ -148,10 +148,7 @@ const statusStyles: Record<Status, string> = {
 const Legacy = () => (
   <PageTransition>
     <div className="container pt-32 -mb-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
+      <Reveal>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
           legacy
         </h1>
@@ -159,18 +156,16 @@ const Legacy = () => (
           an archive of past projects, experiments, and systems i've moved on
           from — kept here as a record of the path.
         </p>
-      </motion.div>
+      </Reveal>
 
       <div className="space-y-14">
         {sections.map((section, sIdx) => {
           const SectionIcon = section.icon;
           return (
-            <motion.section
+            <Reveal
+              as="section"
               key={section.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ delay: sIdx * 0.05 }}
+              index={sIdx}
             >
               {/* Section header */}
               <div className="flex items-start gap-3 mb-5">
@@ -192,12 +187,9 @@ const Legacy = () => (
                 {section.items.map((item, i) => {
                   const ItemIcon = item.icon;
                   return (
-                    <motion.div
+                    <Reveal
                       key={item.title}
-                      initial={{ opacity: 0, x: -8 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, amount: 0.1 }}
-                      transition={{ delay: i * 0.04 }}
+                      index={i}
                       className="group relative py-4 first:pt-2 last:pb-0"
                     >
                       {/* Timeline dot */}
@@ -251,11 +243,11 @@ const Legacy = () => (
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                    </Reveal>
                   );
                 })}
               </div>
-            </motion.section>
+            </Reveal>
           );
         })}
       </div>

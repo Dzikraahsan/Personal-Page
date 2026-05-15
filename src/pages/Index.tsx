@@ -9,6 +9,7 @@ import {
   Activity,
 } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
+import Reveal from "@/components/Reveal";
 import ProjectCard from "@/components/ProjectCard";
 import ProfileCard from "@/components/ProfileCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -309,10 +310,8 @@ const Index = () => {
         </section>
 
         {/* LogoLoop */}
-        <motion.section
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
+        <Reveal
+          as="section"
           className="py-12 md:py-16 mt-16 md:mt-32 border-t border-border/40 overflow-hidden"
         >
           <div
@@ -333,13 +332,11 @@ const Index = () => {
               />
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* About Preview */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
+        <Reveal
+          as="section"
           className="py-16 border-t border-border/40"
         >
           <h2 className="font-mono text-xs text-primary tracking-widest uppercase mb-6">
@@ -358,7 +355,7 @@ const Index = () => {
           >
             read more <ArrowRight size={12} />
           </Link>
-        </motion.section>
+        </Reveal>
 
         {/* Featured Projects */}
         <section className="py-16 border-t border-border/40">

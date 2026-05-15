@@ -1,5 +1,5 @@
 import PageTransition from "@/components/PageTransition";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Code2, Server, FileCode, Palette, Clock, Wrench } from "lucide-react";
 
 const experiments = [
@@ -59,10 +59,7 @@ const statusStyles: Record<string, string> = {
 const Labs = () => (
   <PageTransition>
     <div className="container pt-32 -mb-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
+      <Reveal>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
           learning journey
         </h1>
@@ -70,17 +67,14 @@ const Labs = () => (
           things i'm currently learning, building, and figuring out along the
           way.
         </p>
-      </motion.div>
+      </Reveal>
       <div className="grid gap-5 md:grid-cols-2">
         {experiments.map((exp, i) => {
           const Icon = exp.icon;
           return (
-            <motion.div
+            <Reveal
               key={exp.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ delay: i * 0.08 }}
+              index={i}
               className="group flex flex-col border border-border/60 rounded-xl p-7 hover:border-primary/40 hover:glow-border hover:-translate-y-1 transition-all duration-300"
             >
               {/* Top: icon + title + status */}
@@ -131,7 +125,7 @@ const Labs = () => (
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </Reveal>
           );
         })}
       </div>

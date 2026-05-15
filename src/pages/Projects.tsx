@@ -1,6 +1,6 @@
 import PageTransition from "@/components/PageTransition";
 import ProjectCard from "@/components/ProjectCard";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 
 const allProjects = [
   {
@@ -76,10 +76,7 @@ const allProjects = [
 const Projects = () => (
   <PageTransition>
     <div className="container pt-32 -mb-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
+      <Reveal>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
           projects
         </h1>
@@ -87,7 +84,7 @@ const Projects = () => (
           a collection of things i've built — from open source tools to
           full-stack applications.
         </p>
-      </motion.div>
+      </Reveal>
 
       <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3 items-stretch">
         {allProjects.map((project, i) => (
