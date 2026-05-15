@@ -331,13 +331,11 @@ const Index = () => {
               />
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* About Preview */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
+        <Reveal
+          as="section"
           className="py-16 border-t border-border/40"
         >
           <h2 className="font-mono text-xs text-primary tracking-widest uppercase mb-6">
