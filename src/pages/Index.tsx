@@ -354,7 +354,7 @@ const Index = () => {
           >
             read more <ArrowRight size={12} />
           </Link>
-        </motion.section>
+        </Reveal>
 
         {/* Featured Projects */}
         <section className="py-16 border-t border-border/40">
