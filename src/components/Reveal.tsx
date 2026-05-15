@@ -11,14 +11,6 @@ type RevealProps = {
   [key: string]: unknown;
 };
 
-/**
- * Unified scroll-reveal motion primitive used across the whole site.
- * - Subtle fade + small lift, premium easing.
- * - Lighter, faster on mobile.
- * - Respects prefers-reduced-motion.
- * - Safety fallback: forces content visible after 1.2s in case the
- *   IntersectionObserver never fires (prevents stuck opacity:0).
- */
 const Reveal = ({
   children,
   delay,
@@ -47,8 +39,9 @@ const Reveal = ({
   const y = prefersReducedMotion ? 0 : isMobile ? 8 : 14;
   const duration = prefersReducedMotion ? 0 : isMobile ? 0.45 : 0.6;
   const stagger = isMobile ? 0.04 : 0.06;
-  const computedDelay =
-    prefersReducedMotion ? 0 : delay ?? Math.min(index * stagger, 0.25);
+  const computedDelay = prefersReducedMotion
+    ? 0
+    : (delay ?? Math.min(index * stagger, 0.25));
 
   const MotionTag = motion[as] as typeof motion.div;
 

@@ -16,9 +16,24 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const socials = [
-  { icon: Github, label: "GitHub", href: "https://github.com/Dzikraahsan", handle: "@Dzikraahsan" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/dzikra-ahsan-1b2154386?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app", handle: "in/Dzikra Ahsan Imawan" },
-  { icon: Mail, label: "Email", href: "mailto:dzikraahsan10@gmail.com", handle: "dzikraahsan10@gmail.com" },
+  {
+    icon: Github,
+    label: "GitHub",
+    href: "https://github.com/Dzikraahsan",
+    handle: "@Dzikraahsan",
+  },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/dzikra-ahsan-1b2154386?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    handle: "in/Dzikra Ahsan Imawan",
+  },
+  {
+    icon: Mail,
+    label: "Email",
+    href: "mailto:dzikraahsan10@gmail.com",
+    handle: "dzikraahsan10@gmail.com",
+  },
 ];
 
 const highlights = [
@@ -37,14 +52,14 @@ const highlights = [
   {
     icon: MapPin,
     label: "Location",
-    value: "Bandung, Indonesia",
+    value: "Majalengka, Indonesia",
     sub: "remote-friendly worldwide",
   },
   {
     icon: Clock,
     label: "Working Hours",
     value: "Mon – Fri",
-    sub: "09:00 – 22:00 WIB",
+    sub: "09:00 – 20:00 WIB",
   },
 ];
 
@@ -72,9 +87,11 @@ const Contact = () => {
 
     try {
       setLoading(true);
-      const { error } = await supabase.from("messages").insert([
-        { name: name.trim(), email: email.trim(), message: message.trim() },
-      ]);
+      const { error } = await supabase
+        .from("messages")
+        .insert([
+          { name: name.trim(), email: email.trim(), message: message.trim() },
+        ]);
       if (error) throw error;
       toast.success("Message sent successfully!");
       setName("");
@@ -93,12 +110,14 @@ const Contact = () => {
       <div className="container pt-32 -mb-8">
         {/* Two-column grid: left = existing content, right = info panel */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-
           {/* ── LEFT COLUMN (unchanged content) ─────────────────────── */}
           <Reveal className="max-w-xl w-full">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">let's talk</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
+              let's talk
+            </h1>
             <p className="text-muted-foreground mb-12">
-              have a project in mind, a question, or just want to say hi? i'd love to hear from you.
+              have a project in mind, a question, or just want to say hi? i'd
+              love to hear from you.
             </p>
 
             {/* Social Links */}
@@ -113,8 +132,13 @@ const Contact = () => {
                   rel="noopener noreferrer"
                   className="group flex items-center gap-4 py-3 border-b border-border/40 hover:border-primary/40 transition-colors"
                 >
-                  <s.icon size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
-                  <span className="font-mono text-sm text-foreground group-hover:text-primary transition-colors">{s.handle}</span>
+                  <s.icon
+                    size={16}
+                    className="text-muted-foreground group-hover:text-primary transition-colors"
+                  />
+                  <span className="font-mono text-sm text-foreground group-hover:text-primary transition-colors">
+                    {s.handle}
+                  </span>
                 </Reveal>
               ))}
             </div>
@@ -122,7 +146,9 @@ const Contact = () => {
             {/* Contact Form */}
             <Reveal delay={0.15}>
               <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                <h2 className="font-mono text-xs text-primary tracking-widest uppercase mb-2">send a message</h2>
+                <h2 className="font-mono text-xs text-primary tracking-widest uppercase mb-2">
+                  send a message
+                </h2>
                 <input
                   type="text"
                   placeholder="your name"
@@ -155,11 +181,10 @@ const Contact = () => {
             </Reveal>
           </Reveal>
 
-          {/* ── RIGHT COLUMN (new info panel) ───────────────────────── */}
+          {/* RIGHT COLUMN */}
           <Reveal delay={0.2} className="w-full lg:pt-[3.75rem]">
-            {/* Sticky wrapper so the panel tracks with scroll on desktop */}
+            {/* Sticky wrapper */}
             <div className="lg:sticky lg:top-32 flex flex-col gap-6">
-
               {/* Header accent */}
               <div>
                 <span className="font-mono text-xs text-primary tracking-widest uppercase">
@@ -178,14 +203,21 @@ const Contact = () => {
                     className="group flex items-start gap-3 bg-card border border-border/40 hover:border-primary/30 rounded-lg px-4 py-4 transition-colors duration-300"
                   >
                     <div className="mt-0.5 shrink-0 w-7 h-7 rounded-md border border-border/60 group-hover:border-primary/40 flex items-center justify-center transition-colors duration-300">
-                      <item.icon size={13} className="text-muted-foreground group-hover:text-primary transition-colors duration-300" />
+                      <item.icon
+                        size={13}
+                        className="text-muted-foreground group-hover:text-primary transition-colors duration-300"
+                      />
                     </div>
                     <div className="min-w-0">
                       <p className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase mb-0.5">
                         {item.label}
                       </p>
-                      <p className="text-sm font-medium text-foreground leading-snug">{item.value}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{item.sub}</p>
+                      <p className="text-sm font-medium text-foreground leading-snug">
+                        {item.value}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {item.sub}
+                      </p>
                     </div>
                   </Reveal>
                 ))}
@@ -205,7 +237,8 @@ const Contact = () => {
                       preferred contact
                     </p>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      the form on the left is the fastest way to reach me. for quick chats, email or LinkedIn work just as well.
+                      the form on the left is the fastest way to reach me. for
+                      quick chats, email or LinkedIn work just as well.
                     </p>
                   </div>
                 </div>
@@ -223,10 +256,8 @@ const Contact = () => {
                   </span>
                 </div>
               </Reveal>
-
             </div>
           </Reveal>
-
         </div>
       </div>
     </PageTransition>
