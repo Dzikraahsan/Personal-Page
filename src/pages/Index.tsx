@@ -309,10 +309,8 @@ const Index = () => {
         </section>
 
         {/* LogoLoop */}
-        <motion.section
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
+        <Reveal
+          as="section"
           className="py-12 md:py-16 mt-16 md:mt-32 border-t border-border/40 overflow-hidden"
         >
           <div
