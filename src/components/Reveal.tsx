@@ -1,15 +1,15 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion, type HTMLMotionProps } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 type RevealProps = {
   children: ReactNode;
   delay?: number;
-  /** index for automatic small stagger (overridden by `delay`) */
   index?: number;
   className?: string;
   as?: "div" | "section" | "article" | "li" | "header" | "footer" | "a";
-} & Omit<HTMLMotionProps<"div">, "ref" | "initial" | "animate" | "transition" | "children">;
+  [key: string]: unknown;
+};
 
 /**
  * Unified scroll-reveal motion primitive used across the whole site.
