@@ -9,8 +9,6 @@ import {
   LayoutDashboard,
   Type,
   Utensils,
-  Handshake,
-  Network,
   Earth,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -45,6 +43,13 @@ const statusStyles: Record<string, string> = {
   "On Working": "bg-sky-500/10 text-sky-400 border-sky-500/20",
 };
 
+const statusDotStyles: Record<string, string> = {
+  Completed: "bg-emerald-400",
+  Experimental: "bg-amber-400",
+  Archived: "bg-muted-foreground",
+  "On Working": "bg-sky-400",
+};
+
 const ProjectCard = ({
   title,
   description,
@@ -64,59 +69,79 @@ const ProjectCard = ({
       href={link || "#"}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group relative flex flex-col rounded-2xl border border-border/60 bg-surface/40 p-6 transition-all duration-300 md:hover:-translate-y-1 md:hover:border-primary/40 md:hover:shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.2)] ${className}`}
+      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-surface/40 transition-all duration-300 md:hover:-translate-y-1 md:hover:border-primary/30 md:hover:shadow-[0_16px_40px_-12px_hsl(var(--primary)/0.18)] ${className}`}
       style={{ willChange: "transform" }}
     >
-      {/* Top: icon + title + status */}
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-background/60 text-primary transition-colors md:group-hover:border-primary/40">
-            <Icon size={16} />
+      {/* Top accent line */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 transition-opacity duration-500 md:group-hover:opacity-100" />
+
+      {/* Header */}
+      <div className="flex items-start justify-between gap-4 px-6 pt-6 pb-5">
+        <div className="flex items-center gap-3.5 min-w-0">
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border/60 bg-background/80 text-primary shadow-sm transition-colors duration-300 md:group-hover:border-primary/40 md:group-hover:bg-background">
+            <Icon size={17} strokeWidth={1.6} />
           </div>
-          <h3 className="text-base font-semibold tracking-tight text-foreground truncate">
-            {title}
-          </h3>
+          <div className="min-w-0">
+            <h3 className="text-[15px] font-semibold leading-snug tracking-tight text-foreground truncate">
+              {title}
+            </h3>
+            <p className="mt-0.5 text-[11px] font-mono text-muted-foreground/60 tracking-wide uppercase">
+              {year}
+            </p>
+          </div>
         </div>
         <ArrowUpRight
-          size={16}
-          className="shrink-0 text-muted-foreground transition-all duration-300 md:group-hover:text-primary md:group-hover:-translate-y-0.5 md:group-hover:translate-x-0.5"
+          size={15}
+          className="mt-0.5 shrink-0 text-muted-foreground/50 transition-all duration-300 md:group-hover:text-primary md:group-hover:-translate-y-0.5 md:group-hover:translate-x-0.5"
         />
       </div>
 
+      {/* Divider */}
+      <div className="mx-6 h-px bg-border/50" />
+
       {/* Description */}
-      <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-        {description}
-      </p>
+      <div className="px-6 py-5">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {description}
+        </p>
+      </div>
 
       <div className="flex-1" />
 
-      {/* Divider */}
-      <div className="h-px w-full bg-border/60 mb-4" />
-
-      {/* Metadata */}
-      <div className="space-y-3">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-mono text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5">
-            <CalendarDays size={11} />
-            {year}
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Layers size={11} />
-            {tags.length} stack
-          </span>
+      {/* Footer panel */}
+      <div className="mx-4 mb-4 rounded-xl border border-border/40 bg-muted/30 px-4 py-3.5 space-y-3">
+        {/* Metadata row */}
+        <div className="flex items-center justify-between gap-3 text-[11px] font-mono text-muted-foreground">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-1.5">
+              <Layers size={11} className="shrink-0" />
+              {tags.length} stack
+            </span>
+            <span className="h-2.5 w-px bg-border/60" />
+            <span className="inline-flex items-center gap-1.5">
+              <CalendarDays size={11} className="shrink-0" />
+              {year}
+            </span>
+          </div>
           <span
-            className={`ml-auto inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-wide ${statusStyles[status]}`}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] uppercase tracking-widest font-mono ${statusStyles[status]}`}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-current" />
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${statusDotStyles[status]}`}
+            />
             {status}
           </span>
         </div>
 
-        <div className="flex flex-wrap items-start gap-x-4 gap-y-3 w-full">
+        {/* Divider */}
+        <div className="h-px w-full bg-border/40" />
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="shrink-0 whitespace-nowrap text-[10px] font-mono uppercase tracking-wide px-3 py-1.5 rounded-full bg-muted/60 text-muted-foreground border border-border/40"
+              className="inline-flex items-center whitespace-nowrap text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-lg bg-background/60 text-muted-foreground border border-border/50 transition-colors duration-200 md:group-hover:border-border/80"
             >
               {tag}
             </span>

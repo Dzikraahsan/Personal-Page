@@ -138,11 +138,11 @@ const grouped = tools.reduce<Record<string, Tool[]>>((acc, tool) => {
 }, {});
 
 const categoryOrder = [
+  "Code Editor",
   "Language",
   "Framework",
   "Database",
   "JavaScript Runtime",
-  "Code Editor",
   "DVCS",
   "Repository",
   "Deployments",
@@ -164,14 +164,14 @@ const approachItems = [
     detail: "typography, spacing, and motion all have purpose",
   },
   {
-    icon: "◎",
-    label: "Curiosity-driven",
-    detail: "always tinkering, breaking, and rebuilding",
-  },
-  {
     icon: "◇",
     label: "Empathy-centered",
     detail: "software built around how people actually think",
+  },
+  {
+    icon: "◎",
+    label: "Curiosity-driven",
+    detail: "always tinkering, breaking, and rebuilding",
   },
 ];
 
@@ -279,7 +279,7 @@ const About = () => (
         <h2 className="font-mono text-xs text-primary tracking-widest uppercase mb-6">
           skills & tools
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-20">
           {[
             { label: "Languages", count: grouped["Language"]?.length ?? 0 },
             { label: "Frameworks", count: grouped["Framework"]?.length ?? 0 },
@@ -302,7 +302,7 @@ const About = () => (
 
         {/* Grouped by category */}
         <section className="-mb-[11rem]">
-          <div className="space-y-10">
+          <div className="space-y-16 mt-4">
             {orderedCategories.map((category, catIndex) => {
               const items = grouped[category];
               return (
