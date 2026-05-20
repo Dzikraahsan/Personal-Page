@@ -301,9 +301,9 @@ const Index = () => {
                 status="Available"
                 contactText="Contact"
                 showUserInfo={false}
-                enableTilt={true}
+                enableTilt={false}
                 enableMobileTilt={false}
-                className="w-full max-w-[360px] sm:max-w-[440px] md:max-w-[500px] mx-auto md:mx-0"
+                className="w-full max-w-[400px] sm:max-w-[500px] md:max-w-[600px] mx-auto md:mx-0"
               />
             </div>
           </div>
