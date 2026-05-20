@@ -36,9 +36,9 @@ const Reveal = ({
 
   const visible = inView || forceShow || prefersReducedMotion;
 
-  const y = prefersReducedMotion ? 0 : isMobile ? 8 : 14;
-  const duration = prefersReducedMotion ? 0 : isMobile ? 0.45 : 0.6;
-  const stagger = isMobile ? 0.04 : 0.06;
+  const y = prefersReducedMotion || isMobile ? 0 : 14;
+  const duration = prefersReducedMotion ? 0 : isMobile ? 0.4 : 0.6;
+  const stagger = isMobile ? 0.03 : 0.06;
   const computedDelay = prefersReducedMotion
     ? 0
     : (delay ?? Math.min(index * stagger, 0.25));
