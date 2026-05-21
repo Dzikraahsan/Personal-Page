@@ -34,15 +34,16 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   enableMobileTilt = false,
   className = "",
   onContactClick,
-  borderThickness = 1.25,
+  borderThickness = 1,
   animationDuration = 5000,
   borderColor = "#7eb8e0",
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const animRef = useRef<number>(0);
   const startTimeRef = useRef<number | null>(null);
-  const progressRef = useRef<number>(0);
+  const shineRef = useRef<SVGPathElement>(null);
   const [dims, setDims] = useState({ w: 0, h: 0 });
+  const uid = useRef(`mb-${Math.random().toString(36).slice(2, 7)}`).current;
 
   const updateSize = useCallback(() => {
     if (!cardRef.current) return;
@@ -59,49 +60,38 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     return () => ro.disconnect();
   }, [updateSize]);
 
-  const svgRef = useRef<SVGSVGElement>(null);
-  const lineRef = useRef<SVGPathElement>(null);
-  const uid = useRef(`mb-${Math.random().toString(36).slice(2, 7)}`).current;
-
   useEffect(() => {
     if (!dims.w || !dims.h) return;
-
     const { w, h } = dims;
-    const R = 30;
+    const R = 25;
     const pathD = `M ${R} 0 H ${w - R} Q ${w} 0 ${w} ${R} V ${h - R} Q ${w} ${h} ${w - R} ${h} H ${R} Q 0 ${h} 0 ${h - R} V ${R} Q 0 0 ${R} 0 Z`;
-
     const tmp = document.createElementNS("http://www.w3.org/2000/svg", "path");
     tmp.setAttribute("d", pathD);
-    const perimeter = tmp.getTotalLength();
-    const TRAIL = 200;
+    const P = tmp.getTotalLength();
+    const TRAIL = P * 0.22;
 
     const animate = (ts: number) => {
-      if (startTimeRef.current === null)
-        startTimeRef.current = ts - progressRef.current * animationDuration;
-
-      const progress =
+      if (startTimeRef.current === null) startTimeRef.current = ts;
+      const t =
         ((ts - startTimeRef.current) % animationDuration) / animationDuration;
-      progressRef.current = progress;
-
-      const head = progress * perimeter;
+      const head = t * P;
       const tail = head - TRAIL;
 
-      if (lineRef.current) {
+      if (shineRef.current) {
         if (tail >= 0) {
-          lineRef.current.setAttribute(
+          shineRef.current.setAttribute(
             "stroke-dasharray",
-            `${TRAIL} ${perimeter}`,
+            `${TRAIL} ${P - TRAIL}`,
           );
-          lineRef.current.setAttribute("stroke-dashoffset", `${-tail}`);
+          shineRef.current.setAttribute("stroke-dashoffset", `${-tail}`);
         } else {
           const seg1 = head;
-          const gap = perimeter - TRAIL;
           const seg2 = TRAIL - head;
-          lineRef.current.setAttribute(
+          shineRef.current.setAttribute(
             "stroke-dasharray",
-            `${seg1} ${gap} ${seg2}`,
+            `${seg1} ${P - TRAIL} ${seg2}`,
           );
-          lineRef.current.setAttribute("stroke-dashoffset", "0");
+          shineRef.current.setAttribute("stroke-dashoffset", "0");
         }
       }
 
@@ -116,7 +106,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   }, [dims, animationDuration]);
 
   const { w, h } = dims;
-  const R = 30;
+  const R = 25;
   const pathD =
     w && h
       ? `M ${R} 0 H ${w - R} Q ${w} 0 ${w} ${R} V ${h - R} Q ${w} ${h} ${w - R} ${h} H ${R} Q 0 ${h} 0 ${h - R} V ${R} Q 0 0 ${R} 0 Z`
@@ -138,7 +128,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           loading="eager"
           draggable="false"
         />
-
         {showUserInfo && (
           <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-1">
             {name && (
@@ -171,7 +160,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
       {w > 0 && h > 0 && (
         <svg
-          ref={svgRef}
           width={w}
           height={h}
           viewBox={`0 0 ${w} ${h}`}
@@ -186,36 +174,50 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <defs>
             <filter
               id={`${uid}-glow`}
-              x="-50%"
-              y="-50%"
-              width="200%"
-              height="200%"
+              x="-80%"
+              y="-80%"
+              width="260%"
+              height="260%"
             >
-              <feGaussianBlur stdDeviation="2.5" result="blur" />
+              <feGaussianBlur stdDeviation="4" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
+            <linearGradient
+              id={`${uid}-shine`}
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="0"
+              x2={w}
+              y2={h}
+            >
+              <stop offset="0%" stopColor={borderColor} stopOpacity="0" />
+              <stop offset="40%" stopColor="#ffffff" stopOpacity="0.9" />
+              <stop offset="60%" stopColor={borderColor} stopOpacity="1" />
+              <stop offset="100%" stopColor={borderColor} stopOpacity="0" />
+            </linearGradient>
           </defs>
 
+          {/* Full static border */}
           <path
             d={pathD}
             fill="none"
             stroke={borderColor}
             strokeWidth={borderThickness}
-            strokeOpacity={0.12}
+            strokeOpacity={0.18}
           />
 
+          {/* Shiny moving highlight */}
           <path
-            ref={lineRef}
+            ref={shineRef}
             d={pathD}
             fill="none"
-            stroke={borderColor}
-            strokeWidth={borderThickness * 2}
+            stroke={`url(#${uid}-shine)`}
+            strokeWidth={borderThickness * 3}
             strokeLinecap="round"
             filter={`url(#${uid}-glow)`}
-            style={{ willChange: "stroke-dashoffset" }}
           />
         </svg>
       )}
