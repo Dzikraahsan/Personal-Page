@@ -83,8 +83,6 @@ const allProjects: Project[] = [
   },
 ];
 
-// Editorial rhythm on large screens (6-col grid):
-// hero (6) → 3/3 → 2/2/2 → 3/3
 const spanClasses = [
   "lg:col-span-6",
   "lg:col-span-3",
