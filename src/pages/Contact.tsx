@@ -250,7 +250,7 @@ const Contact = () => {
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
                   </span>
                   <span className="font-mono text-xs text-muted-foreground tracking-wide">
-                    available for new projects
+                    open to work
                   </span>
                 </div>
               </Reveal>
