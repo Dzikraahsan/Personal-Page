@@ -178,6 +178,14 @@ const tools = [
     icon: "https://cdn.simpleicons.org/git/FFFFFF",
   },
 
+  // Library
+
+  {
+    name: "TanStack",
+    subtitle: "Library",
+    icon: "https://cdn.simpleicons.org/tanstack/white",
+  },
+
   // Repository
   {
     name: "GitHub",
@@ -195,6 +203,17 @@ const tools = [
     name: "Railway",
     subtitle: "Deployments",
     icon: "https://cdn.simpleicons.org/railway/FFFFFF",
+  },
+
+  {
+    name: "Netlify",
+    subtitle: "Deployments",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/netlify/netlify-original.svg",
+  },
+  {
+    name: "Cloudflare Pages",
+    subtitle: "Deployments",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cloudflare/cloudflare-original.svg",
   },
 
   // Storage
@@ -302,8 +321,8 @@ const Index = () => {
             {/* PROFILE CARD */}
             <div className="order-1 md:order-2 flex justify-center md:justify-end w-full mx-auto">
               <ProfileCard
-                avatarUrl="https://res.cloudinary.com/da4fjxm1e/image/upload/v1778729787/dzii27-trsnprnt_kvonuu.png"
-                miniAvatarUrl="https://res.cloudinary.com/da4fjxm1e/image/upload/v1778729787/dzii27-trsnprnt_kvonuu.png"
+                avatarUrl="https://res.cloudinary.com/da4fjxm1e/image/upload/v1779339552/dzii27-trsnprnt_kvonuu_qwd8wg.png"
+                miniAvatarUrl="https://res.cloudinary.com/da4fjxm1e/image/upload/v1779339552/dzii27-trsnprnt_kvonuu_qwd8wg.png"
                 name="Dzikra Ahsan"
                 title="Frontend Developer"
                 handle="dzikraahsan"

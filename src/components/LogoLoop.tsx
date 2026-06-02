@@ -35,7 +35,6 @@ export interface LogoLoopProps {
   width?: number | string;
   logoHeight?: number;
   gap?: number;
-  pauseOnHover?: boolean;
   hoverSpeed?: number;
   fadeOut?: boolean;
   fadeOutColor?: string;
@@ -218,7 +217,6 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     width = "100%",
     logoHeight = 28,
     gap = 32,
-    pauseOnHover,
     hoverSpeed,
     fadeOut = false,
     fadeOutColor,
@@ -241,10 +239,8 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 
     const effectiveHoverSpeed = useMemo(() => {
       if (hoverSpeed !== undefined) return hoverSpeed;
-      if (pauseOnHover === true) return 0;
-      if (pauseOnHover === false) return undefined;
       return 0;
-    }, [hoverSpeed, pauseOnHover]);
+    }, [hoverSpeed]);
 
     const isVertical = direction === "up" || direction === "down";
 
