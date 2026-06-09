@@ -6,7 +6,7 @@ const tools = [
   {
     name: "Antigravity",
     subtitle: "Code Editor",
-    icon: "https://res.cloudinary.com/da4fjxm1e/image/upload/v1775093756/Google-Antigravity-Icon-White_yd3qgp.png",
+    icon: "https://res.cloudinary.com/da4fjxm1e/image/upload/e_colorize:100,co_rgb:3B82F6/v1775093756/Google-Antigravity-Icon-White_yd3qgp.png",
   },
   {
     name: "Cursor",
@@ -16,7 +16,7 @@ const tools = [
   {
     name: "Zed",
     subtitle: "Code Editor",
-    icon: "https://res.cloudinary.com/da4fjxm1e/image/upload/v1775092890/zed-logo_sajpzu.png",
+    icon: "https://cdn.simpleicons.org/zedindustries/181717/E5E7EB",
   },
   {
     name: "React JS",
@@ -56,7 +56,7 @@ const tools = [
   {
     name: "PHP",
     subtitle: "Language",
-    icon: "https://cdn.simpleicons.org/php/FFFFFF",
+    icon: "https://cdn.simpleicons.org/php",
   },
   {
     name: "Python",
@@ -66,12 +66,12 @@ const tools = [
   {
     name: "Dart",
     subtitle: "Language",
-    icon: "https://cdn.simpleicons.org/dart/white",
+    icon: "https://cdn.simpleicons.org/dart",
   },
   {
     name: "MySQL",
     subtitle: "Database",
-    icon: "https://cdn.simpleicons.org/mysql/FFFFFF",
+    icon: "https://cdn.simpleicons.org/mysql",
   },
   {
     name: "TIDB",
@@ -86,7 +86,7 @@ const tools = [
   {
     name: "Supabase",
     subtitle: "Database",
-    icon: "https://cdn.simpleicons.org/supabase/FFFFFF",
+    icon: "https://cdn.simpleicons.org/supabase",
   },
   {
     name: "Node JS",
@@ -96,27 +96,27 @@ const tools = [
   {
     name: "Git",
     subtitle: "DVCS",
-    icon: "https://cdn.simpleicons.org/git/FFFFFF",
+    icon: "https://cdn.simpleicons.org/git",
   },
   {
     name: "TanStack",
     subtitle: "Library",
-    icon: "https://cdn.simpleicons.org/tanstack/white",
+    icon: "https://cdn.simpleicons.org/tanstack/FF4154/FF6B7A",
   },
   {
     name: "GitHub",
     subtitle: "Repository",
-    icon: "https://cdn.simpleicons.org/github/FFFFFF",
+    icon: "https://cdn.simpleicons.org/github/181717/E5E7EB",
   },
   {
     name: "Vercel",
     subtitle: "Deployments",
-    icon: "https://cdn.simpleicons.org/vercel/FFFFFF",
+    icon: "https://cdn.simpleicons.org/vercel/000000/E5E7EB",
   },
   {
     name: "Railway",
     subtitle: "Deployments",
-    icon: "https://cdn.simpleicons.org/railway/FFFFFF",
+    icon: "https://cdn.simpleicons.org/railway/7B3FF2/A78BFA",
   },
   {
     name: "Netlify",
@@ -131,7 +131,7 @@ const tools = [
   {
     name: "Cloudinary",
     subtitle: "Storage",
-    icon: "https://cdn.simpleicons.org/cloudinary/FFFFFF",
+    icon: "https://cdn.simpleicons.org/cloudinary/2563EB/60A5FA",
   },
   {
     name: "Canva",

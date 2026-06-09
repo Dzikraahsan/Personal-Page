@@ -119,7 +119,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     >
       <div
         ref={cardRef}
-        className="absolute inset-0 overflow-hidden rounded-[25px] bg-[linear-gradient(180deg,#4fa3d1_0%,#0b1d3a_100%)]"
+        className="absolute inset-0 overflow-hidden rounded-[23px] bg-[linear-gradient(180deg,#4fa3d1_0%,#0b1d3a_100%)]"
       >
         <img
           src={avatarUrl}

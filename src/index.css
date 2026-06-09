@@ -5,7 +5,8 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
+    :root,
+    .dark {
         --background: 0 0% 5%;
         --foreground: 0 0% 100%;
 
@@ -15,7 +16,6 @@
         --popover: 0 0% 7%;
         --popover-foreground: 0 0% 100%;
 
-        /* PRIMARY */
         --primary: 202 100% 78%;
         --primary-foreground: 0 0% 0%;
 
@@ -25,7 +25,6 @@
         --muted: 0 0% 9%;
         --muted-foreground: 240 4% 46%;
 
-        /* ACCENT */
         --accent: 202 100% 78%;
         --accent-foreground: 0 0% 0%;
 
@@ -35,31 +34,70 @@
         --border: 0 0% 15%;
         --input: 0 0% 15%;
 
-        /* FOCUS / RING */
         --ring: 202 100% 78%;
 
         --radius: 0.75rem;
 
-        /* SIDEBAR */
         --sidebar-background: 0 0% 5%;
         --sidebar-foreground: 0 0% 63%;
-
         --sidebar-primary: 202 100% 78%;
         --sidebar-primary-foreground: 0 0% 0%;
-
         --sidebar-accent: 0 0% 9%;
         --sidebar-accent-foreground: 0 0% 100%;
-
         --sidebar-border: 0 0% 15%;
         --sidebar-ring: 202 100% 78%;
 
-        /* Custom tokens */
         --surface: 0 0% 9.4%;
         --text-secondary: 240 5% 65%;
         --text-muted: 240 4% 46%;
 
-        /* GLOW */
         --glow: 202 100% 78%;
+    }
+
+    .light {
+        --background: 0 0% 100%;
+        --foreground: 0 0% 7%;
+
+        --card: 0 0% 98%;
+        --card-foreground: 0 0% 7%;
+
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 7%;
+
+        --primary: 202 85% 45%;
+        --primary-foreground: 0 0% 100%;
+
+        --secondary: 0 0% 95%;
+        --secondary-foreground: 0 0% 25%;
+
+        --muted: 0 0% 95%;
+        --muted-foreground: 240 4% 40%;
+
+        --accent: 202 85% 45%;
+        --accent-foreground: 0 0% 100%;
+
+        --destructive: 0 84% 50%;
+        --destructive-foreground: 0 0% 100%;
+
+        --border: 0 0% 88%;
+        --input: 0 0% 88%;
+
+        --ring: 202 85% 45%;
+
+        --sidebar-background: 0 0% 100%;
+        --sidebar-foreground: 0 0% 30%;
+        --sidebar-primary: 202 85% 45%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 0 0% 95%;
+        --sidebar-accent-foreground: 0 0% 7%;
+        --sidebar-border: 0 0% 88%;
+        --sidebar-ring: 202 85% 45%;
+
+        --surface: 0 0% 96%;
+        --text-secondary: 240 5% 35%;
+        --text-muted: 240 4% 45%;
+
+        --glow: 202 85% 45%;
     }
 }
 
@@ -115,6 +153,9 @@
     body {
         @apply bg-background text-foreground font-sans antialiased;
         overflow-x: hidden;
+        transition:
+            background-color 0.3s ease,
+            color 0.3s ease;
     }
 
     img {

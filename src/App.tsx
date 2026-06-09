@@ -17,6 +17,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import ClickSpark from "@/components/ClickSpark";
 import LetterGlitch from "@/components/LetterGlitch";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const queryClient = new QueryClient();
 
@@ -45,34 +46,36 @@ const AnimatedRoutes = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ClickSpark
-          sparkColor="#ffffff"
-          sparkSize={10}
-          sparkRadius={15}
-          sparkCount={8}
-          duration={400}
-          easing="ease-out"
-        >
-          <div className="min-h-screen flex flex-col relative overflow-hidden">
-            <div className="absolute inset-0 -z-10 bg-background"></div>
+    <ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ClickSpark
+            sparkColor="#ffffff"
+            sparkSize={10}
+            sparkRadius={15}
+            sparkCount={8}
+            duration={400}
+            easing="ease-out"
+          >
+            <div className="min-h-screen flex flex-col relative overflow-hidden">
+              <div className="absolute inset-0 -z-10 bg-background"></div>
 
-            <Navbar />
+              <Navbar />
 
-            <main className="flex-1">
-              <AnimatedRoutes />
-            </main>
+              <main className="flex-1">
+                <AnimatedRoutes />
+              </main>
 
-            <Footer />
+              <Footer />
 
-            <ScrollToTopButton />
-          </div>
-        </ClickSpark>
-      </BrowserRouter>
-    </TooltipProvider>
+              <ScrollToTopButton />
+            </div>
+          </ClickSpark>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

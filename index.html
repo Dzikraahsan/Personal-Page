@@ -1,19 +1,34 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="https://res.cloudinary.com/da4fjxm1e/image/upload/v1761051349/foto_dzikra_mad82p.webp" type="image/x-icon">
-    
-    <title>Dzii27</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="shortcut icon"
+            href="https://res.cloudinary.com/da4fjxm1e/image/upload/v1761051349/foto_dzikra_mad82p.webp"
+            type="image/x-icon"
+        />
 
-    <!-- Preload Font -->
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <title>Dzii27</title>
 
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+        <!-- Preload Font -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    </head>
+    <body>
+        <script>
+            (function () {
+                try {
+                    var t = localStorage.getItem("dzii27-theme");
+                    if (t !== "light" && t !== "dark") t = "dark";
+                    document.documentElement.classList.add(t);
+                    document.documentElement.style.colorScheme = t;
+                } catch (e) {
+                    document.documentElement.classList.add("dark");
+                }
+            })();
+        </script>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
 </html>
