@@ -14,6 +14,7 @@ import Contact from "./pages/Contact.tsx";
 import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import ScrollToTop from "./components/ScrollToTop";
+import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import ClickSpark from "@/components/ClickSpark";
 import LetterGlitch from "@/components/LetterGlitch";
 
@@ -66,6 +67,8 @@ const App = () => (
             </main>
 
             <Footer />
+
+            <ScrollToTopButton />
           </div>
         </ClickSpark>
       </BrowserRouter>
