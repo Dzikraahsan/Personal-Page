@@ -105,7 +105,7 @@ const experiments: Experiment[] = [
         {
           name: "Dart",
           category: "Language",
-          logo: "https://cdn.simpleicons.org/dart/white",
+          logo: "https://cdn.simpleicons.org/dart",
         },
         {
           name: "Flutter",
