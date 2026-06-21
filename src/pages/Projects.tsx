@@ -59,6 +59,37 @@ export interface Project {
 
 const allProjects: Project[] = [
   {
+    title: "Finance",
+    description:
+      "A personal finance tracker that allows users to log income and expenses, visualise spending patterns, and understand their financial health over time with a clean dashboard interface.",
+    tags: ["React", "Vite", "TypeScript", "Tailwind", "Supabase"],
+    link: "https://dzii-finance.vercel.app",
+    year: "2025",
+    status: "Completed",
+    featured: true,
+    category: "Full Stack",
+    role: "Full Stack Developer",
+    complexity: "Advanced",
+    duration: "7 weeks",
+    highlights: ["Auth System", "Expense Tracking", "Data Visualisation"],
+    learnings: [
+      "Supabase Integration",
+      "Database Design",
+      "Auth Flows",
+      "Chart Libraries",
+    ],
+    challenges:
+      "Building a reliable financial tracking system with accurate calculations, structured data management, and meaningful visual insights across different transaction types.",
+    outcome:
+      "Successfully delivered a complete finance tracker that helps users monitor income, expenses, and spending trends through an intuitive dashboard experience.",
+    technologies: [
+      { label: "Frontend", items: ["React", "TypeScript", "Tailwind"] },
+      { label: "Backend", items: ["Supabase"] },
+      { label: "Tooling", items: ["Vite"] },
+    ],
+    liveDemo: "",
+  },
+  {
     title: "Paperjam Club",
     description:
       "A curated space for makers, players, and storytellers. Built as a community-first platform where creative people can share projects, discoveries, and ideas in a calm, focused environment away from algorithmic noise.",
@@ -66,19 +97,25 @@ const allProjects: Project[] = [
     link: "",
     year: "2026",
     status: "On Working",
-    featured: true,
+    featured: false,
     category: "Full Stack",
     role: "Sole Developer",
     complexity: "Advanced",
     duration: "Ongoing",
     highlights: ["Community Feed", "Project Showcase", "Curated Discovery"],
-    learnings: ["Community UX", "Content Architecture", "React Patterns"],
+    learnings: [
+      "Community Platform Design",
+      "Content Architecture",
+      "Authentication Systems",
+      "User Experience Design",
+    ],
     challenges:
-      "Designing a content experience that feels curated and intentional rather than algorithmically driven.",
+      "Designing a community platform that encourages meaningful interaction and content discovery while maintaining a calm, focused experience free from algorithmic distractions.",
     outcome:
-      "Currently in active development with a clear product vision and growing feature set.",
+      "Established a strong foundation for a community-first platform where makers, players, and storytellers can share projects, ideas, and discoveries in a more intentional environment.",
     technologies: [
       { label: "Frontend", items: ["React", "TypeScript", "Tailwind"] },
+      { label: "Backend", items: ["Supabase"] },
       { label: "Tooling", items: ["Vite"] },
     ],
     liveDemo: "",
@@ -89,7 +126,7 @@ const allProjects: Project[] = [
       "A food business website for a local restaurant that presents their full menu, brand story, and contact information in a clean, appetising layout optimised for mobile visitors.",
     tags: ["React", "Vite", "TypeScript", "Tailwind"],
     link: "https://www.kaifood.web.id/",
-    year: "2024",
+    year: "2025",
     status: "Completed",
     category: "Business",
     role: "Frontend Developer",
@@ -110,7 +147,7 @@ const allProjects: Project[] = [
   {
     title: "Portfolio",
     description:
-      "A personal portfolio page presenting my work, skills, and background. Designed with a dark minimal aesthetic and smooth reveal animations to create a calm, focused browsing experience.",
+      "A personal page presenting my work, skills, and background. Designed with a dark minimal aesthetic and smooth reveal animations to create a calm, focused browsing experience.",
     tags: ["React", "Vite", "TypeScript", "Tailwind"],
     link: "https://dzii27-page.vercel.app",
     year: "2024",
@@ -130,36 +167,6 @@ const allProjects: Project[] = [
       { label: "Tooling", items: ["Vite"] },
     ],
     liveDemo: "https://dzii27-page.vercel.app",
-  },
-  {
-    title: "Finance",
-    description:
-      "A personal finance tracker that allows users to log income and expenses, visualise spending patterns, and understand their financial health over time with a clean dashboard interface.",
-    tags: ["React", "Vite", "TypeScript", "Tailwind", "Supabase"],
-    link: "https://dzii-finance.vercel.app",
-    year: "2024",
-    status: "Completed",
-    category: "Full Stack",
-    role: "Full Stack Developer",
-    complexity: "Advanced",
-    duration: "5 weeks",
-    highlights: ["Auth System", "Expense Tracking", "Data Visualisation"],
-    learnings: [
-      "Supabase Integration",
-      "Database Design",
-      "Auth Flows",
-      "Chart Libraries",
-    ],
-    challenges:
-      "Designing a real-time data model that remains performant as transaction history grows, while keeping the UI simple.",
-    outcome:
-      "Fully functional app deployed on Vercel with Supabase backend. Used personally for monthly budgeting.",
-    technologies: [
-      { label: "Frontend", items: ["React", "TypeScript", "Tailwind"] },
-      { label: "Backend", items: ["Supabase"] },
-      { label: "Tooling", items: ["Vite"] },
-    ],
-    liveDemo: "https://dzii-finance.vercel.app",
   },
   {
     title: "Daily Activity",
@@ -191,7 +198,7 @@ const allProjects: Project[] = [
       "An employee performance dashboard that records work hours and displays productivity statistics. Built with JavaScript before migrating to a TypeScript-first stack.",
     tags: ["React", "Vite", "JavaScript", "Tailwind"],
     link: "https://dashboard-40.vercel.app/",
-    year: "2023",
+    year: "2024",
     status: "Archived",
     category: "Dashboard",
     role: "Frontend Developer",
@@ -293,7 +300,7 @@ const ALL_STATUSES: ProjectStatus[] = [
   "Experimental",
   "Archived",
 ];
-const ALL_YEARS = ["2023", "2024", "2025", "2026"];
+const ALL_YEARS = ["2024", "2025", "2026"];
 const ALL_CATEGORIES: Category[] = [
   "Full Stack",
   "Frontend",
