@@ -16,18 +16,10 @@ import Reveal from "@/components/Reveal";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type ProjectStatus =
-  | "Completed"
-  | "Experimental"
-  | "Archived"
-  | "On Working";
+  "Completed" | "Experimental" | "Archived" | "On Working";
 export type Complexity = "Beginner" | "Intermediate" | "Advanced";
 export type Category =
-  | "Full Stack"
-  | "Frontend"
-  | "Tool"
-  | "Dashboard"
-  | "Business"
-  | "Portfolio";
+  "Full Stack" | "Frontend" | "Tool" | "Dashboard" | "Business" | "Portfolio";
 
 export interface TechGroup {
   label: string;
@@ -87,6 +79,72 @@ const allProjects: Project[] = [
       { label: "Backend", items: ["Supabase"] },
       { label: "Tooling", items: ["Vite"] },
     ],
+    liveDemo: "",
+  },
+  {
+    title: "Football Terrace",
+    description:
+      "A modern football culture platform that brings together editorial storytelling, curated apparel, and an active global community. Designed to celebrate football beyond the ninety minutes through long-form journalism, matchday culture, events, and thoughtfully crafted merchandise.",
+
+    tags: ["React", "Vite", "TypeScript", "Tailwind CSS"],
+
+    link: "",
+
+    year: "2026",
+
+    status: "On Working",
+
+    category: "Full Stack",
+
+    role: "Sole Developer",
+
+    complexity: "Advanced",
+
+    duration: "Ongoing",
+
+    highlights: [
+      "Editorial Football Stories",
+      "Interactive Community Platform",
+      "Premium Apparel Collection",
+      "Matchday Event Directory",
+      "Dynamic Story Routing",
+      "Product Catalog & Archive",
+      "Responsive User Experience",
+      "Modern Editorial Interface",
+    ],
+
+    learnings: [
+      "Scalable Frontend Architecture",
+      "Component-Driven Design",
+      "Editorial Content Modeling",
+      "Responsive Interface Design",
+      "Advanced State Management",
+      "Performance Optimization",
+      "User Experience Design",
+      "Information Architecture",
+    ],
+
+    challenges:
+      "Building a cohesive football platform that seamlessly combines editorial content, community engagement, and merchandise within a consistent design system. The project required balancing readability, performance, scalability, and responsive behavior while maintaining a premium editorial experience across desktop and mobile devices.",
+
+    outcome:
+      "Developed a scalable football culture platform that integrates long-form storytelling, community experiences, and curated apparel into a unified ecosystem. The application establishes a strong foundation for future expansion, including richer community features, enhanced editorial content, and e-commerce capabilities while preserving a consistent and immersive user experience.",
+
+    technologies: [
+      {
+        label: "Frontend",
+        items: ["React", "TypeScript", "Tailwind CSS", "TanStack Router"],
+      },
+      {
+        label: "Backend",
+        items: ["Supabase"],
+      },
+      {
+        label: "Tooling",
+        items: ["Vite", "ESLint", "Git", "npm"],
+      },
+    ],
+
     liveDemo: "",
   },
   {
