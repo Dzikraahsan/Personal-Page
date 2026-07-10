@@ -45,7 +45,13 @@ const Navbar = () => {
                   <motion.div
                     layoutId="nav-indicator"
                     className="absolute -bottom-0.5 left-0 right-0 h-px bg-primary"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 40,
+                      mass: 0.7,
+                      restDelta: 0.001,
+                    }}
                   />
                 )}
               </Link>
