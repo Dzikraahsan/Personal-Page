@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import ShinyText from "../components/ShinyText";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -297,7 +298,11 @@ const Index = () => {
                 transition={{ delay: 0.2 }}
                 className="text-4xl sm:text-5xl md:text-5xl font-bold leading-[1.05] tracking-tight mb-7 max-w-2xl"
               >
-                hi, i'm <span className="text-gradient">Dzikra</span>{" "}
+                hi, i'm
+                <ShinyText
+                  text="Dzikra"
+                  className="font-bold text-5xl pl-3"
+                />{" "}
                 <span className="wave">👋</span>
               </motion.h1>
 

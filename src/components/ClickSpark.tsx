@@ -19,7 +19,7 @@ interface Spark {
 }
 
 const ClickSpark: React.FC<ClickSparkProps> = ({
-  sparkColor = "#fff",
+  sparkColor = "hsl(var(--spark))",
   sparkSize = 10,
   sparkRadius = 15,
   sparkCount = 8,
@@ -112,8 +112,27 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
         const x2 = spark.x + (distance + lineLength) * Math.cos(spark.angle);
         const y2 = spark.y + (distance + lineLength) * Math.sin(spark.angle);
 
-        ctx.strokeStyle = sparkColor;
-        ctx.lineWidth = 2;
+        const getSparkColor = () =>
+          getComputedStyle(document.documentElement)
+            .getPropertyValue("--spark")
+            .trim();
+
+        ctx.save();
+
+        ctx.strokeStyle = sparkColor.startsWith("var(")
+          ? getSparkColor()
+          : sparkColor;
+
+        ctx.globalAlpha = 1 - progress;
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = "round";
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        ctx.restore();
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
