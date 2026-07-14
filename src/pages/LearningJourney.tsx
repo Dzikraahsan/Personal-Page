@@ -692,7 +692,7 @@ const Labs = () => {
   return (
     <PageTransition>
       {/* Container utama diubah max-w-4xl agar layout memanjang dengan elegan */}
-      <div className="container pt-28 sm:pt-32 pb-24 px-4 sm:px-6">
+      <div className="container pt-28 sm:pt-32 -mb-[1rem] px-4 sm:px-6">
         {/* Header Section */}
         <Reveal>
           {/* Menghapus mx-auto agar element badge menempel penuh di kiri */}
