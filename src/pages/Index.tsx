@@ -555,8 +555,8 @@ const Index = () => {
                 ],
               },
               {
-                to: "/learning-journey",
-                label: "learning journey",
+                to: "/journey",
+                label: "journey",
                 title: "Learning Journey",
                 description:
                   "things i'm currently learning, building, and figuring out along the way.",
