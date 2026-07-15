@@ -572,9 +572,12 @@ const ExpandToggle = ({
 // ─── Shared expanded content ──────────────────────────────────────────────────
 
 const ExpandedContent = ({ project }: { project: Project }) => (
-  <div className="flex flex-col gap-5 text-left">
+  <div
+    className="w-full text-left clear-both"
+    style={{ display: "block", width: "100%", minWidth: "100%" }}
+  >
     {/* Highlights Section */}
-    <div>
+    <div className="mb-5 block w-full">
       <SectionLabel>Highlights</SectionLabel>
       <div className="flex flex-wrap gap-1.5 mt-1">
         {project.highlights.map((h) => (
@@ -589,7 +592,7 @@ const ExpandedContent = ({ project }: { project: Project }) => (
     </div>
 
     {/* Learnings Section */}
-    <div>
+    <div className="mb-5 block w-full">
       <SectionLabel>Learnings</SectionLabel>
       <div className="flex flex-wrap gap-1.5 mt-1">
         {project.learnings.map((l) => (
@@ -603,24 +606,71 @@ const ExpandedContent = ({ project }: { project: Project }) => (
       </div>
     </div>
 
-    {/* Divider tipis antar bagian teks */}
-    <div className="h-px bg-border/20 my-1" />
+    <div className="h-px bg-border/20 my-4 block w-full" />
 
-    {/* Challenge & Outcome - Disusun vertikal satu kolom agar tidak berhimpitan */}
-    <div className="space-y-4">
-      <div className="space-y-1">
+    {/* ── PERBAIKAN TOTAL TANPA GRID & TANPA FLEX INDUK ── */}
+    {/* Menggunakan standar Block Layout dengan floating elements agar teks dipaksa wrap secara matematis */}
+    <div
+      className="block w-full clear-both"
+      style={{ contentVisibility: "auto" }}
+    >
+      {/* Kolom Kiri: Challenge */}
+      <div
+        className="w-full sm:w-[48%] mb-4 sm:mb-0"
+        style={{
+          display: "block",
+          float: "left",
+          maxWidth: "100%",
+          boxSizing: "border-box",
+        }}
+      >
         <SectionLabel>Challenge</SectionLabel>
-        <p className="text-[12px] sm:text-xs text-muted-foreground/80 leading-relaxed font-normal">
+        <p
+          className="text-[12px] sm:text-xs text-muted-foreground/80 leading-relaxed font-normal"
+          style={{
+            display: "inline-block",
+            width: "100%",
+            whiteSpace: "normal",
+            wordBreak: "break-word",
+            overflowWrap: "anywhere", // Memaksa browser memutus baris di mana saja jika menyentuh tepi
+          }}
+        >
           {project.challenges}
         </p>
       </div>
 
-      <div className="space-y-1">
+      {/* Spasi Pemisah Tengah khusus layar desktop */}
+      <div className="hidden sm:block" style={{ float: "left", width: "4%" }}>
+        &nbsp;
+      </div>
+
+      {/* Kolom Kanan: Outcome */}
+      <div
+        className="w-full sm:w-[48%]"
+        style={{
+          display: "block",
+          float: "left",
+          maxWidth: "100%",
+          boxSizing: "border-box",
+        }}
+      >
         <SectionLabel>Outcome</SectionLabel>
-        <p className="text-[12px] sm:text-xs text-muted-foreground/80 leading-relaxed font-normal">
+        <p
+          className="text-[12px] sm:text-xs text-muted-foreground/80 leading-relaxed font-normal"
+          style={{
+            display: "inline-block",
+            width: "100%",
+            whiteSpace: "normal",
+            wordBreak: "break-word",
+            overflowWrap: "anywhere", // Memaksa browser memutus baris di mana saja jika menyentuh tepi
+          }}
+        >
           {project.outcome}
         </p>
       </div>
+
+      {/* Reset float tag agar background kartu tidak rusak */}
+      <div style={{ clear: "both", display: "block", height: 0 }}></div>
     </div>
   </div>
 );
@@ -655,24 +705,31 @@ const MetaRow = ({ project }: { project: Project }) => (
 
 // ─── Featured Card ────────────────────────────────────────────────────────────
 
-const FeaturedCard = ({ project }: { project: Project }) => {
-  const [expanded, setExpanded] = useState(false);
-  const reducedMotion = useReducedMotion();
+const FeaturedCard = ({
+  project,
+  onOpenDetails,
+}: {
+  project: Project;
+  onOpenDetails: (project: Project) => void;
+}) => {
   const demoUrl = project.liveDemo || project.link || null;
 
   return (
     <div
-      className="relative rounded-2xl border border-primary/20 bg-surface/40 overflow-hidden transition-all duration-300 md:hover:-translate-y-px md:hover:border-primary/30"
+      onClick={() => onOpenDetails(project)}
+      className="relative rounded-2xl border border-primary/20 bg-surface/40 overflow-hidden transition-all duration-300 md:hover:-translate-y-px md:hover:border-primary/30 cursor-pointer group"
       style={{ willChange: "transform" }}
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-      <div className="p-6 sm:p-12">
-        {/* Top bar */}
+      <div className="p-6 sm:p-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <Star size={11} className="text-primary/60" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-primary/60">
+            <Star
+              size={11}
+              className="text-primary/60 shrink-0 -translate-y-[1.5px]"
+            />
+            <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-primary/60 leading-none select-none">
               Featured Project
             </span>
           </div>
@@ -682,11 +739,10 @@ const FeaturedCard = ({ project }: { project: Project }) => {
         </div>
 
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-12">
-          {/* Left */}
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-4 mb-3">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1 group-hover:text-primary transition-colors duration-200">
                   {project.title}
                 </h2>
                 <span className="text-[11px] font-mono text-muted-foreground/50 uppercase tracking-wide">
@@ -698,6 +754,7 @@ const FeaturedCard = ({ project }: { project: Project }) => {
                   href={demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
                   className="shrink-0 flex items-center gap-1 text-muted-foreground/50 hover:text-primary transition-all duration-200 hover:-translate-y-0.5 hover:translate-x-0.5 mt-1"
                   style={{ willChange: "transform" }}
                 >
@@ -713,7 +770,6 @@ const FeaturedCard = ({ project }: { project: Project }) => {
             <MetaRow project={project} />
           </div>
 
-          {/* Right: stats panel */}
           <div className="mt-6 lg:mt-0 lg:w-52 shrink-0">
             <div className="rounded-xl border border-border/40 bg-muted/20 divide-y divide-border/40">
               {[
@@ -779,18 +835,28 @@ const FeaturedCard = ({ project }: { project: Project }) => {
           </div>
         </div>
 
-        {/* Toggle + expansion */}
-        <div className="mt-5 pt-4 border-t border-border/40">
-          <ExpandToggle
-            expanded={expanded}
-            onToggle={() => setExpanded((v) => !v)}
-            reducedMotion={reducedMotion}
-          />
-          <AnimatedPanel open={expanded} reducedMotion={reducedMotion}>
-            <div className="mt-5">
-              <ExpandedContent project={project} />
-            </div>
-          </AnimatedPanel>
+        <div className="flex items-center justify-between pt-4 border-t border-border/35 mt-5">
+          <button className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-muted-foreground/50 group-hover:text-primary transition-colors duration-200">
+            <ChevronDown
+              size={12}
+              className="-rotate-90 group-hover:translate-x-0.5 transition-transform"
+            />
+            <span>view details</span>
+          </button>
+
+          {demoUrl && (
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground/50 hover:text-primary transition-all duration-200 hover:-translate-y-0.5"
+              style={{ willChange: "transform" }}
+            >
+              <span>live demo</span>
+              <ArrowUpRight size={12} />
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -1127,7 +1193,6 @@ const Projects = () => {
   const [activeYear, setActiveYear] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
 
-  // State baru untuk menampung data projek yang sedang dibuka di modal
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const featuredProject = allProjects[0];
@@ -1257,7 +1322,10 @@ const Projects = () => {
             </span>
             <span className="h-px flex-1 bg-border/30" />
           </div>
-          <FeaturedCard project={featuredProject} />
+          <FeaturedCard
+            project={featuredProject}
+            onOpenDetails={(proj) => setSelectedProject(proj)}
+          />
         </Reveal>
 
         {/* ── Archive ── */}
