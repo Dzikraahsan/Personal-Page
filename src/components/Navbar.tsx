@@ -80,28 +80,81 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-lg flex flex-col items-center justify-center gap-8"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-background/30 backdrop-blur-xl flex flex-col justify-between p-6 pt-24"
           >
-            {navLinks.map((link, i) => (
-              <motion.div
-                key={link.to}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-              >
-                <Link
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className={`font-mono text-lg ${
-                    location.pathname === link.to
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                  } transition-colors`}
-                >
-                  {link.label}
-                </Link>
-              </motion.div>
-            ))}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
+
+            {/* Main Links Container */}
+            <div className="relative flex flex-col gap-2.5 w-full max-w-sm mx-auto my-auto">
+              <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-muted-foreground/45 block mb-1 pl-1">
+                / navigation menu
+              </span>
+
+              {navLinks.map((link, i) => {
+                const isActive = location.pathname === link.to;
+
+                return (
+                  <motion.div
+                    key={link.to}
+                    initial={{ opacity: 0, y: 15, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 30,
+                      delay: i * 0.04,
+                    }}
+                    className="w-full"
+                  >
+                    <Link
+                      to={link.to}
+                      onClick={() => setMobileOpen(false)}
+                      className={`group relative flex items-center justify-between w-full p-4 rounded-xl border font-mono text-sm transition-all duration-200 ${
+                        isActive
+                          ? "bg-primary/5 border-primary/25 text-primary"
+                          : "bg-surface/20 border-border/40 text-muted-foreground active:bg-surface/40 active:border-border/60 text-foreground"
+                      }`}
+                    >
+                      {/* Left Side: Index Indicator + Label */}
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`text-[10px] opacity-35 ${isActive ? "text-primary font-bold" : "text-muted-foreground"}`}
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="tracking-wide">{link.label}</span>
+                      </div>
+
+                      {/* Right Side Status Element */}
+                      {isActive ? (
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_2px_hsl(var(--primary)/0.4)] animate-pulse" />
+                      ) : (
+                        <span className="text-[10px] opacity-0 group-active:opacity-100 group-hover:opacity-40 transition-opacity font-mono tracking-tighter">
+                          -&gt;
+                        </span>
+                      )}
+
+                      {/* Ambient Top Light Line on Active */}
+                      {isActive && (
+                        <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Mini Footer Mobile Menu */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.25 }}
+              className="relative border-t border-border/30 pt-4 text-center w-full max-w-sm mx-auto font-mono text-[9px] text-muted-foreground/30 tracking-widest uppercase"
+            >
+              dzii27 © personal page
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
