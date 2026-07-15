@@ -296,12 +296,12 @@ const Index = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-4xl sm:text-5xl md:text-5xl font-bold leading-[1.05] tracking-tight mb-7 max-w-2xl"
+                className="text-4xl sm:text-5xl font-bold leading-[1.05] tracking-tight mb-7 max-w-2xl"
               >
                 hi, i'm
                 <ShinyText
                   text="Dzikra"
-                  className="font-bold text-5xl pl-3"
+                  className="font-bold text-4xl sm:text-5xl pl-3"
                 />{" "}
                 <span className="wave">👋</span>
               </motion.h1>
@@ -384,7 +384,6 @@ const Index = () => {
         </Reveal>
 
         {/* About Preview */}
-        {/* add once, if not already present in this file: import { motion } from "framer-motion"; */}
         <Reveal
           as="section"
           className="py-20 md:py-24 border-t border-border/40"
@@ -399,7 +398,7 @@ const Index = () => {
                 <span aria-hidden="true" className="h-px flex-1 bg-border/40" />
               </div>
 
-              <p className="text-muted-foreground leading-[1.85] max-w-xl text-[15px] mb-8">
+              <p className="text-muted-foreground leading-[1.85] max-w-xl text-[15px] sm:text-lg mb-8">
                 i'm a frontend developer who loves building things at the
                 intersection of design and engineering. i believe great software
                 is equal parts technical precision and human empathy — every
@@ -427,12 +426,12 @@ const Index = () => {
               aria-labelledby="about-preview-principles-label"
               className="pt-10 md:pt-0 border-t md:border-t-0 md:border-l border-border/40 md:pl-10 md:col-span-5"
             >
-              <h3
+              <h2
                 id="about-preview-principles-label"
-                className="font-mono text-[10px] tracking-[0.2em] uppercase text-muted-foreground/60 mb-6"
+                className="font-mono text-xs tracking-[0.2em] uppercase text-muted-foreground/60 mb-6"
               >
                 principles
-              </h3>
+              </h2>
 
               <ul className="space-y-6">
                 <motion.li
@@ -444,7 +443,7 @@ const Index = () => {
                 >
                   <span
                     aria-hidden="true"
-                    className="font-mono text-[10px] text-primary/70 tabular-nums pt-0.5"
+                    className="font-mono text-[12px] text-primary/70 tabular-nums pt-0.5"
                   >
                     01
                   </span>
@@ -468,7 +467,7 @@ const Index = () => {
                 >
                   <span
                     aria-hidden="true"
-                    className="font-mono text-[10px] text-primary/70 tabular-nums pt-0.5"
+                    className="font-mono text-[12px] text-primary/70 tabular-nums pt-0.5"
                   >
                     02
                   </span>
@@ -492,7 +491,7 @@ const Index = () => {
                 >
                   <span
                     aria-hidden="true"
-                    className="font-mono text-[10px] text-primary/70 tabular-nums pt-0.5"
+                    className="font-mono text-[12px] text-primary/70 tabular-nums pt-0.5"
                   >
                     03
                   </span>

@@ -223,10 +223,10 @@ const About = () => (
             profile
           </span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3">
           about
         </h1>
-        <p className="text-muted-foreground text-sm max-w-xl leading-relaxed">
+        <p className="text-muted-foreground text-sm sm:text-md max-w-xl leading-relaxed">
           frontend developer · web developer · design enthusiast
         </p>
       </Reveal>

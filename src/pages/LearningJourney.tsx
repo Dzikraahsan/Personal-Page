@@ -252,7 +252,7 @@ const experiments: Experiment[] = [
         {
           name: "MySQL",
           category: "Database",
-          logo: "https://cdn.simpleicons.org/mysql/white",
+          logo: "https://cdn.simpleicons.org/mysql",
         },
         {
           name: "Composer",
@@ -438,8 +438,16 @@ const progressBarColor: Record<string, string> = {
 
 // ─── Shared Component Primitives ──────────────────────────────────────────────
 
-const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-muted-foreground/45 block mb-1.5">
+const SectionLabel = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <span
+    className={`text-[9px] font-mono uppercase tracking-[0.2em] text-muted-foreground/45 block ${className}`}
+  >
     {children}
   </span>
 );
@@ -471,7 +479,7 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
 
   return (
     <Reveal index={index}>
-      <div className="relative w-full flex items-stretch gap-4 sm:gap-6">
+      <div className="relative w-full flex items-stretch gap-4 py-5 sm:gap-6">
         {/* Left Axis Line Segment */}
         <div className="flex flex-col items-center shrink-0 w-8">
           <div className="relative z-10 flex items-center justify-center w-7 h-7 rounded-full bg-background border border-border/60">
@@ -490,22 +498,22 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
           <div className="flex items-start justify-between gap-3 border-b border-border/30 pb-3">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-mono text-[10px] text-muted-foreground/35">
+                <span className="font-mono text-[10px] sm:text-xs text-muted-foreground/35">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className="h-1 w-1 rounded-full bg-border/40" />
-                <div className="flex items-center gap-1 text-[10px] text-muted-foreground/50 font-mono">
+                <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground/50 font-mono">
                   <Clock size={10} />
                   <span>{exp.duration}</span>
                 </div>
               </div>
-              <h3 className="text-base font-bold text-foreground leading-snug">
+              <h3 className="text-xl pt-4 mb-2 font-bold text-foreground leading-snug">
                 {exp.title}
               </h3>
             </div>
 
             <span
-              className={`font-mono text-[9px] tracking-wider uppercase px-2 py-0.5 rounded-full border shrink-0 ${statusStyles[exp.status]}`}
+              className={`font-mono text-[10px] sm:text-xs tracking-wider uppercase px-2 py-0.5 rounded-full border shrink-0 ${statusStyles[exp.status]}`}
             >
               {exp.status}
             </span>
@@ -513,28 +521,28 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
 
           {/* Description & Overview */}
           <div className="space-y-1">
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            <p className="text-md sm:text-base text-muted-foreground leading-relaxed mb-4 sm:mb-0">
               {exp.description}
             </p>
-            <p className="text-xs text-muted-foreground/60 leading-relaxed italic">
+            <p className="text-sm text-muted-foreground/60 leading-relaxed italic">
               {d.overview}
             </p>
           </div>
 
           {/* Continuous Progress Metric Track */}
           <div className="space-y-1">
-            <div className="flex items-center justify-between text-[9px] font-mono text-muted-foreground/50">
+            <div className="flex items-center justify-between text-xs font-mono text-muted-foreground/50">
               <div className="flex items-center gap-1">
                 <TrendingUp size={10} />
                 <span>PROGRESS ROADMAP</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span
-                  className={`font-mono uppercase text-[7px] tracking-wider px-1.5 py-0.2 rounded border ${stageColor[d.progressStage]}`}
+                  className={`font-mono uppercase text-xs tracking-wider px-1.5 py-0.2 rounded border ${stageColor[d.progressStage]}`}
                 >
                   {d.progressStage}
                 </span>
-                <span className="text-foreground/70 font-semibold">
+                <span className="text-foreground/70 py-2 font-semibold">
                   {d.progressPercent}%
                 </span>
               </div>
@@ -549,11 +557,14 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
 
           {/* Journey Narrative Segment */}
           <div className="space-y-1.5 bg-muted/5 p-3 rounded-lg border border-border/20">
-            <div className="flex items-center gap-1 text-muted-foreground/40">
-              <BookOpen size={10} />
-              <SectionLabel>Journey Narrative</SectionLabel>
+            <div className="flex items-center gap-2 text-muted-foreground/40 mb-2">
+              <BookOpen size={12} className="shrink-0" />
+
+              <SectionLabel className="!mb-0 leading-none text-[12px]">
+                Journey Narrative
+              </SectionLabel>
             </div>
-            <p className="text-xs text-muted-foreground/80 leading-relaxed font-normal">
+            <p className="text-sm text-muted-foreground/80 leading-relaxed font-normal">
               {d.journeyNarrative}
             </p>
           </div>
@@ -567,14 +578,14 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
                   key={group.label}
                   className="border border-border/20 bg-background/20 p-2 rounded flex flex-col sm:flex-row sm:items-center gap-2"
                 >
-                  <span className="font-mono text-[8px] text-primary/70 uppercase tracking-widest sm:w-16 shrink-0">
+                  <span className="font-mono text-[12px] text-primary/70 uppercase tracking-widest sm:w-16 shrink-0">
                     {group.label}
                   </span>
                   <div className="flex flex-wrap gap-1">
                     {group.items.map((skill) => (
                       <Chip
                         key={skill}
-                        className="bg-background/60 border-border/20 text-[9px]"
+                        className="bg-background/60 border-border/20 text-[12px]"
                       >
                         {skill}
                       </Chip>
@@ -588,7 +599,7 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
           {/* Milestones Checklist Container */}
           <div className="space-y-2">
             <SectionLabel>Milestones Path</SectionLabel>
-            <div className="grid gap-1.5 bg-secondary/15 p-3 rounded-lg border border-border/20 font-mono text-[11px]">
+            <div className="grid gap-1.5 bg-secondary/15 p-3 rounded-lg border border-border/20 font-mono text-xs">
               {d.milestones.map((m) => (
                 <div key={m.label} className="flex items-center gap-2">
                   {m.done ? (
@@ -624,22 +635,22 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
               {d.techEcosystem.map((tech) => (
                 <div
                   key={tech.name}
-                  className="flex items-center gap-2 rounded bg-background/40 border border-border/30 p-1.5"
+                  className="flex items-center gap-2 rounded bg-background/40 border border-border/30 p-3"
                 >
                   {tech.logo ? (
                     <img
                       src={tech.logo}
                       alt={tech.name}
-                      className="w-3.5 h-3.5 object-contain shrink-0"
+                      className="w-7 h-7 object-contain shrink-0"
                     />
                   ) : (
                     <div className="w-3.5 h-3.5 rounded bg-secondary/80 border border-border/40 shrink-0" />
                   )}
                   <div className="min-w-0 font-mono leading-tight">
-                    <div className="text-[10px] font-semibold text-foreground/80 truncate">
+                    <div className="text-sm font-semibold text-foreground/80 truncate">
                       {tech.name}
                     </div>
-                    <div className="text-[7px] text-muted-foreground/40 truncate uppercase tracking-tight">
+                    <div className="text-[9px] text-muted-foreground/40 truncate uppercase tracking-tight">
                       {tech.category}
                     </div>
                   </div>
@@ -651,18 +662,18 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
           {/* Micro Footer Time Investment */}
           <div className="grid grid-cols-2 gap-2 border-t border-border/20 pt-3 font-mono text-[10px] text-muted-foreground/50">
             <div>
-              <span className="text-[7px] uppercase tracking-wider block">
+              <span className="text-[10px] uppercase tracking-wider block">
                 Started
               </span>
-              <span className="text-foreground/60">
+              <span className="text-foreground/60 text-xs sm:text-sm">
                 {d.timeInvestment.started}
               </span>
             </div>
             <div>
-              <span className="text-[7px] uppercase tracking-wider block">
+              <span className="text-[10px] uppercase tracking-wider block">
                 Consistency
               </span>
-              <span className="text-foreground/60">
+              <span className="text-foreground/60 text-xs sm:text-sm">
                 {d.timeInvestment.consistency}
               </span>
             </div>
@@ -691,11 +702,9 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
 const Labs = () => {
   return (
     <PageTransition>
-      {/* Container utama diubah max-w-4xl agar layout memanjang dengan elegan */}
       <div className="container pt-28 sm:pt-32 -mb-[1rem] px-4 sm:px-6">
         {/* Header Section */}
         <Reveal>
-          {/* Menghapus mx-auto agar element badge menempel penuh di kiri */}
           <div className="flex items-center gap-3 mb-8">
             <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground/60">
               / journey
@@ -706,17 +715,15 @@ const Labs = () => {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-left mb-3 text-foreground">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-left mb-3 text-foreground">
             learning journey
           </h1>
-          {/* Menghapus mx-auto dan mengganti max-w-md ke max-w-xl agar deskripsi mengikuti kelebaran layout baru */}
-          <p className="text-muted-foreground text-left max-w-xl text-xs sm:text-sm leading-relaxed mb-12">
+          <p className="text-muted-foreground text-left max-w-xl text-sm sm:text-base leading-relaxed mb-12">
             a strictly tracked compilation of syntax stacks and core frameworks
             i am internalizing.
           </p>
         </Reveal>
 
-        {/* Linear Axis Timeline Layout - Menghapus max-w pembatas lama agar mekar ke 4xl */}
         <div className="relative flex flex-col w-full">
           {experiments.map((exp, i) => (
             <RoadNode

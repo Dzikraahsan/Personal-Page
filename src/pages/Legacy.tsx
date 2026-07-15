@@ -759,7 +759,7 @@ const Legacy = () => {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-2">
             legacy
           </h1>
           <p className="text-muted-foreground max-w-lg mb-4">

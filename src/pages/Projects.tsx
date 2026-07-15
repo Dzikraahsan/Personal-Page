@@ -912,19 +912,16 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  // Mencegah scroll pada body utama saat modal terbuka
   useEffect(() => {
     if (project) {
       document.body.style.overflow = "hidden";
       setMounted(true);
-      // Memicu animasi masuk (ease-out) pada frame berikutnya
       const animationFrame = requestAnimationFrame(() => {
         setVisible(true);
       });
       return () => cancelAnimationFrame(animationFrame);
     } else {
       setVisible(false);
-      // Menunggu animasi keluar selesai sebelum unmount komponen
       const timeout = setTimeout(() => {
         setMounted(false);
         document.body.style.overflow = "";
@@ -1203,7 +1200,7 @@ const Projects = () => {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3">
             projects
           </h1>
           <p className="text-muted-foreground max-w-xl text-sm sm:text-base leading-relaxed mb-8">
@@ -1260,7 +1257,6 @@ const Projects = () => {
             </span>
             <span className="h-px flex-1 bg-border/30" />
           </div>
-          {/* FeaturedCard dihubungkan ke Modal saat diklik detail di masa depan */}
           <FeaturedCard project={featuredProject} />
         </Reveal>
 
