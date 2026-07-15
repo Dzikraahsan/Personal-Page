@@ -178,7 +178,7 @@
         background-image: linear-gradient(
             to right,
             hsl(var(--primary)),
-            hsl(160 70% 60%),
+            hsl(179, 100%, 64%),
             hsl(var(--primary))
         );
         background-size: 200% 100%;
