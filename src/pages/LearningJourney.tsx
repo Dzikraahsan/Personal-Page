@@ -576,7 +576,7 @@ const RoadNode = ({ exp, index, isLast }: RoadNodeProps) => {
               {d.skillGroups.map((group) => (
                 <div
                   key={group.label}
-                  className="border border-border/20 bg-background/20 p-2 rounded flex flex-col sm:flex-row sm:items-center gap-2"
+                  className="border border-border/20 bg-background/20 p-2 rounded flex flex-col sm:flex-row sm:items-center gap-6"
                 >
                   <span className="font-mono text-[12px] text-primary/70 uppercase tracking-widest sm:w-16 shrink-0">
                     {group.label}

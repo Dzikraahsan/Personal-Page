@@ -298,11 +298,8 @@ const Index = () => {
                 transition={{ delay: 0.2 }}
                 className="text-4xl sm:text-5xl font-bold leading-[1.05] tracking-tight mb-7 max-w-2xl"
               >
-                hi, i'm
-                <ShinyText
-                  text="Dzikra"
-                  className="font-bold text-4xl sm:text-5xl pl-3"
-                />{" "}
+                hi, i'm{" "}
+                <span className="text-gradient font-bold pr-1">Dzikra</span>{" "}
                 <span className="wave">👋</span>
               </motion.h1>
 
