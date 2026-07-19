@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import PageTransition from "@/components/PageTransition";
 import Reveal from "@/components/Reveal";
 import {
@@ -15,7 +15,6 @@ import {
   ClipboardCheck,
   Home,
   Type,
-  ChevronDown,
   Layers,
   Clock,
   CheckCircle2,
@@ -44,7 +43,6 @@ interface LegacyItem {
   stack: string[];
   status: Status;
   icon: typeof Code2;
-  // Extended archive fields
   archiveId: string;
   category: string;
   duration: string;
@@ -385,23 +383,23 @@ const statusConfig: Record<
 > = {
   archived: {
     label: "archived",
-    cls: "text-muted-foreground border-border bg-secondary",
-    dot: "bg-muted-foreground",
+    cls: "text-muted-foreground border-border bg-secondary/40",
+    dot: "bg-muted-foreground/60",
   },
   completed: {
     label: "completed",
-    cls: "text-emerald-400 border-emerald-500/30 bg-emerald-500/5",
+    cls: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5",
     dot: "bg-emerald-400",
   },
   experimental: {
     label: "experimental",
-    cls: "text-amber-400 border-amber-500/30 bg-amber-500/5",
+    cls: "text-amber-400 border-amber-500/20 bg-amber-500/5",
     dot: "bg-amber-400",
   },
   deprecated: {
     label: "deprecated",
-    cls: "text-muted-foreground border-border/60 bg-secondary/60",
-    dot: "bg-muted-foreground/50",
+    cls: "text-muted-foreground border-border/40 bg-secondary/30",
+    dot: "bg-muted-foreground/40",
   },
 };
 
@@ -494,12 +492,9 @@ interface ArchiveEntryProps {
 }
 
 const ArchiveEntry = ({ item, index }: ArchiveEntryProps) => {
-  const [open, setOpen] = useState(false);
   const ItemIcon = item.icon;
   const sc = statusConfig[item.status];
   const cc = complexityConfig[item.complexity];
-
-  const toggle = useCallback(() => setOpen((p) => !p), []);
 
   return (
     <Reveal
@@ -507,126 +502,93 @@ const ArchiveEntry = ({ item, index }: ArchiveEntryProps) => {
       index={index}
       className="group relative py-3 first:pt-1 last:pb-0"
     >
-      {/* Timeline dot */}
+      {/* Timeline Bullet Accent */}
       <span
-        className={`absolute -left-[27px] top-7 w-2 h-2 rounded-full border border-background transition-colors duration-300 ${
-          open ? sc.dot : "bg-border group-hover:bg-primary"
-        }`}
+        className={`absolute -left-[31px] top-6.5 w-3 h-3 rounded-full border border-background bg-border/70 group-hover:bg-primary group-hover:scale-110 group-hover:shadow-[0_0_8px_1px_hsl(var(--primary)/0.5)] transition-all duration-300 z-10`}
       />
 
-      <div
-        className={`rounded-lg border bg-card/40 transition-all duration-300 ${
-          open
-            ? "border-primary/30 bg-card/70"
-            : "border-border/50 hover:border-primary/30 hover:bg-card/60"
-        }`}
-      >
-        {/* ── Collapsed header ── */}
-        <button
-          onClick={toggle}
-          className="w-full text-left p-4 sm:p-5"
-          aria-expanded={open}
-        >
-          {/* Archive ID + category */}
+      {/*
+        CARD WRAPPER
+      */}
+      <div className="rounded-2xl border border-border/40 bg-surface/10 hover:border-border/70 hover:bg-surface/15 transition-all duration-300 ease-out overflow-hidden shadow-[0_4px_20px_-12px_hsl(var(--primary)/0.02)]">
+
+        <div className="p-5 sm:p-6 block">
+          {/* Top meta tier: ID & Category metadata */}
           <div className="flex items-center justify-between gap-2 mb-3">
-            <span className="font-mono text-[10px] tracking-widest text-muted-foreground/50 uppercase">
+            <span className="font-mono text-[10px] tracking-[0.15em] text-muted-foreground/40 uppercase">
               {item.archiveId}
             </span>
-            <span className="font-mono text-[10px] tracking-wider uppercase text-muted-foreground/40 border border-border/30 rounded px-1.5 py-0.5">
+            <span className="font-mono text-[9px] tracking-wider uppercase text-muted-foreground/50 px-2 py-0.5 rounded border border-border/40 bg-background/40">
               {item.category}
             </span>
           </div>
 
-          {/* Title row */}
-          <div className="flex items-start justify-between gap-3 mb-3">
+          {/* Main Tier: Icon, Title & Status indicators */}
+          <div className="flex items-start justify-between gap-4 mb-3.5">
             <div className="flex items-center gap-2.5 min-w-0">
-              <ItemIcon
-                size={14}
-                className={`shrink-0 transition-colors duration-300 ${
-                  open
-                    ? "text-primary"
-                    : "text-muted-foreground group-hover:text-primary/80"
-                }`}
-              />
-              <h3
-                className={`text-[15px] font-semibold tracking-tight transition-colors duration-300 ${
-                  open
-                    ? "text-primary"
-                    : "text-foreground group-hover:text-foreground"
-                }`}
-              >
+              <div className="p-1.5 rounded-lg border bg-background/40 border-border/50 text-muted-foreground group-hover:border-primary/20 group-hover:text-primary transition-colors duration-300">
+                <ItemIcon size={14} className="shrink-0" />
+              </div>
+              <h3 className="text-[16px] font-semibold tracking-tight text-foreground transition-colors duration-300 group-hover:text-primary">
                 {item.title}
               </h3>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
+
+            <div className="flex items-center gap-2 shrink-0 mt-[2px]">
               <span
-                className={`inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full border ${sc.cls}`}
+                className={`inline-flex items-center gap-1.5 font-mono text-[9px] tracking-widest uppercase px-2 py-0.5 rounded-full border ${sc.cls}`}
               >
-                <span className={`w-1.5 h-1.5 rounded-full ${sc.dot}`} />
+                <span className={`w-1 h-1 rounded-full ${sc.dot}`} />
                 {sc.label}
               </span>
-              <ChevronDown
-                size={13}
-                className={`text-muted-foreground/50 transition-transform duration-300 ${
-                  open ? "rotate-180" : ""
-                }`}
-              />
             </div>
           </div>
 
-          {/* Summary */}
-          <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+          {/* Core context description */}
+          <p className="text-sm text-muted-foreground/85 leading-relaxed mb-4 max-w-2xl">
             {item.context}
           </p>
 
-          {/* Metrics row */}
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-muted-foreground/70">
-            <span className="flex items-center gap-1.5 font-mono">
-              <Calendar size={11} />
+          {/* Horizontal metrics row */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-mono text-muted-foreground/60 pt-3 border-t border-border/20 mb-5">
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar size={11} className="text-muted-foreground/40" />
               {item.period}
             </span>
-            <span className="flex items-center gap-1.5 font-mono">
-              <Clock size={11} />
+            <span className="inline-flex items-center gap-1.5">
+              <Clock size={11} className="text-muted-foreground/40" />
               {item.duration}
             </span>
-            <span className="flex items-center gap-1.5 font-mono">
-              <Layers size={11} />
+            <span className="inline-flex items-center gap-1.5">
+              <Layers size={11} className="text-muted-foreground/40" />
               {item.stack.length} technologies
             </span>
-            <span className={`flex items-center gap-1.5 font-mono ${cc.cls}`}>
-              <BarChart2 size={11} />
-              {cc.label} complexity
+            <span className={`inline-flex items-center gap-1.5 ${cc.cls}`}>
+              <BarChart2 size={11} className="opacity-80" />
+              {cc.label} Complexity
             </span>
           </div>
-        </button>
 
-        {/* ── Expanded content ── */}
-        <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            open ? "max-h-[900px] opacity-100" : "max-h-0 opacity-0"
-          }`}
-          aria-hidden={!open}
-        >
-          <div className="border-t border-border/40 mx-4 sm:mx-5" />
+          {/* Detailed Content Ecosystem Area */}
+          <div className="border-t border-border/20 pt-5 grid grid-cols-1 md:grid-cols-2 gap-6 bg-muted/5 -mx-5 sm:-mx-6 px-5 sm:px-6">
 
-          <div className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {/* Tech ecosystem */}
-            <div>
-              <h4 className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50 mb-3">
-                <Cpu size={10} />
-                Technology
+            {/* 1. Tech Ecosystem Stack breakdown */}
+            <div className="space-y-3">
+              <h4 className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground/40">
+                <Cpu size={10} className="text-muted-foreground/50" />
+                Technology Stack
               </h4>
-              <div className="flex flex-col gap-2.5">
+              <div className="space-y-2">
                 {item.techGroups.map((g) => (
-                  <div key={g.label} className="flex items-start gap-2">
+                  <div key={g.label} className="flex items-start gap-3">
                     <span className="text-[10px] font-mono text-muted-foreground/40 w-16 shrink-0 mt-0.5 uppercase tracking-wider">
                       {g.label}
                     </span>
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1.5">
                       {g.items.map((t) => (
                         <span
                           key={t}
-                          className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-secondary/60 border border-border/50 text-foreground/75"
+                          className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-background/50 border border-border/40 text-muted-foreground transition-all hover:border-border/60"
                         >
                           {t}
                         </span>
@@ -637,28 +599,28 @@ const ArchiveEntry = ({ item, index }: ArchiveEntryProps) => {
               </div>
             </div>
 
-            {/* Purpose */}
-            <div>
-              <h4 className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50 mb-3">
-                <Target size={10} />
-                Purpose
+            {/* 2. Project Core Purpose */}
+            <div className="space-y-2.5">
+              <h4 className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground/40">
+                <Target size={10} className="text-muted-foreground/50" />
+                Project Purpose
               </h4>
-              <p className="text-xs text-muted-foreground/80 leading-relaxed">
+              <p className="text-xs text-muted-foreground/80 leading-relaxed max-w-xl">
                 {item.purpose}
               </p>
             </div>
 
-            {/* Learnings */}
-            <div>
-              <h4 className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50 mb-3">
-                <BookOpen size={10} />
-                Learnings
+            {/* 3. Engineering Learnings nodes */}
+            <div className="space-y-2.5">
+              <h4 className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground/40">
+                <BookOpen size={10} className="text-muted-foreground/50" />
+                Key Learnings
               </h4>
               <div className="flex flex-wrap gap-1.5">
                 {item.learnings.map((l) => (
                   <span
                     key={l}
-                    className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-primary/5 border border-primary/15 text-primary/70"
+                    className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-primary/5 border border-primary/15 text-primary/70"
                   >
                     {l}
                   </span>
@@ -666,17 +628,17 @@ const ArchiveEntry = ({ item, index }: ArchiveEntryProps) => {
               </div>
             </div>
 
-            {/* Highlights */}
-            <div>
-              <h4 className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50 mb-3">
-                <Lightbulb size={10} />
-                Highlights
+            {/* 4. Architecture Highlights */}
+            <div className="space-y-2.5">
+              <h4 className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground/40">
+                <Lightbulb size={10} className="text-muted-foreground/50" />
+                Technical Highlights
               </h4>
               <div className="flex flex-wrap gap-1.5">
                 {item.highlights.map((h) => (
                   <span
                     key={h}
-                    className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-secondary/50 border border-border/40 text-foreground/60"
+                    className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-background/40 border border-border/40 text-muted-foreground/80"
                   >
                     {h}
                   </span>
@@ -684,37 +646,33 @@ const ArchiveEntry = ({ item, index }: ArchiveEntryProps) => {
               </div>
             </div>
 
-            {/* Outcome */}
-            <div className="sm:col-span-2">
-              <div className="border-t border-border/30 pt-4">
-                <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                  {/* Outcome */}
-                  <div className="flex-1">
-                    <h4 className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50 mb-2">
-                      <CheckCircle2 size={10} />
-                      Outcome
-                    </h4>
-                    <p className="text-xs font-mono text-foreground/70">
-                      {item.outcome}
-                    </p>
-                  </div>
+            {/* 5. Production Outcome & Post-mortem Reflection */}
+            <div className="md:col-span-2 pt-4 border-t border-border/20 mt-2 pb-1">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div className="space-y-1.5">
+                  <h4 className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground/40">
+                    <CheckCircle2 size={10} className="text-emerald-400/60" />
+                    Final Outcome
+                  </h4>
+                  <p className="text-xs font-mono text-foreground/80 leading-relaxed">
+                    {item.outcome}
+                  </p>
+                </div>
 
-                  {/* Divider on desktop */}
-                  <div className="hidden sm:block w-px bg-border/30 self-stretch" />
+                <div className="hidden sm:block w-px bg-border/20 self-stretch my-1" />
 
-                  {/* Reflection */}
-                  <div className="flex-[2]">
-                    <h4 className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50 mb-2">
-                      <XCircle size={10} />
-                      What I'd do differently
-                    </h4>
-                    <p className="text-xs text-muted-foreground/70 leading-relaxed italic">
-                      "{item.reflection}"
-                    </p>
-                  </div>
+                <div className="sm:col-span-2 space-y-1.5">
+                  <h4 className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground/40">
+                    <XCircle size={10} className="text-primary/60" />
+                    Retrospective Reflection
+                  </h4>
+                  <p className="text-xs text-muted-foreground/75 leading-relaxed italic border-l-2 border-primary/20 pl-3 ml-1 py-0.5">
+                    "{item.reflection}"
+                  </p>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
