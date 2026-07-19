@@ -179,6 +179,7 @@ const Navbar = () => {
                     <Link
                       to={link.to}
                       onClick={() => setMobileOpen(false)}
+                      aria-current={isActive ? "page" : undefined}
                       className={`group relative flex items-center justify-between w-full p-4 rounded-xl border font-mono text-sm transition-all duration-200 ${
                         isActive
                           ? "bg-primary/5 border-primary/25 text-primary"
