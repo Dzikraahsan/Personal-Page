@@ -96,7 +96,8 @@ const Navbar = () => {
                     linksRef.current[link.to] = el;
                   }}
                   to={link.to}
-                  className={`font-mono text-xs tracking-wide transition-colors duration-200 relative py-1 z-10 ${
+                  aria-current={isActive ? "page" : undefined}
+                  className={`font-mono text-xs tracking-wide transition-colors duration-200 relative py-1 z-10 rounded-sm ${
                     isActive
                       ? "text-primary"
                       : "text-muted-foreground hover:text-foreground"
