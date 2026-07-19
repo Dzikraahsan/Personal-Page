@@ -48,9 +48,31 @@ const Navbar = () => {
     }
   }, [location.pathname]);
 
+  // Close mobile menu on route change and restore focus to the toggle button
+  useEffect(() => {
+    if (mobileOpen) {
+      setMobileOpen(false);
+      menuButtonRef.current?.focus();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
+  // Escape key closes the mobile menu
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
+
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
+      <nav aria-label="Primary" className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
         <div className="container flex items-center justify-between h-14">
           <Link
             to="/"
