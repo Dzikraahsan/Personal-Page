@@ -163,10 +163,12 @@ const Contact = () => {
             <Reveal delay={0.1}>
               <form
                 onSubmit={handleSubmit}
+                noValidate
+                aria-label="Contact form"
                 className="bg-surface/10 rounded-2xl border border-border/40 p-5 sm:p-6 mb-12 space-y-4 shadow-[0_8px_30px_-12px_hsl(var(--primary)/0.04)]"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <CornerDownRight size={12} className="text-primary/70" />
+                  <CornerDownRight size={12} className="text-primary/70" aria-hidden="true" />
                   <h2 className="font-mono text-[10px] text-primary tracking-[0.2em] uppercase">
                     send a digital letter
                   </h2>
@@ -174,15 +176,28 @@ const Contact = () => {
 
                 {/* Input Name */}
                 <div className="relative">
+                  <label htmlFor="contact-name" className="sr-only">
+                    Your name
+                  </label>
                   <input
+                    id="contact-name"
+                    name="name"
                     type="text"
+                    autoComplete="name"
+                    required
+                    aria-required="true"
+                    aria-invalid={name.length > 0 && !isNameValid}
+                    aria-describedby="contact-name-hint"
                     placeholder="your name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full bg-surface/30 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-all duration-200 font-mono"
                   />
+                  <span id="contact-name-hint" className="sr-only">
+                    At least 2 characters.
+                  </span>
                   {name.length > 0 && (
-                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true">
                       {isNameValid ? (
                         <CheckCircle2 size={13} className="text-emerald-400/80" />
                       ) : (
@@ -194,15 +209,28 @@ const Contact = () => {
 
                 {/* Input Email */}
                 <div className="relative">
+                  <label htmlFor="contact-email" className="sr-only">
+                    Your email address
+                  </label>
                   <input
+                    id="contact-email"
+                    name="email"
                     type="email"
+                    autoComplete="email"
+                    required
+                    aria-required="true"
+                    aria-invalid={email.length > 0 && !isEmailValid}
+                    aria-describedby="contact-email-hint"
                     placeholder="your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full bg-surface/30 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-all duration-200 font-mono"
                   />
+                  <span id="contact-email-hint" className="sr-only">
+                    A valid email address so I can reply.
+                  </span>
                   {email.length > 0 && (
-                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true">
                       {isEmailValid ? (
                         <CheckCircle2 size={13} className="text-emerald-400/80" />
                       ) : (
@@ -214,14 +242,26 @@ const Contact = () => {
 
                 {/* Textarea Message */}
                 <div className="relative">
+                  <label htmlFor="contact-message" className="sr-only">
+                    Your message
+                  </label>
                   <textarea
+                    id="contact-message"
+                    name="message"
                     rows={4}
+                    required
+                    aria-required="true"
+                    aria-invalid={message.length > 0 && !isMessageValid}
+                    aria-describedby="contact-message-hint"
                     placeholder="your message..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full bg-surface/30 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-all duration-200 font-mono resize-none [scrollbar-width:none]"
                   />
-                  <div className="absolute right-3.5 bottom-3 pointer-events-none flex items-center gap-1.5 font-mono text-[9px] text-muted-foreground/40">
+                  <span id="contact-message-hint" className="sr-only">
+                    At least 5 characters describing what you'd like to talk about.
+                  </span>
+                  <div className="absolute right-3.5 bottom-3 pointer-events-none flex items-center gap-1.5 font-mono text-[9px] text-muted-foreground/40" aria-hidden="true">
                     <span>{message.trim().length} chars</span>
                     {message.length > 0 && (
                       isMessageValid ? (
@@ -232,6 +272,7 @@ const Contact = () => {
                     )}
                   </div>
                 </div>
+
 
                 {/* Button Submit */}
                 <button
