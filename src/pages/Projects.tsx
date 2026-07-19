@@ -1347,7 +1347,7 @@ const Projects = () => {
         />
 
         {/* ── Footer note ── */}
-        <Reveal index={4} className="mt-14 -mb-20">
+        <Reveal index={4} className="mt-14 -mb-[92px]">
           <div className="rounded-2xl border border-border/40 bg-surface/20 px-5 sm:px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-colors duration-200 hover:border-border/60">
             <p className="text-sm text-muted-foreground">
               more projects live quietly on github — open source, drafts, and

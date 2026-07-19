@@ -1004,7 +1004,7 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="pt-32 -mb-8 border-t border-border/40">
+        <section className="pt-32 border-t border-border/40">
           <div className="mx-auto max-w-[1100px]">
             <div className="relative rounded-2xl border border-border/60 bg-surface/40 px-6 py-14 sm:px-12 sm:py-20 overflow-hidden">
               <div

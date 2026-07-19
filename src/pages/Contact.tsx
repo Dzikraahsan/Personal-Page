@@ -130,7 +130,7 @@ const Contact = () => {
 
   return (
     <PageTransition>
-      <div className="container pt-28 sm:pt-32 pb-6 relative">
+      <div className="container pt-28 sm:pt-32 -mb-5 pb-6 relative">
         <div
           className="pointer-events-none absolute top-40 right-10 w-72 h-72 bg-primary/5 rounded-full blur-[120px] opacity-40 z-0"
           aria-hidden="true"
