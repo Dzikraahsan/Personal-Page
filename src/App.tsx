@@ -42,7 +42,6 @@ const getQueryClient = () => {
   return queryClientInstance;
 };
 
-// Subtle fallback to prevent layout shifts during route chunk loading
 const PageFallback = () => (
   <div className="min-h-[80vh] w-full bg-background" aria-hidden="true" />
 );
@@ -73,6 +72,7 @@ const AnimatedRoutes = () => {
 const AppShell = () => {
   return (
     <ClickSpark
+      sparkColor="#ffffff"
       sparkSize={10}
       sparkRadius={15}
       sparkCount={8}
@@ -80,14 +80,17 @@ const AppShell = () => {
       easing="ease-out"
     >
       <div className="min-h-screen flex flex-col relative overflow-hidden">
+        {/* Accessibility Skip Link */}
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
 
+        {/* Background Layer */}
         <div className="absolute inset-0 -z-10 bg-background" aria-hidden="true" />
 
         <Navbar />
 
+        {/* Landmark Main Content */}
         <main
           id="main-content"
           tabIndex={-1}
