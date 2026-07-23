@@ -800,7 +800,7 @@ const Legacy = () => {
 
         {/* ── Footer record ── */}
         <Reveal>
-          <div className="mt-10 mb-8 border-t border-border/30 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-[10px] font-mono uppercase tracking-widest text-muted-foreground/30">
+          <div className="mt-10 mb-7 border-t border-border/30 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-[10px] font-mono uppercase tracking-widest text-muted-foreground/30">
             <span>archive — personal engineering record</span>
             <span>
               {totalProjects} total entries across {sections.length} collections

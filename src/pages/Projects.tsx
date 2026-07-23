@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef, memo } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import {
   ArrowUpRight,
   Search,
@@ -12,28 +12,14 @@ import {
 } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
 import Reveal from "@/components/Reveal";
-import {
-  MOTION_EASE,
-  MOTION_DURATION,
-  MOTION_SCALE,
-  MOTION_SPRING,
-} from "@/lib/motion";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type ProjectStatus =
-  | "Completed"
-  | "Experimental"
-  | "Archived"
-  | "On Working";
+  "Completed" | "Experimental" | "Archived" | "On Working";
 export type Complexity = "Beginner" | "Intermediate" | "Advanced";
 export type Category =
-  | "Full Stack"
-  | "Frontend"
-  | "Tool"
-  | "Dashboard"
-  | "Business"
-  | "Portfolio";
+  "Full Stack" | "Frontend" | "Tool" | "Dashboard" | "Business" | "Portfolio";
 
 export interface TechGroup {
   label: string;
@@ -61,9 +47,9 @@ export interface Project {
   liveDemo?: string;
 }
 
-// ─── Data Tokens ──────────────────────────────────────────────────────────────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
-const ALL_PROJECTS: readonly Project[] = [
+const allProjects: Project[] = [
   {
     title: "Finance",
     description:
@@ -99,14 +85,23 @@ const ALL_PROJECTS: readonly Project[] = [
     title: "Football Terrace",
     description:
       "A modern football culture platform that brings together editorial storytelling, curated apparel, and an active global community. Designed to celebrate football beyond the ninety minutes through long-form journalism, matchday culture, events, and thoughtfully crafted merchandise.",
+
     tags: ["React", "Vite", "TypeScript", "Tailwind CSS"],
+
     link: "",
+
     year: "2026",
+
     status: "On Working",
+
     category: "Full Stack",
+
     role: "Sole Developer",
+
     complexity: "Advanced",
+
     duration: "Ongoing",
+
     highlights: [
       "Editorial Football Stories",
       "Interactive Community Platform",
@@ -117,6 +112,7 @@ const ALL_PROJECTS: readonly Project[] = [
       "Responsive User Experience",
       "Modern Editorial Interface",
     ],
+
     learnings: [
       "Scalable Frontend Architecture",
       "Component-Driven Design",
@@ -127,10 +123,13 @@ const ALL_PROJECTS: readonly Project[] = [
       "User Experience Design",
       "Information Architecture",
     ],
+
     challenges:
       "Building a cohesive football platform that seamlessly combines editorial content, community engagement, and merchandise within a consistent design system. The project required balancing readability, performance, scalability, and responsive behavior while maintaining a premium editorial experience across desktop and mobile devices.",
+
     outcome:
       "Developed a scalable football culture platform that integrates long-form storytelling, community experiences, and curated apparel into a unified ecosystem. The application establishes a strong foundation for future expansion, including richer community features, enhanced editorial content, and e-commerce capabilities while preserving a consistent and immersive user experience.",
+
     technologies: [
       {
         label: "Frontend",
@@ -145,6 +144,7 @@ const ALL_PROJECTS: readonly Project[] = [
         items: ["Vite", "ESLint", "Git", "npm"],
       },
     ],
+
     liveDemo: "",
   },
   {
@@ -321,9 +321,9 @@ const ALL_PROJECTS: readonly Project[] = [
     ],
     liveDemo: "https://text-studio-pro.vercel.app",
   },
-] as const;
+];
 
-// ─── Shared Constants ─────────────────────────────────────────────────────────
+// ─── Shared constants ─────────────────────────────────────────────────────────
 
 export const statusStyles: Record<ProjectStatus, string> = {
   Completed: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
@@ -351,37 +351,48 @@ const complexityBars: Record<Complexity, number> = {
   Advanced: 3,
 };
 
-const ALL_STATUSES: readonly ProjectStatus[] = [
+const ALL_STATUSES: ProjectStatus[] = [
   "Completed",
   "On Working",
   "Experimental",
   "Archived",
-] as const;
-
-const ALL_YEARS: readonly string[] = ["2024", "2025", "2026"] as const;
-
-const ALL_CATEGORIES: readonly Category[] = [
+];
+const ALL_YEARS = ["2024", "2025", "2026"];
+const ALL_CATEGORIES: Category[] = [
   "Full Stack",
   "Frontend",
   "Tool",
   "Dashboard",
   "Business",
   "Portfolio",
-] as const;
+];
 
-// ─── Shared Primitives ────────────────────────────────────────────────────────
+// ─── Hooks ────────────────────────────────────────────────────────────────────
 
-export const StatusBadge = memo(({ status }: { status: ProjectStatus }) => (
+function useReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return reduced;
+}
+
+// ─── Shared primitives ────────────────────────────────────────────────────────
+
+export const StatusBadge = ({ status }: { status: ProjectStatus }) => (
   <span
     className={`inline-flex shrink-0 items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] font-mono uppercase tracking-widest transition-colors duration-200 ${statusStyles[status]}`}
   >
     <span className={`h-1.5 w-1.5 rounded-full ${statusDot[status]}`} />
     {status}
   </span>
-));
-StatusBadge.displayName = "StatusBadge";
+);
 
-export const ComplexityBar = memo(({ level }: { level: Complexity }) => {
+export const ComplexityBar = ({ level }: { level: Complexity }) => {
   const filled = complexityBars[level];
   return (
     <span
@@ -400,62 +411,167 @@ export const ComplexityBar = memo(({ level }: { level: Complexity }) => {
       </span>
     </span>
   );
-});
-ComplexityBar.displayName = "ComplexityBar";
+};
 
-export const Chip = memo(
-  ({
-    children,
-    className = "",
-  }: {
-    children: React.ReactNode;
-    className?: string;
-  }) => (
-    <span
-      className={`inline-flex items-center whitespace-nowrap text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-md border border-border/50 bg-background/50 text-muted-foreground transition-colors duration-200 hover:-translate-y-px hover:border-border/70 ${className}`}
-      style={{ willChange: "transform" }}
-    >
-      {children}
-    </span>
-  )
+export const Chip = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <span
+    className={`inline-flex items-center whitespace-nowrap text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-md border border-border/50 bg-background/50 text-muted-foreground transition-all duration-200 hover:-translate-y-px hover:border-border/70 ${className}`}
+    style={{ willChange: "transform" }}
+  >
+    {children}
+  </span>
 );
-Chip.displayName = "Chip";
 
-export const SectionLabel = memo(({ children }: { children: React.ReactNode }) => (
+export const SectionLabel = ({ children }: { children: React.ReactNode }) => (
   <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground/40 block mb-2">
     {children}
   </span>
-));
-SectionLabel.displayName = "SectionLabel";
-
-const FilterPill = memo(
-  ({
-    active,
-    onClick,
-    children,
-  }: {
-    active: boolean;
-    onClick: () => void;
-    children: React.ReactNode;
-  }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`relative inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider px-3 py-1.5 rounded-full border transition-[background-color,border-color,color,transform] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 select-none [-webkit-tap-highlight-color:transparent] ${
-        active
-          ? "border-primary/40 bg-primary/10 text-primary"
-          : "border-border/50 bg-transparent text-muted-foreground hover:border-border hover:text-foreground"
-      }`}
-      style={{ willChange: "transform" }}
-    >
-      {children}
-    </button>
-  )
 );
-FilterPill.displayName = "FilterPill";
 
-const MetaRow = memo(({ project }: { project: Project }) => (
+const FilterPill = ({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) => (
+  <button
+    onClick={onClick}
+    className={`inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider px-3 py-1.5 rounded-full border transition-all duration-200 active:scale-95 ${
+      active
+        ? "border-primary/40 bg-primary/10 text-primary"
+        : "border-border/50 bg-transparent text-muted-foreground hover:border-border hover:text-foreground"
+    }`}
+    style={{ willChange: "transform" }}
+  >
+    {children}
+  </button>
+);
+
+// ─── Animated expand panel ────────────────────────────────────────────────────
+
+const AnimatedPanel = ({
+  open,
+  children,
+  reducedMotion,
+}: {
+  open: boolean;
+  children: React.ReactNode;
+  reducedMotion: boolean;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const [rendered, setRendered] = useState(false);
+
+  useEffect(() => {
+    if (!open) {
+      setVisible(false);
+      setHeight(0);
+
+      const timeout = setTimeout(
+        () => setRendered(false),
+        reducedMotion ? 0 : 280,
+      );
+
+      return () => clearTimeout(timeout);
+    }
+
+    setRendered(true);
+  }, [open, reducedMotion]);
+
+  useEffect(() => {
+    if (!rendered || !ref.current) return;
+
+    const updateHeight = () => {
+      setHeight(ref.current?.scrollHeight ?? 0);
+    };
+
+    updateHeight();
+
+    requestAnimationFrame(() => {
+      setVisible(true);
+    });
+
+    window.addEventListener("resize", updateHeight);
+
+    return () => {
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, [rendered]);
+
+  if (!rendered) return null;
+
+  return (
+    <div
+      style={{
+        height: reducedMotion ? "auto" : height,
+        overflow: "hidden",
+        transition: reducedMotion
+          ? "none"
+          : "height 280ms cubic-bezier(0.4,0,0.2,1)",
+      }}
+    >
+      <div
+        ref={ref}
+        style={{
+          opacity: reducedMotion ? 1 : visible ? 1 : 0,
+          transform: reducedMotion
+            ? "none"
+            : visible
+              ? "translateY(0)"
+              : "translateY(-6px)",
+          transition: reducedMotion
+            ? "none"
+            : "opacity 220ms ease 50ms, transform 220ms ease 50ms",
+          willChange: "transform, opacity",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// ─── Expand toggle button ─────────────────────────────────────────────────────
+
+const ExpandToggle = ({
+  expanded,
+  onToggle,
+  reducedMotion,
+}: {
+  expanded: boolean;
+  onToggle: () => void;
+  reducedMotion: boolean;
+}) => (
+  <button
+    onClick={onToggle}
+    className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-muted-foreground/50 hover:text-primary transition-colors duration-200"
+  >
+    <ChevronDown
+      size={12}
+      style={{
+        transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+        transition: reducedMotion
+          ? "none"
+          : "transform 240ms cubic-bezier(0.4,0,0.2,1)",
+      }}
+    />
+    {expanded ? "collapse" : "details"}
+  </button>
+);
+
+// ─── Metadata row ─────────────────────────────────────────────────────────────
+
+const MetaRow = ({ project }: { project: Project }) => (
   <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] font-mono text-muted-foreground/60">
     <span className="inline-flex items-center gap-1.5">
       <CalendarDays size={11} className="shrink-0" />
@@ -479,351 +595,306 @@ const MetaRow = memo(({ project }: { project: Project }) => (
     <span className="h-2.5 w-px bg-border/50" />
     <ComplexityBar level={project.complexity} />
   </div>
-));
-MetaRow.displayName = "MetaRow";
+);
 
-// ─── Featured Card Component ──────────────────────────────────────────────────
+// ─── Featured Card ────────────────────────────────────────────────────────────
 
-const FeaturedCard = memo(
-  ({
-    project,
-    onOpenDetails,
-  }: {
-    project: Project;
-    onOpenDetails: (project: Project) => void;
-  }) => {
-    const demoUrl = project.liveDemo || project.link || null;
+const FeaturedCard = ({
+  project,
+  onOpenDetails,
+}: {
+  project: Project;
+  onOpenDetails: (project: Project) => void;
+}) => {
+  const demoUrl = project.liveDemo || project.link || null;
 
-    return (
-      <div
-        onClick={() => onOpenDetails(project)}
-        className="relative rounded-2xl border border-primary/20 bg-surface/40 overflow-hidden transition-[background-color,border-color,transform,box-shadow] duration-300 md:hover:-translate-y-px md:hover:border-primary/30 cursor-pointer group transform-gpu select-none [-webkit-tap-highlight-color:transparent]"
-        style={{ willChange: "transform" }}
-      >
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+  return (
+    <div
+      onClick={() => onOpenDetails(project)}
+      className="relative rounded-2xl border border-primary/20 bg-surface/40 overflow-hidden transition-all duration-300 md:hover:-translate-y-px md:hover:border-primary/30 cursor-pointer group"
+      style={{ willChange: "transform" }}
+    >
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-        <div className="p-6 sm:p-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <Star
-                size={11}
-                className="text-primary/60 shrink-0 -translate-y-[1.5px]"
-                aria-hidden="true"
-              />
-              <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-primary/60 leading-none select-none">
-                Featured Project
-              </span>
-            </div>
-            <span className="text-[10px] font-mono text-muted-foreground/30 tracking-widest">
-              01
+      <div className="p-6 sm:p-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <Star
+              size={11}
+              className="text-primary/60 shrink-0 -translate-y-[1.5px]"
+            />
+            <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-primary/60 leading-none select-none">
+              Featured Project
             </span>
           </div>
-
-          <div className="flex flex-col lg:flex-row lg:items-start lg:gap-12">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-4 mb-3">
-                <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1 group-hover:text-primary transition-colors duration-200">
-                    {project.title}
-                  </h2>
-                  <span className="text-[11px] font-mono text-muted-foreground/50 uppercase tracking-wide">
-                    {project.category}
-                  </span>
-                </div>
-                {demoUrl && (
-                  <a
-                    href={demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Open live demo for ${project.title}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="shrink-0 flex items-center gap-1 text-muted-foreground/50 hover:text-primary transition-[color,transform] duration-200 hover:-translate-y-0.5 hover:translate-x-0.5 mt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transform-gpu select-none [-webkit-tap-highlight-color:transparent]"
-                    style={{ willChange: "transform" }}
-                  >
-                    <ArrowUpRight size={15} aria-hidden="true" />
-                  </a>
-                )}
-              </div>
-
-              <p className="text-sm text-muted-foreground leading-relaxed mb-5 max-w-xl">
-                {project.description}
-              </p>
-
-              <MetaRow project={project} />
-            </div>
-
-            <div className="mt-6 lg:mt-0 lg:w-52 shrink-0">
-              <div className="rounded-xl border border-border/40 bg-muted/20 divide-y divide-border/40">
-                {[
-                  {
-                    label: "Status",
-                    node: <StatusBadge status={project.status} />,
-                  },
-                  {
-                    label: "Complexity",
-                    node: <ComplexityBar level={project.complexity} />,
-                  },
-                  {
-                    label: "Duration",
-                    node: (
-                      <span className="text-[11px] font-mono text-foreground/70">
-                        {project.duration}
-                      </span>
-                    ),
-                  },
-                  {
-                    label: "Year",
-                    node: (
-                      <span className="text-[11px] font-mono text-foreground/70">
-                        {project.year}
-                      </span>
-                    ),
-                  },
-                ].map(({ label, node }) => (
-                  <div
-                    key={label}
-                    className="flex items-center justify-between px-4 py-2.5 text-[11px]"
-                  >
-                    <span className="font-mono text-muted-foreground/50 uppercase tracking-wide">
-                      {label}
-                    </span>
-                    {node}
-                  </div>
-                ))}
-                <div className="px-4 py-3">
-                  <span className="font-mono text-muted-foreground/50 uppercase tracking-wide text-[11px] block mb-2">
-                    Stack
-                  </span>
-                  <div className="flex flex-col gap-3">
-                    {project.technologies.map((g) => (
-                      <div
-                        key={g.label}
-                        className="flex flex-col sm:flex-row sm:items-start gap-2"
-                      >
-                        <span className="text-[10px] font-mono text-muted-foreground/40 w-20 shrink-0 uppercase tracking-wider">
-                          {g.label}
-                        </span>
-
-                        <div className="flex flex-wrap gap-1.5">
-                          {g.items.map((item) => (
-                            <Chip key={item}>{item}</Chip>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between pt-4 border-t border-border/35 mt-5">
-            <button
-              type="button"
-              className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-muted-foreground/50 group-hover:text-primary transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm select-none [-webkit-tap-highlight-color:transparent]"
-            >
-              <ChevronDown
-                size={12}
-                className="-rotate-90 group-hover:translate-x-0.5 transition-transform transform-gpu"
-                aria-hidden="true"
-              />
-              <span>view details</span>
-            </button>
-
-            {demoUrl && (
-              <a
-                href={demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground/50 hover:text-primary transition-[color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transform-gpu select-none [-webkit-tap-highlight-color:transparent]"
-                style={{ willChange: "transform" }}
-              >
-                <span>live demo</span>
-                <ArrowUpRight size={12} aria-hidden="true" />
-              </a>
-            )}
-          </div>
+          <span className="text-[10px] font-mono text-muted-foreground/30 tracking-widest">
+            01
+          </span>
         </div>
-      </div>
-    );
-  }
-);
-FeaturedCard.displayName = "FeaturedCard";
 
-// ─── Project Card Component ───────────────────────────────────────────────────
-
-export const ProjectCard = memo(
-  ({
-    project,
-    index,
-    onOpenDetails,
-  }: {
-    project: Project;
-    index: number;
-    onOpenDetails: (project: Project) => void;
-  }) => {
-    const demoUrl = project.liveDemo || project.link || null;
-
-    return (
-      <Reveal index={index}>
-        <div
-          onClick={() => onOpenDetails(project)}
-          className="flex flex-col h-full rounded-2xl border border-border/40 bg-surface/10 md:hover:border-border/70 md:hover:bg-surface/20 md:hover:shadow-[0_8px_30px_-12px_hsl(var(--primary)/0.08)] md:hover:-translate-y-1 transition-[background-color,border-color,transform,box-shadow] duration-300 ease-out cursor-pointer overflow-hidden group w-full transform-gpu select-none [-webkit-tap-highlight-color:transparent]"
-          style={{ willChange: "transform" }}
-        >
-          {/* Main Card Body */}
-          <div className="flex flex-col flex-1 p-5 sm:p-6">
-            {/* Header Area */}
+        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-12">
+          <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-4 mb-3">
-              <div className="min-w-0">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-[10px] font-mono text-muted-foreground/30 select-none">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="h-1.5 w-1.5 rounded-full bg-border/60" />
-                  <span className="text-[10px] font-mono uppercase tracking-wide text-muted-foreground/45 truncate">
-                    {project.category}
-                  </span>
-                </div>
-                <h3 className="text-lg font-semibold tracking-tight text-foreground truncate group-hover:text-primary transition-colors duration-300">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1 group-hover:text-primary transition-colors duration-200">
                   {project.title}
-                </h3>
+                </h2>
+                <span className="text-[11px] font-mono text-muted-foreground/50 uppercase tracking-wide">
+                  {project.category}
+                </span>
               </div>
-
-              <div className="shrink-0 -mt-[0.5rem]">
-                <StatusBadge status={project.status} />
-              </div>
+              {demoUrl && (
+                <a
+                  href={demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="shrink-0 flex items-center gap-1 text-muted-foreground/50 hover:text-primary transition-all duration-200 hover:-translate-y-0.5 hover:translate-x-0.5 mt-1"
+                  style={{ willChange: "transform" }}
+                >
+                  <ArrowUpRight size={15} />
+                </a>
+              )}
             </div>
 
-            {/* Description */}
-            <p className="text-sm text-muted-foreground/80 leading-relaxed mb-6 line-clamp-3 flex-1">
+            <p className="text-sm text-muted-foreground leading-relaxed mb-5 max-w-xl">
               {project.description}
             </p>
 
-            {/* Meta Information List */}
-            <div className="space-y-2 pt-4 border-t border-border/30 text-[11px] font-mono text-muted-foreground/60">
-              <div className="flex justify-between items-center">
-                <span className="inline-flex items-center gap-1.5">
-                  <CalendarDays size={11} className="text-muted-foreground/40" />
-                  Year
-                </span>
-                <span className="text-foreground/70">{project.year}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="inline-flex items-center gap-1.5">
-                  <Layers size={11} className="text-muted-foreground/40" />
+            <MetaRow project={project} />
+          </div>
+
+          <div className="mt-6 lg:mt-0 lg:w-52 shrink-0">
+            <div className="rounded-xl border border-border/40 bg-muted/20 divide-y divide-border/40">
+              {[
+                {
+                  label: "Status",
+                  node: <StatusBadge status={project.status} />,
+                },
+                {
+                  label: "Complexity",
+                  node: <ComplexityBar level={project.complexity} />,
+                },
+                {
+                  label: "Duration",
+                  node: (
+                    <span className="text-[11px] font-mono text-foreground/70">
+                      {project.duration}
+                    </span>
+                  ),
+                },
+                {
+                  label: "Year",
+                  node: (
+                    <span className="text-[11px] font-mono text-foreground/70">
+                      {project.year}
+                    </span>
+                  ),
+                },
+              ].map(({ label, node }) => (
+                <div
+                  key={label}
+                  className="flex items-center justify-between px-4 py-2.5 text-[11px]"
+                >
+                  <span className="font-mono text-muted-foreground/50 uppercase tracking-wide">
+                    {label}
+                  </span>
+                  {node}
+                </div>
+              ))}
+              <div className="px-4 py-3">
+                <span className="font-mono text-muted-foreground/50 uppercase tracking-wide text-[11px] block mb-2">
                   Stack
                 </span>
-                <span className="text-foreground/70">
-                  {project.tags.length} technologies
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="inline-flex items-center gap-1.5">
-                  <Clock size={11} className="text-muted-foreground/40" />
-                  Duration
-                </span>
-                <span className="text-foreground/70">{project.duration}</span>
+                <div className="flex flex-col gap-3">
+                  {project.technologies.map((g) => (
+                    <div
+                      key={g.label}
+                      className="flex flex-col sm:flex-row sm:items-start gap-2"
+                    >
+                      <span className="text-[10px] font-mono text-muted-foreground/40 w-20 shrink-0 uppercase tracking-wider">
+                        {g.label}
+                      </span>
+
+                      <div className="flex flex-wrap gap-1.5">
+                        {g.items.map((item) => (
+                          <Chip key={item}>{item}</Chip>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Footer Actions */}
-          <div className="flex items-center justify-between px-5 py-3.5 bg-muted/5 border-t border-border/25 mt-auto transition-colors duration-300 md:group-hover:bg-muted/10">
-            <button
-              type="button"
-              className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-muted-foreground/50 group-hover:text-primary transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm select-none [-webkit-tap-highlight-color:transparent]"
+        <div className="flex items-center justify-between pt-4 border-t border-border/35 mt-5">
+          <button className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-muted-foreground/50 group-hover:text-primary transition-colors duration-200">
+            <ChevronDown
+              size={12}
+              className="-rotate-90 group-hover:translate-x-0.5 transition-transform"
+            />
+            <span>view details</span>
+          </button>
+
+          {demoUrl && (
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground/50 hover:text-primary transition-all duration-200 hover:-translate-y-0.5"
+              style={{ willChange: "transform" }}
             >
-              <ChevronDown
-                size={12}
-                className="-rotate-90 transition-transform duration-300 ease-out md:group-hover:translate-x-0.5 md:group-hover:text-primary transform-gpu"
-                aria-hidden="true"
-              />
-              <span>view details</span>
-            </button>
+              <span>live demo</span>
+              <ArrowUpRight size={12} />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
-            {demoUrl && (
-              <a
-                href={demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground/50 hover:text-primary transition-[color,transform] duration-300 hover:-translate-y-0.5 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transform-gpu select-none [-webkit-tap-highlight-color:transparent]"
-                style={{ willChange: "transform" }}
-              >
-                <span>live demo</span>
-                <ArrowUpRight
-                  size={12}
-                  className="transition-transform duration-300 ease-out md:group-hover:-translate-y-0.5 md:group-hover:translate-x-0.5 transform-gpu"
-                  aria-hidden="true"
-                />
-              </a>
-            )}
+// ─── Project Card ──────────────────────────────────────────────────────────────
+
+export const ProjectCard = ({
+  project,
+  index,
+  onOpenDetails,
+}: {
+  project: Project;
+  index: number;
+  onOpenDetails: (project: Project) => void;
+}) => {
+  const demoUrl = project.liveDemo || project.link || null;
+
+  return (
+    <Reveal index={index}>
+      <div
+        onClick={() => onOpenDetails(project)}
+        className="flex flex-col h-full rounded-2xl border border-border/40 bg-surface/10 md:hover:border-border/70 md:hover:bg-surface/20 md:hover:shadow-[0_8px_30px_-12px_hsl(var(--primary)/0.08)] md:hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer overflow-hidden group w-full"
+        style={{ willChange: "transform" }}
+      >
+        {/* Main Card Body */}
+        <div className="flex flex-col flex-1 p-5 sm:p-6">
+          {/* Header Area */}
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-[10px] font-mono text-muted-foreground/30 select-none">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="h-1.5 w-1.5 rounded-full bg-border/60" />
+                <span className="text-[10px] font-mono uppercase tracking-wide text-muted-foreground/45 truncate">
+                  {project.category}
+                </span>
+              </div>
+              <h3 className="text-lg font-semibold tracking-tight text-foreground truncate group-hover:text-primary transition-colors duration-300">
+                {project.title}
+              </h3>
+            </div>
+
+            <div className="shrink-0 -mt-[0.5rem]">
+              <StatusBadge status={project.status} />
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-6 line-clamp-3 flex-1">
+            {project.description}
+          </p>
+
+          {/* Meta Information List */}
+          <div className="space-y-2 pt-4 border-t border-border/30 text-[11px] font-mono text-muted-foreground/60">
+            <div className="flex justify-between items-center">
+              <span className="inline-flex items-center gap-1.5">
+                <CalendarDays size={11} className="text-muted-foreground/40" />
+                Year
+              </span>
+              <span className="text-foreground/70">{project.year}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="inline-flex items-center gap-1.5">
+                <Layers size={11} className="text-muted-foreground/40" />
+                Stack
+              </span>
+              <span className="text-foreground/70">
+                {project.tags.length} technologies
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="inline-flex items-center gap-1.5">
+                <Clock size={11} className="text-muted-foreground/40" />
+                Duration
+              </span>
+              <span className="text-foreground/70">{project.duration}</span>
+            </div>
           </div>
         </div>
-      </Reveal>
-    );
-  }
-);
-ProjectCard.displayName = "ProjectCard";
 
-// ─── Floating Detail Modal ────────────────────────────────────────────────────
+        {/* Footer Actions */}
+        <div className="flex items-center justify-between px-5 py-3.5 bg-muted/5 border-t border-border/25 mt-auto transition-colors duration-300 md:group-hover:bg-muted/10">
+          <button className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-muted-foreground/50 group-hover:text-primary transition-colors duration-300">
+            <ChevronDown
+              size={12}
+              className="-rotate-90 transition-transform duration-300 ease-out md:group-hover:translate-x-0.5 md:group-hover:text-primary"
+            />
+            <span>view details</span>
+          </button>
+
+          {demoUrl && (
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground/50 hover:text-primary transition-all duration-300 hover:-translate-y-0.5 ease-out"
+              style={{ willChange: "transform" }}
+            >
+              <span>live demo</span>
+              <ArrowUpRight
+                size={12}
+                className="transition-transform duration-300 ease-out md:group-hover:-translate-y-0.5 md:group-hover:translate-x-0.5"
+              />
+            </a>
+          )}
+        </div>
+      </div>
+    </Reveal>
+  );
+};
+
+// ─── Project Modal (Floating Detail) ──────────────────────────────────────────
 
 interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
 }
 
-const ProjectModal = memo(({ project, onClose }: ProjectModalProps) => {
+const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
+  const reducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Lock body scroll safely with cleanup
   useEffect(() => {
     if (project) {
       document.body.style.overflow = "hidden";
       setMounted(true);
-
       const animationFrame = requestAnimationFrame(() => {
         setVisible(true);
       });
-
-      return () => {
-        cancelAnimationFrame(animationFrame);
-        document.body.style.overflow = "";
-      };
+      return () => cancelAnimationFrame(animationFrame);
     } else {
       setVisible(false);
       const timeout = setTimeout(() => {
         setMounted(false);
-      }, 300);
-
+        document.body.style.overflow = "";
+      }, 200);
       return () => clearTimeout(timeout);
     }
   }, [project]);
-
-  // Focus close button on open
-  useEffect(() => {
-    if (visible) {
-      closeButtonRef.current?.focus();
-    }
-  }, [visible]);
-
-  // Accessibility: Escape key handling
-  useEffect(() => {
-    if (!project) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [project, onClose]);
 
   if (!mounted && !project) return null;
 
@@ -831,27 +902,24 @@ const ProjectModal = memo(({ project, onClose }: ProjectModalProps) => {
 
   return (
     <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-project-title"
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 transition-opacity duration-300 transform-gpu ${
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 transition-all duration-300 ${
         visible
           ? "bg-background/40 backdrop-blur-md opacity-100"
           : "bg-background/0 backdrop-blur-none opacity-0"
       }`}
       style={{
         transitionTimingFunction: visible
-          ? `cubic-bezier(${MOTION_EASE.OUT_SMOOTH.join(",")})`
+          ? "cubic-bezier(0.215, 0.610, 0.355, 1)"
           : "cubic-bezier(0.55, 0.055, 0.675, 0.19)",
       }}
     >
       {/* Backdrop click to close */}
-      <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
+      <div className="absolute inset-0" onClick={onClose} />
 
       {/* Modal Card Content */}
       {project && (
         <div
-          className={`relative w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl border border-primary/25 bg-surface/70 backdrop-blur-xl shadow-2xl overflow-hidden transition-[opacity,transform] duration-300 transform-gpu ${
+          className={`relative w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl border border-primary/25 bg-surface/70 backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-300 ${
             visible
               ? "opacity-100 scale-100 translate-y-0"
               : "opacity-0 scale-95 translate-y-4"
@@ -859,7 +927,7 @@ const ProjectModal = memo(({ project, onClose }: ProjectModalProps) => {
           style={{
             willChange: "transform, opacity",
             transitionTimingFunction: visible
-              ? `cubic-bezier(${MOTION_EASE.OUT_SMOOTH.join(",")})`
+              ? "cubic-bezier(0.215, 0.610, 0.355, 1)"
               : "cubic-bezier(0.55, 0.055, 0.675, 0.19)",
           }}
         >
@@ -878,27 +946,21 @@ const ProjectModal = memo(({ project, onClose }: ProjectModalProps) => {
                   {project.year}
                 </span>
               </div>
-              <h2
-                id="modal-project-title"
-                className="text-xl sm:text-2xl font-bold tracking-tight text-foreground"
-              >
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
                 {project.title}
               </h2>
             </div>
 
             <button
-              ref={closeButtonRef}
-              type="button"
               onClick={onClose}
-              aria-label="Close project details"
-              className="relative before:absolute before:-inset-2 p-1.5 rounded-lg border border-border/40 bg-surface/40 text-muted-foreground hover:text-foreground hover:border-border transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring select-none [-webkit-tap-highlight-color:transparent]"
+              className="p-1.5 rounded-lg border border-border/40 bg-surface/40 text-muted-foreground hover:text-foreground hover:border-border transition-colors duration-200"
             >
-              <X size={16} aria-hidden="true" />
+              <X size={16} />
             </button>
           </div>
 
           {/* Scrollable Modal Body */}
-          <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden overscroll-contain">
+          <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {/* Description */}
             <div>
               <SectionLabel>About Project</SectionLabel>
@@ -1010,11 +1072,10 @@ const ProjectModal = memo(({ project, onClose }: ProjectModalProps) => {
                 href={demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-mono uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 hover:bg-primary/25 rounded-lg transition-[background-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transform-gpu select-none [-webkit-tap-highlight-color:transparent]"
-                style={{ willChange: "transform" }}
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-mono uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 hover:bg-primary/25 rounded-lg transition-all duration-200 hover:-translate-y-0.5"
               >
                 <span>launch live site</span>
-                <ArrowUpRight size={13} aria-hidden="true" />
+                <ArrowUpRight size={13} />
               </a>
             </div>
           )}
@@ -1022,10 +1083,9 @@ const ProjectModal = memo(({ project, onClose }: ProjectModalProps) => {
       )}
     </div>
   );
-});
-ProjectModal.displayName = "ProjectModal";
+};
 
-// ─── Main Page Entrypoint ─────────────────────────────────────────────────────
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 const Projects = () => {
   const [search, setSearch] = useState("");
@@ -1035,31 +1095,28 @@ const Projects = () => {
 
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const featuredProject = ALL_PROJECTS[0];
-  const restProjects = useMemo(() => ALL_PROJECTS.slice(1), []);
+  const featuredProject = allProjects[0];
+  const restProjects = allProjects.slice(1);
 
-  const completedCount = useMemo(
-    () => ALL_PROJECTS.filter((p) => p.status === "Completed").length,
-    []
-  );
-  const activeCount = useMemo(
-    () => ALL_PROJECTS.filter((p) => p.status === "On Working").length,
-    []
-  );
-  const experimentalCount = useMemo(
-    () => ALL_PROJECTS.filter((p) => p.status === "Experimental").length,
-    []
-  );
+  const completedCount = allProjects.filter(
+    (p) => p.status === "Completed",
+  ).length;
+  const activeCount = allProjects.filter(
+    (p) => p.status === "On Working",
+  ).length;
+  const experimentalCount = allProjects.filter(
+    (p) => p.status === "Experimental",
+  ).length;
 
   const allTechs = useMemo(() => {
     const set = new Set<string>();
-    ALL_PROJECTS.forEach((p) => p.tags.forEach((t) => set.add(t)));
+    allProjects.forEach((p) => p.tags.forEach((t) => set.add(t)));
     return set.size;
   }, []);
 
   const yearGroups = useMemo(() => {
     const map = new Map<string, number>();
-    ALL_PROJECTS.forEach((p) => {
+    allProjects.forEach((p) => {
       map.set(p.year, (map.get(p.year) ?? 0) + 1);
     });
     return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
@@ -1072,31 +1129,20 @@ const Projects = () => {
     setActiveCategory(null);
   }, []);
 
-  const handleOpenDetails = useCallback((project: Project) => {
-    setSelectedProject(project);
-  }, []);
-
-  const handleCloseDetails = useCallback(() => {
-    setSelectedProject(null);
-  }, []);
-
   const hasFilters = Boolean(
-    search || activeStatus || activeYear || activeCategory
+    search || activeStatus || activeYear || activeCategory,
   );
 
-  // Optimized Filtering Engine
   const filtered = useMemo(() => {
-    const query = search.toLowerCase().trim();
-
+    const q = search.toLowerCase().trim();
     return restProjects.filter((p) => {
       if (
-        query &&
-        !p.title.toLowerCase().includes(query) &&
-        !p.category.toLowerCase().includes(query) &&
-        !p.tags.some((t) => t.toLowerCase().includes(query))
-      ) {
+        q &&
+        !p.title.toLowerCase().includes(q) &&
+        !p.category.toLowerCase().includes(q) &&
+        !p.tags.some((t) => t.toLowerCase().includes(q))
+      )
         return false;
-      }
       if (activeStatus && p.status !== activeStatus) return false;
       if (activeYear && p.year !== activeYear) return false;
       if (activeCategory && p.category !== activeCategory) return false;
@@ -1115,7 +1161,7 @@ const Projects = () => {
             </span>
             <span className="h-px flex-1 max-w-[60px] bg-border/50" />
             <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground/50">
-              {String(ALL_PROJECTS.length).padStart(2, "0")} entries
+              {String(allProjects.length).padStart(2, "0")} entries
             </span>
           </div>
 
@@ -1151,7 +1197,7 @@ const Projects = () => {
           </div>
 
           {/* Year timeline */}
-          <div className="flex items-center gap-4 mb-12 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center gap-4 mb-12 overflow-x-auto pb-1">
             {yearGroups.map(([year, count], i) => (
               <div key={year} className="flex items-center gap-4 shrink-0">
                 {i > 0 && <span className="h-px w-6 bg-border/40 shrink-0" />}
@@ -1178,11 +1224,11 @@ const Projects = () => {
           </div>
           <FeaturedCard
             project={featuredProject}
-            onOpenDetails={handleOpenDetails}
+            onOpenDetails={(proj) => setSelectedProject(proj)}
           />
         </Reveal>
 
-        {/* ── Archive Header ── */}
+        {/* ── Archive ── */}
         <Reveal index={2}>
           <div className="flex items-center gap-3 mt-14 mb-6">
             <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-muted-foreground/50">
@@ -1195,13 +1241,12 @@ const Projects = () => {
           </div>
         </Reveal>
 
-        {/* ── Search + Filters Bar ── */}
+        {/* ── Search + Filters ── */}
         <Reveal index={3}>
           <div className="mb-6 space-y-3">
             <div className="relative">
               <Search
                 size={13}
-                aria-hidden="true"
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/40"
               />
               <input
@@ -1209,8 +1254,7 @@ const Projects = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="search by title, tech, or category…"
-                aria-label="Search projects by title, technology, or category"
-                className="w-full sm:max-w-sm bg-surface/30 border border-border/50 rounded-xl pl-9 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-[background-color,border-color] duration-200 font-mono"
+                className="w-full sm:max-w-sm bg-surface/30 border border-border/50 rounded-xl pl-9 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-all duration-200 font-mono"
               />
             </div>
 
@@ -1219,9 +1263,7 @@ const Projects = () => {
                 <FilterPill
                   key={s}
                   active={activeStatus === s}
-                  onClick={() =>
-                    setActiveStatus((prev) => (prev === s ? null : s))
-                  }
+                  onClick={() => setActiveStatus(activeStatus === s ? null : s)}
                 >
                   <span
                     className={`h-1.5 w-1.5 rounded-full ${statusDot[s]}`}
@@ -1231,27 +1273,25 @@ const Projects = () => {
               ))}
               <span className="h-5 w-px bg-border/40 self-center mx-1" />
               {ALL_YEARS.filter((y) =>
-                restProjects.some((p) => p.year === y)
+                restProjects.some((p) => p.year === y),
               ).map((y) => (
                 <FilterPill
                   key={y}
                   active={activeYear === y}
-                  onClick={() =>
-                    setActiveYear((prev) => (prev === y ? null : y))
-                  }
+                  onClick={() => setActiveYear(activeYear === y ? null : y)}
                 >
                   {y}
                 </FilterPill>
               ))}
               <span className="h-5 w-px bg-border/40 self-center mx-1" />
               {ALL_CATEGORIES.filter((c) =>
-                restProjects.some((p) => p.category === c)
+                restProjects.some((p) => p.category === c),
               ).map((c) => (
                 <FilterPill
                   key={c}
                   active={activeCategory === c}
                   onClick={() =>
-                    setActiveCategory((prev) => (prev === c ? null : c))
+                    setActiveCategory(activeCategory === c ? null : c)
                   }
                 >
                   {c}
@@ -1259,19 +1299,18 @@ const Projects = () => {
               ))}
               {hasFilters && (
                 <button
-                  type="button"
                   onClick={clearFilters}
-                  className="relative before:absolute before:-inset-2 inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground/50 hover:text-foreground transition-[color,transform] duration-200 px-2 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm transform-gpu select-none [-webkit-tap-highlight-color:transparent]"
+                  className="inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground/50 hover:text-foreground transition-colors duration-200 px-2 active:scale-95"
                   style={{ willChange: "transform" }}
                 >
-                  <X size={10} aria-hidden="true" /> clear
+                  <X size={10} /> clear
                 </button>
               )}
             </div>
           </div>
         </Reveal>
 
-        {/* ── Project Grid List ── */}
+        {/* ── Project list ── */}
         <div>
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1280,7 +1319,7 @@ const Projects = () => {
                   key={project.title}
                   project={project}
                   index={i}
-                  onOpenDetails={handleOpenDetails}
+                  onOpenDetails={(proj) => setSelectedProject(proj)}
                 />
               ))}
             </div>
@@ -1291,9 +1330,8 @@ const Projects = () => {
                   no projects match those filters.
                 </p>
                 <button
-                  type="button"
                   onClick={clearFilters}
-                  className="relative before:absolute before:-inset-2 mt-3 text-[11px] font-mono text-primary/60 hover:text-primary transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm select-none [-webkit-tap-highlight-color:transparent]"
+                  className="mt-3 text-[11px] font-mono text-primary/60 hover:text-primary transition-colors duration-200"
                 >
                   clear filters
                 </button>
@@ -1302,15 +1340,15 @@ const Projects = () => {
           )}
         </div>
 
-        {/* ── Floating Detail Modal ── */}
+        {/* ── Shared Floating Detail Modal ── */}
         <ProjectModal
           project={selectedProject}
-          onClose={handleCloseDetails}
+          onClose={() => setSelectedProject(null)}
         />
 
-        {/* ── Footer Note Archive ── */}
-        <Reveal index={4} className="mt-14 pb-2 -mb-24">
-          <div className="rounded-2xl border border-border/40 bg-surface/20 px-5 sm:px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-[border-color] duration-200 hover:border-border/60">
+        {/* ── Footer note ── */}
+        <Reveal index={4} className="mt-14 -mb-[92px]">
+          <div className="rounded-2xl border border-border/40 bg-surface/20 px-5 sm:px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-colors duration-200 hover:border-border/60">
             <p className="text-sm text-muted-foreground">
               more projects live quietly on github — open source, drafts, and
               experiments.

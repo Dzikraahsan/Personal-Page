@@ -1,120 +1,62 @@
-import {
-  ComponentPropsWithoutRef,
-  ElementType,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  MOTION_DURATION,
-  MOTION_OFFSET,
-  calculateStaggerDelay,
-  getRevealTransition,
-  revealVariants,
-} from "@/lib/motion";
 
-type AllowedElement =
-  | "div"
-  | "section"
-  | "article"
-  | "li"
-  | "header"
-  | "footer"
-  | "a";
-
-type RevealBaseProps<T extends AllowedElement> = {
+type RevealProps = {
   children: ReactNode;
   delay?: number;
   index?: number;
   className?: string;
-  as?: T;
+  as?: "div" | "section" | "article" | "li" | "header" | "footer" | "a";
+  [key: string]: unknown;
 };
 
-export type RevealProps<T extends AllowedElement = "div"> =
-  RevealBaseProps<T> &
-    Omit<ComponentPropsWithoutRef<T>, keyof RevealBaseProps<T>>;
-
-const Reveal = <T extends AllowedElement = "div">({
+const Reveal = ({
   children,
   delay,
   index = 0,
   className,
-  as,
-  style,
+  as = "div",
   ...rest
-}: RevealProps<T>) => {
-  const MotionTag = motion[as || "div"] as ElementType;
-
+}: RevealProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
-
-  const isMobile = useIsMobile();
-  const prefersReducedMotion = useReducedMotion();
-
-  // Observer hanya dipakai di desktop
   const inView = useInView(ref, {
     once: true,
     amount: 0.05,
     margin: "0px 0px -5% 0px",
   });
-
+  const isMobile = useIsMobile();
+  const prefersReducedMotion = useReducedMotion();
   const [forceShow, setForceShow] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion || isMobile) return;
+    const t = setTimeout(() => setForceShow(true), 1200);
+    return () => clearTimeout(t);
+  }, []);
 
-    if (inView) return;
+  const visible = inView || forceShow || prefersReducedMotion;
 
-    const timer = window.setTimeout(() => {
-      setForceShow(true);
-    }, 1200);
-
-    return () => clearTimeout(timer);
-  }, [inView, prefersReducedMotion, isMobile]);
-
-  const isVisible = prefersReducedMotion
-    ? true
-    : isMobile
-    ? true
-    : inView || forceShow;
-
-  const yOffset = prefersReducedMotion
-    ? MOTION_OFFSET.NONE
-    : isMobile
-    ? 4
-    : MOTION_OFFSET.MD;
-
-  const duration = prefersReducedMotion
-    ? MOTION_DURATION.INSTANT
-    : isMobile
-    ? 0.22
-    : MOTION_DURATION.SLOW;
-
+  const y = prefersReducedMotion || isMobile ? 0 : 14;
+  const duration = prefersReducedMotion ? 0 : isMobile ? 0.4 : 0.6;
+  const stagger = isMobile ? 0.03 : 0.06;
   const computedDelay = prefersReducedMotion
     ? 0
-    : isMobile
-    ? 0
-    : calculateStaggerDelay(index, isMobile, delay);
+    : (delay ?? Math.min(index * stagger, 0.25));
 
-  const transitionConfig = useMemo(
-    () => getRevealTransition(duration, computedDelay),
-    [duration, computedDelay]
-  );
+  const MotionTag = motion[as] as typeof motion.div;
 
   return (
     <MotionTag
       ref={ref}
       className={className}
-      custom={{ y: yOffset }}
-      variants={revealVariants}
-      initial={isMobile ? false : "hidden"}
-      animate={isVisible ? "visible" : "hidden"}
-      transition={transitionConfig}
-      style={style}
-      {...(rest as ComponentPropsWithoutRef<ElementType>)}
+      initial={{ opacity: 0, y }}
+      animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y }}
+      transition={{
+        duration,
+        delay: computedDelay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      {...rest}
     >
       {children}
     </MotionTag>

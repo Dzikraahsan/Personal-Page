@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState } from "react";
 import PageTransition from "@/components/PageTransition";
 import Reveal from "@/components/Reveal";
 import {
@@ -34,7 +34,7 @@ interface HighlightItem {
   sub: string;
 }
 
-const SOCIALS: readonly SocialItem[] = [
+const socials: SocialItem[] = [
   {
     icon: Github,
     label: "GitHub",
@@ -53,9 +53,9 @@ const SOCIALS: readonly SocialItem[] = [
     href: "mailto:dzikraahsan10@gmail.com",
     handle: "dzikraahsan10@gmail.com",
   },
-] as const;
+];
 
-const HIGHLIGHTS: readonly HighlightItem[] = [
+const highlights: HighlightItem[] = [
   {
     icon: Zap,
     label: "Response Time",
@@ -80,54 +80,46 @@ const HIGHLIGHTS: readonly HighlightItem[] = [
     value: "Mon – Fri",
     sub: "09:00 – 20:00 WIB",
   },
-] as const;
+];
 
-// Helper Regex Email Standard
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const Contact = () => {
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
-const ContactForm = memo(() => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [loading, setLoading] = useState(false);
-
-  const isNameValid = formData.name.trim().length >= 2;
-  const isEmailValid = EMAIL_REGEX.test(formData.email.trim());
-  const isMessageValid = formData.message.trim().length >= 5;
-
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  }, []);
+  const isNameValid = name.trim().length >= 2;
+  const isEmailValid = email.trim().includes("@") && email.trim().includes(".");
+  const isMessageValid = message.trim().length >= 5;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isNameValid) {
+    if (!name.trim() || name.trim().length < 2) {
       toast.error("Please enter a valid name (at least 2 characters).");
       return;
     }
-    if (!isEmailValid) {
+    if (!email.trim() || !email.includes("@") || !email.includes(".")) {
       toast.error("Please enter a valid email address.");
       return;
     }
-    if (!isMessageValid) {
+    if (!message.trim() || message.trim().length < 5) {
       toast.error("Please enter a message (at least 5 characters).");
       return;
     }
 
     try {
       setLoading(true);
-      const { error } = await supabase.from("messages").insert([
-        {
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          message: formData.message.trim(),
-        },
-      ]);
-
+      const { error } = await supabase
+        .from("messages")
+        .insert([
+          { name: name.trim(), email: email.trim(), message: message.trim() },
+        ]);
       if (error) throw error;
-
       toast.success("Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
+      setName("");
+      setEmail("");
+      setMessage("");
     } catch (err) {
       console.error("Error sending message:", err);
       toast.error("Failed to send message. Please try again.");
@@ -137,156 +129,15 @@ const ContactForm = memo(() => {
   };
 
   return (
-    <Reveal delay={0.1}>
-      <form
-        onSubmit={handleSubmit}
-        noValidate
-        aria-label="Contact form"
-        className="bg-surface/10 rounded-2xl border border-border/40 p-5 sm:p-6 mb-12 space-y-4 shadow-[0_8px_30px_-12px_hsl(var(--primary)/0.04)]"
-      >
-        <div className="flex items-center gap-2 mb-2">
-          <CornerDownRight size={12} className="text-primary/70" aria-hidden="true" />
-          <h2 className="font-mono text-[10px] text-primary tracking-[0.2em] uppercase">
-            send a digital letter
-          </h2>
-        </div>
-
-        {/* Input Name */}
-        <div className="relative">
-          <label htmlFor="contact-name" className="sr-only">
-            Your name
-          </label>
-          <input
-            id="contact-name"
-            name="name"
-            type="text"
-            autoComplete="name"
-            required
-            aria-required="true"
-            aria-invalid={formData.name.length > 0 && !isNameValid}
-            aria-describedby="contact-name-hint"
-            placeholder="your name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full bg-surface/30 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-[background-color,border-color] duration-200 font-mono"
-          />
-          <span id="contact-name-hint" className="sr-only">
-            At least 2 characters.
-          </span>
-          {formData.name.length > 0 && (
-            <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true">
-              {isNameValid ? (
-                <CheckCircle2 size={13} className="text-emerald-400/80" />
-              ) : (
-                <AlertCircle size={13} className="text-amber-400/60" />
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Input Email */}
-        <div className="relative">
-          <label htmlFor="contact-email" className="sr-only">
-            Your email address
-          </label>
-          <input
-            id="contact-email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            aria-required="true"
-            aria-invalid={formData.email.length > 0 && !isEmailValid}
-            aria-describedby="contact-email-hint"
-            placeholder="your email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full bg-surface/30 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-[background-color,border-color] duration-200 font-mono"
-          />
-          <span id="contact-email-hint" className="sr-only">
-            A valid email address so I can reply.
-          </span>
-          {formData.email.length > 0 && (
-            <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true">
-              {isEmailValid ? (
-                <CheckCircle2 size={13} className="text-emerald-400/80" />
-              ) : (
-                <AlertCircle size={13} className="text-amber-400/60" />
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Textarea Message */}
-        <div className="relative">
-          <label htmlFor="contact-message" className="sr-only">
-            Your message
-          </label>
-          <textarea
-            id="contact-message"
-            name="message"
-            rows={4}
-            required
-            aria-required="true"
-            aria-invalid={formData.message.length > 0 && !isMessageValid}
-            aria-describedby="contact-message-hint"
-            placeholder="your message..."
-            value={formData.message}
-            onChange={handleChange}
-            className="w-full bg-surface/30 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-[background-color,border-color] duration-200 font-mono resize-none [scrollbar-width:none]"
-          />
-          <span id="contact-message-hint" className="sr-only">
-            At least 5 characters describing what you'd like to talk about.
-          </span>
-          <div
-            className="absolute right-3.5 bottom-3 pointer-events-none flex items-center gap-1.5 font-mono text-[9px] text-muted-foreground/40"
-            aria-hidden="true"
-          >
-            <span>{formData.message.trim().length} chars</span>
-            {formData.message.length > 0 && (
-              isMessageValid ? (
-                <CheckCircle2 size={11} className="text-emerald-400/80" />
-              ) : (
-                <AlertCircle size={11} className="text-amber-400/60" />
-              )
-            )}
-          </div>
-        </div>
-
-        {/* Button Submit */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="group/btn inline-flex items-center gap-2 bg-primary text-primary-foreground font-mono text-xs tracking-wider uppercase px-5 py-2.5 rounded-xl hover:scale-[1.02] hover:-translate-y-px hover:shadow-[0_8px_30px_hsl(var(--primary)/0.2)] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none transform-gpu select-none [-webkit-tap-highlight-color:transparent]"
-          style={{ willChange: "transform" }}
-        >
-          <span>{loading ? "sending..." : "dispatch"}</span>
-          <Send
-            size={12}
-            className={`transition-transform duration-300 ease-out transform-gpu ${
-              loading ? "animate-pulse" : "group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
-            }`}
-          />
-        </button>
-      </form>
-    </Reveal>
-  );
-});
-
-ContactForm.displayName = "ContactForm";
-
-const Contact = () => {
-  return (
     <PageTransition>
-      <div className="container pt-28 sm:pt-32 -mb-4 pb-6 relative">
-        {/* Background Radial Glow */}
+      <div className="container pt-28 sm:pt-32 -mb-5 pb-6 relative">
         <div
-          className="pointer-events-none absolute top-40 right-10 w-72 h-72 bg-primary/5 rounded-full blur-[120px] opacity-40 z-0 transform-gpu"
+          className="pointer-events-none absolute top-40 right-10 w-72 h-72 bg-primary/5 rounded-full blur-[120px] opacity-40 z-0"
           aria-hidden="true"
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start relative z-10">
-          {/* Left Column: Title, Form & Social Connections */}
+
           <div className="lg:col-span-7 max-w-2xl w-full">
             <Reveal>
               <div className="flex items-center gap-3 mb-8">
@@ -308,15 +159,145 @@ const Contact = () => {
               </p>
             </Reveal>
 
-            {/* Form Component */}
-            <ContactForm />
+            {/* Form Send Message */}
+            <Reveal delay={0.1}>
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                aria-label="Contact form"
+                className="bg-surface/10 rounded-2xl border border-border/40 p-5 sm:p-6 mb-12 space-y-4 shadow-[0_8px_30px_-12px_hsl(var(--primary)/0.04)]"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <CornerDownRight size={12} className="text-primary/70" aria-hidden="true" />
+                  <h2 className="font-mono text-[10px] text-primary tracking-[0.2em] uppercase">
+                    send a digital letter
+                  </h2>
+                </div>
+
+                {/* Input Name */}
+                <div className="relative">
+                  <label htmlFor="contact-name" className="sr-only">
+                    Your name
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    aria-required="true"
+                    aria-invalid={name.length > 0 && !isNameValid}
+                    aria-describedby="contact-name-hint"
+                    placeholder="your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full bg-surface/30 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-all duration-200 font-mono"
+                  />
+                  <span id="contact-name-hint" className="sr-only">
+                    At least 2 characters.
+                  </span>
+                  {name.length > 0 && (
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true">
+                      {isNameValid ? (
+                        <CheckCircle2 size={13} className="text-emerald-400/80" />
+                      ) : (
+                        <AlertCircle size={13} className="text-amber-400/60" />
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Input Email */}
+                <div className="relative">
+                  <label htmlFor="contact-email" className="sr-only">
+                    Your email address
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    aria-required="true"
+                    aria-invalid={email.length > 0 && !isEmailValid}
+                    aria-describedby="contact-email-hint"
+                    placeholder="your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full bg-surface/30 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-all duration-200 font-mono"
+                  />
+                  <span id="contact-email-hint" className="sr-only">
+                    A valid email address so I can reply.
+                  </span>
+                  {email.length > 0 && (
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true">
+                      {isEmailValid ? (
+                        <CheckCircle2 size={13} className="text-emerald-400/80" />
+                      ) : (
+                        <AlertCircle size={13} className="text-amber-400/60" />
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Textarea Message */}
+                <div className="relative">
+                  <label htmlFor="contact-message" className="sr-only">
+                    Your message
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows={4}
+                    required
+                    aria-required="true"
+                    aria-invalid={message.length > 0 && !isMessageValid}
+                    aria-describedby="contact-message-hint"
+                    placeholder="your message..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="w-full bg-surface/30 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 focus:bg-surface/50 transition-all duration-200 font-mono resize-none [scrollbar-width:none]"
+                  />
+                  <span id="contact-message-hint" className="sr-only">
+                    At least 5 characters describing what you'd like to talk about.
+                  </span>
+                  <div className="absolute right-3.5 bottom-3 pointer-events-none flex items-center gap-1.5 font-mono text-[9px] text-muted-foreground/40" aria-hidden="true">
+                    <span>{message.trim().length} chars</span>
+                    {message.length > 0 && (
+                      isMessageValid ? (
+                        <CheckCircle2 size={11} className="text-emerald-400/80" />
+                      ) : (
+                        <AlertCircle size={11} className="text-amber-400/60" />
+                      )
+                    )}
+                  </div>
+                </div>
+
+
+                {/* Button Submit */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="group/btn inline-flex items-center gap-2 bg-primary text-primary-foreground font-mono text-xs tracking-wider uppercase px-5 py-2.5 rounded-xl hover:scale-[1.02] hover:-translate-y-px hover:shadow-[0_8px_30px_rgb(var(--primary-rgb)/0.2)] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none"
+                  style={{ willChange: "transform" }}
+                >
+                  <span>{loading ? "sending..." : "dispatch"}</span>
+                  <Send
+                    size={12}
+                    className={`transition-transform duration-300 ease-out ${
+                      loading ? "animate-pulse" : "group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+                    }`}
+                  />
+                </button>
+              </form>
+            </Reveal>
 
             {/* Socials Connection Archive */}
             <div className="flex flex-col gap-2 mt-6">
               <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-muted-foreground/40 block mb-1.5 pl-1">
                 // connections
               </span>
-              {SOCIALS.map((s, i) => (
+              {socials.map((s, i) => (
                 <Reveal
                   as="a"
                   key={s.label}
@@ -324,8 +305,7 @@ const Contact = () => {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between px-4 py-3 border border-border/40 bg-surface/5 hover:bg-surface/10 hover:border-border/80 rounded-xl transition-[background-color,border-color,transform] duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transform-gpu select-none [-webkit-tap-highlight-color:transparent]"
-                  style={{ willChange: "transform" }}
+                  className="group flex items-center justify-between px-4 py-3 border border-border/40 bg-surface/5 hover:bg-surface/10 hover:border-border/80 rounded-xl transition-all duration-300 ease-out"
                 >
                   <div className="flex items-center gap-3.5 min-w-0">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-background/50 text-muted-foreground transition-colors duration-300 group-hover:border-primary/30 group-hover:text-primary">
@@ -336,22 +316,17 @@ const Contact = () => {
                     </span>
                   </div>
                   <div className="flex items-center gap-2 font-mono text-[10px] text-muted-foreground/30 group-hover:text-primary transition-colors duration-300">
-                    <span className="hidden sm:inline opacity-0 group-hover:opacity-100 transition-opacity duration-300 uppercase tracking-wider">
-                      {s.label}
-                    </span>
-                    <ArrowUpRight
-                      size={13}
-                      className="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transform-gpu"
-                    />
+                    <span className="hidden sm:inline opacity-0 group-hover:opacity-100 transition-opacity duration-300 uppercase tracking-wider">{s.label}</span>
+                    <ArrowUpRight size={13} className="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </div>
                 </Reveal>
               ))}
             </div>
           </div>
 
-          {/* Right Column: Quick Info & Metadata Sidebar */}
           <div className="lg:col-span-5 w-full lg:pt-[3.75rem]">
             <div className="lg:sticky lg:top-28 flex flex-col gap-8">
+
               <div>
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs text-primary tracking-widest uppercase">
@@ -374,9 +349,13 @@ const Contact = () => {
 
               {/* Grid Metadata Info */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-                {HIGHLIGHTS.map((item, i) => (
-                  <Reveal key={item.label} index={i} delay={0.15 + i * 0.05}>
-                    <div className="group flex items-start gap-3 bg-surface/5 border border-border/40 hover:border-border/80 hover:bg-surface/10 rounded-2xl p-4 transition-[background-color,border-color,transform] duration-300 ease-out h-full transform-gpu">
+                {highlights.map((item, i) => (
+                  <Reveal
+                    key={item.label}
+                    index={i}
+                    delay={0.15 + i * 0.05}
+                  >
+                    <div className="group flex items-start gap-3 bg-surface/5 border border-border/40 hover:border-border/80 hover:bg-surface/10 rounded-2xl p-4 transition-all duration-300 ease-out h-full">
                       <div className="mt-[1px] shrink-0 w-7 h-7 rounded-lg border border-border/60 bg-background/40 group-hover:border-primary/30 flex items-center justify-center transition-colors duration-300">
                         <item.icon
                           size={12}
@@ -403,7 +382,7 @@ const Contact = () => {
 
               {/* Preferred Contact Mode Node */}
               <Reveal delay={0.4}>
-                <div className="flex items-start gap-3.5 bg-surface/5 border border-border/30 rounded-2xl p-4 transform-gpu">
+                <div className="flex items-start gap-3.5 bg-surface/5 border border-border/30 rounded-2xl p-4">
                   <div className="mt-0.5 shrink-0 w-7 h-7 rounded-lg border border-border/50 bg-background/50 flex items-center justify-center">
                     <MessageSquare size={13} className="text-primary/70" />
                   </div>
@@ -421,7 +400,7 @@ const Contact = () => {
 
               {/* Institutional Statement Node */}
               <Reveal delay={0.5}>
-                <div className="rounded-2xl border border-border/40 bg-surface/5 px-4 py-4 flex flex-col gap-2 transition-colors duration-300 hover:border-border/60 transform-gpu">
+                <div className="rounded-2xl border border-border/40 bg-surface/5 px-4 py-4 flex flex-col gap-2 transition-colors duration-300 hover:border-border/60">
                   <p className="text-[11px] text-muted-foreground/70 leading-relaxed font-normal">
                     currently handling remote architectures worldwide, ensuring complete technological compliance with design metrics.
                   </p>
@@ -430,8 +409,10 @@ const Contact = () => {
                   </span>
                 </div>
               </Reveal>
+
             </div>
           </div>
+
         </div>
       </div>
     </PageTransition>

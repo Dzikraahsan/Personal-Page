@@ -465,7 +465,7 @@ const About = () => {
           </div>
 
           {/* ── SECTION 5: GROUPED BY CATEGORY GRID ── */}
-          <div className="space-y-12 mt-4 -mb-36">
+          <div className="space-y-12 mt-4 -mb-[150px]">
             {orderedCategories.map((category, catIndex) => {
               const items = grouped[category];
               return (
